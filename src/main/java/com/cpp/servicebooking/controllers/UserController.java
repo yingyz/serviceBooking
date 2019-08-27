@@ -1,10 +1,13 @@
 package com.cpp.servicebooking.controllers;
 
-import com.cpp.servicebooking.LoginRequest.JWTLoginSucessReponse;
-import com.cpp.servicebooking.LoginRequest.LoginRequest;
+import com.cpp.servicebooking.Request.UserRequest.JWTLoginSucessReponse;
+import com.cpp.servicebooking.Request.UserRequest.LoginRequest;
+import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
+import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
+import com.cpp.servicebooking.services.RoleService;
 import com.cpp.servicebooking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -57,9 +63,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null)return errorMap;
+
+        User user = new User();
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(signUpRequest.getPassword());
+        user.setFullName(signUpRequest.getFullName());
+        user.setLocation(signUpRequest.getLocation());
+        Role role = roleService.findRoleByRolename(signUpRequest.getRole());
+        user.setRole(role);
 
         User newUser = userService.saveUser(user);
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);

@@ -1,6 +1,7 @@
 package com.cpp.servicebooking.security;
 
 public class SecurityConstants {
+    public static final String ADMIN_URLS = "/api/admin/**";
     public static final String SIGN_UP_URLS = "/api/users/**";
     public static final String SERVICE = "/api/services/**";
     public static final String POSTS = "/api/posts/**";

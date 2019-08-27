@@ -1,5 +1,6 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +12,6 @@ import java.util.*;
 
 @Entity
 public class User implements UserDetails {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,16 @@ public class User implements UserDetails {
     @NotBlank(message = "Please enter your full name")
     private String fullName;
 
-    @NotBlank(message = "Please enter your role")
-    private String role;
+   // @NotBlank(message = "Please enter your role")
+    //private String roleStr;
+
+    @NotBlank(message = "Location field is required")
+    private String location;
+
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     private Date create_At;
     private Date update_At;
@@ -62,11 +70,20 @@ public class User implements UserDetails {
         return fullName;
     }
 
-    public String getRole() {
+    //public String getRoleStr() {
+      //  return roleStr;
+    //}
+
+    //public void setRoleStr(String role) {
+        //this.roleStr = roleStr;
+    //}
+
+
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -90,6 +107,16 @@ public class User implements UserDetails {
         this.update_At = update_At;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+
+
     @PrePersist
     protected void onCreate(){
         this.create_At = new Date();
@@ -104,7 +131,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 
-        list.add(new SimpleGrantedAuthority(role));
+        //list.add(new SimpleGrantedAuthority(roleStr));
 
         return list;
     }

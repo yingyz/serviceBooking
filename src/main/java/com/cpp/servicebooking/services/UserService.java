@@ -1,7 +1,9 @@
 package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.exceptions.DuplicateAccountException;
+import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.repository.RoleRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 

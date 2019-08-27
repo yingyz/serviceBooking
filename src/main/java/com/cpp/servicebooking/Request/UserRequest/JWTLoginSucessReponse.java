@@ -1,4 +1,4 @@
-package com.cpp.servicebooking.LoginRequest;
+package com.cpp.servicebooking.Request.UserRequest;
 
 public class JWTLoginSucessReponse {
     private boolean success;

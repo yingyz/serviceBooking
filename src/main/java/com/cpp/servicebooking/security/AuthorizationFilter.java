@@ -4,6 +4,7 @@ import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
@@ -14,7 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.cpp.servicebooking.security.SecurityConstants.HEADER_STRING;
 import static com.cpp.servicebooking.security.SecurityConstants.TOKEN_PREFIX;
@@ -36,7 +38,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 Long userId = jwtTokenProvider.getUserIdFromJWT(jwt);
                 User userDetails = userService.loadUserById(userId);
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+                authorities.add(new SimpleGrantedAuthority(userDetails.getRole().getName()));
+
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -58,3 +63,5 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
+//https://stackoverflow.com/questions/14712685/spring-security-set-grantedauthorities
