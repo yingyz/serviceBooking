@@ -4,10 +4,13 @@ import com.cpp.servicebooking.Request.UserRequest.JWTLoginSucessReponse;
 import com.cpp.servicebooking.Request.UserRequest.LoginRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.models.Role;
+import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.UserInfo;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RoleService;
+import com.cpp.servicebooking.services.ServicetypeService;
 import com.cpp.servicebooking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +37,9 @@ public class UserController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private ServicetypeService servicetypeService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -70,14 +76,22 @@ public class UserController {
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(signUpRequest.getPassword());
-        user.setFullName(signUpRequest.getFullName());
-        user.setLocation(signUpRequest.getLocation());
         Role role = roleService.findRoleByRolename(signUpRequest.getRole());
         user.setRole(role);
+        UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),signUpRequest.getZipcode(), signUpRequest.getPhone());
+        user.setUserInfo(userInfo);
+
+        if (signUpRequest.getServicename() != null && role.getName().equals("Service")) {
+            ServiceProvide serviceProvide = new ServiceProvide();
+            serviceProvide.setServiceType(servicetypeService.findServiceByServicename(signUpRequest.getServicename()));
+            user.setServiceProvide(serviceProvide);
+        }
 
         User newUser = userService.saveUser(user);
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
+
+
 
     @GetMapping("/all")
     public Iterable<User> getAllUsers() {

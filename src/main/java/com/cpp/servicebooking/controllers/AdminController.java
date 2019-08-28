@@ -2,9 +2,12 @@ package com.cpp.servicebooking.controllers;
 
 
 import com.cpp.servicebooking.Request.UserRequest.RoleRequest;
+import com.cpp.servicebooking.Request.UserRequest.ServiceRequest;
 import com.cpp.servicebooking.models.Role;
+import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RoleService;
+import com.cpp.servicebooking.services.ServicetypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,9 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
+    private ServicetypeService saveServicetype;
+
+    @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("/role")
@@ -31,6 +37,16 @@ public class AdminController {
         Role role = new Role(roleRequest.getName());
         Role newRole = roleService.saveRole(role);
         return new ResponseEntity<Role>(newRole, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/servicetype")
+    public ResponseEntity<?> saveServicetype(@Valid @RequestBody ServiceRequest serviceRequest, BindingResult result) {
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null) return errorMap;
+
+        ServiceType serviceType = new ServiceType(serviceRequest.getName());
+        ServiceType newserviceType = saveServicetype.saveServicetype(serviceType);
+        return new ResponseEntity<ServiceType>(newserviceType, HttpStatus.CREATED);
     }
 
     @GetMapping("/roles")

@@ -1,8 +1,6 @@
 package com.cpp.servicebooking.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -25,14 +23,13 @@ public class User implements UserDetails {
     @NotBlank(message = "Password field is required")
     private String password;
 
-    @NotBlank(message = "Please enter your full name")
-    private String fullName;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "userInfo_id")
+    private UserInfo userInfo;
 
-   // @NotBlank(message = "Please enter your role")
-    //private String roleStr;
-
-    @NotBlank(message = "Location field is required")
-    private String location;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "serviceprovide_id")
+    private ServiceProvide serviceProvide;
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -66,18 +63,6 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    //public String getRoleStr() {
-      //  return roleStr;
-    //}
-
-    //public void setRoleStr(String role) {
-        //this.roleStr = roleStr;
-    //}
-
 
     public Role getRole() {
         return role;
@@ -87,8 +72,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public Date getCreate_At() {
@@ -107,15 +96,17 @@ public class User implements UserDetails {
         this.update_At = update_At;
     }
 
-    public String getLocation() {
-        return location;
+    public String getFullName() {
+        return userInfo.getFirstname() + " " + userInfo.getLastname();
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public ServiceProvide getServiceProvide() {
+        return serviceProvide;
     }
 
-
+    public void setServiceProvide(ServiceProvide serviceProvide) {
+        this.serviceProvide = serviceProvide;
+    }
 
     @PrePersist
     protected void onCreate(){

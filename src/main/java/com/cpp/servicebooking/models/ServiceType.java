@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Role {
+public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +17,13 @@ public class Role {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "role", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "serviceType", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<ServiceProvide> serviceProvides = new HashSet<>();
 
-    public Role () {}
+    public ServiceType() {}
 
-    public Role(String name) {
+    public ServiceType(String name) {
         this.name = name;
     }
 
@@ -43,5 +43,11 @@ public class Role {
         this.name = name;
     }
 
+    public Set<ServiceProvide> getServiceProvides() {
+        return serviceProvides;
+    }
 
+    public void setServiceProvides(Set<ServiceProvide> serviceProvides) {
+        this.serviceProvides = serviceProvides;
+    }
 }
