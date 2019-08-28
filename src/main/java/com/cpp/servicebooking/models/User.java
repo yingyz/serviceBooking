@@ -1,5 +1,6 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -36,8 +37,14 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<OrderRequest> orderRequests = new HashSet<>();
+
     private Date create_At;
     private Date update_At;
+
+    public User(){};
 
     public Long getId() {
         return id;
