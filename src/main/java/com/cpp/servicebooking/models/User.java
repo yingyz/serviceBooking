@@ -1,11 +1,8 @@
 package com.cpp.servicebooking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-<<<<<<< HEAD
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-=======
->>>>>>> ybranch
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -49,10 +46,6 @@ public class User implements UserDetails {
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @OneToMany(mappedBy = "user", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<OrderRequest> orderRequests = new HashSet<>();
 
     private Date create_At;
     private Date update_At;

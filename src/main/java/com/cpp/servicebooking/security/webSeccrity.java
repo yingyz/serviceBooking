@@ -58,7 +58,7 @@ public class webSeccrity extends WebSecurityConfigurerAdapter {
                 .antMatchers(SIGN_UP_URLS)
                 .permitAll()
                 .antMatchers(ADMIN_URLS).hasAnyAuthority("Admin")
-                .antMatchers(POSTS).hasAnyAuthority("Customer")
+                .antMatchers(CUSTOMER).hasAnyAuthority("Customer")
                 .antMatchers(SERVICE).hasAnyAuthority("Service")
                 .anyRequest()
                 .authenticated();
