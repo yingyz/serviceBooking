@@ -1,5 +1,7 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,11 +17,12 @@ public class ServiceProvide {
 
     @OneToOne(mappedBy = "serviceProvide", cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnore
     private User user;
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "serviceprovide_id")
+    @JoinColumn(name = "serviceType_id")
     private ServiceType serviceType;
 
     public ServiceProvide() {}

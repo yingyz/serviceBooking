@@ -33,8 +33,6 @@ public class SignUpRequest {
     @NotBlank(message = "Role cannot be blank")
     private String role;
 
-    private String servicename;
-
     public String getUsername() {
         return username;
     }
@@ -113,13 +111,5 @@ public class SignUpRequest {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getServicename() {
-        return servicename;
-    }
-
-    public void setServicename(String servicename) {
-        this.servicename = servicename;
     }
 }

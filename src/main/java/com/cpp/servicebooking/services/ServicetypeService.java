@@ -1,6 +1,6 @@
 package com.cpp.servicebooking.services;
 
-import com.cpp.servicebooking.exceptions.DuplicateAccountException;
+import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;

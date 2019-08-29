@@ -1,8 +1,8 @@
 package com.cpp.servicebooking.controllers;
 
 
-import com.cpp.servicebooking.Request.UserRequest.RoleRequest;
-import com.cpp.servicebooking.Request.UserRequest.ServiceRequest;
+import com.cpp.servicebooking.Request.AdminRequest.RoleRequest;
+import com.cpp.servicebooking.Request.AdminRequest.ServiceTypeRequest;
 import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.services.MapValidationErrorService;
@@ -40,11 +40,11 @@ public class AdminController {
     }
 
     @PostMapping("/servicetype")
-    public ResponseEntity<?> saveServicetype(@Valid @RequestBody ServiceRequest serviceRequest, BindingResult result) {
+    public ResponseEntity<?> saveServicetype(@Valid @RequestBody ServiceTypeRequest serviceTypeRequest, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        ServiceType serviceType = new ServiceType(serviceRequest.getName());
+        ServiceType serviceType = new ServiceType(serviceTypeRequest.getName());
         ServiceType newserviceType = saveServicetype.saveServicetype(serviceType);
         return new ResponseEntity<ServiceType>(newserviceType, HttpStatus.CREATED);
     }

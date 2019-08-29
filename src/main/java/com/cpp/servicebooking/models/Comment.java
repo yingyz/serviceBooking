@@ -22,7 +22,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     public Comment() {}

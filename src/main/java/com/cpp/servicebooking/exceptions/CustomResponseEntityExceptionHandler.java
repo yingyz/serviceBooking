@@ -1,5 +1,9 @@
 package com.cpp.servicebooking.exceptions;
 
+import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
+import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
+import com.cpp.servicebooking.exceptions.Response.DuplicateAccountReponse;
+import com.cpp.servicebooking.exceptions.Response.DatabaseNotFoundExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,5 +20,11 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     public final ResponseEntity<Object> handleDuplicateAccountException(DuplicateAccountException ex, WebRequest request) {
         DuplicateAccountReponse reponse = new DuplicateAccountReponse(ex.getMessage());
         return new ResponseEntity<Object>(reponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleDatabaseNotFoundException(DatabaseNotFoundException ex, WebRequest request) {
+        DatabaseNotFoundExceptionResponse response = new DatabaseNotFoundExceptionResponse(ex.getMessage());
+        return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
     }
 }
