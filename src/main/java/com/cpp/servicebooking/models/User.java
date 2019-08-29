@@ -47,10 +47,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<OrderRequest> orderRequests = new HashSet<>();
-
     private Date create_At;
     private Date update_At;
 

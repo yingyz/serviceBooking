@@ -32,5 +32,9 @@ public class UserInfoService {
 
     }
 
+    public UserInfo getUserInfoByName(String name){
+        return userRepo.findByUsername(name).getUserInfo();
+    }
+
 
 }
