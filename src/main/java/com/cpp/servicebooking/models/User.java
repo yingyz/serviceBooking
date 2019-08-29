@@ -1,11 +1,8 @@
 package com.cpp.servicebooking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-<<<<<<< HEAD
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-=======
->>>>>>> ybranch
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
