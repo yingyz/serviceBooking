@@ -31,4 +31,9 @@ public class RequestOrderService {
     public Iterable<RequestOrder> findAllRequest(){
         return requestOrderRepo.findAll();
     }
+
+    public Iterable<RequestOrder> findRequestsByUsername(String name){
+        User user = userRepo.findByUsername(name);
+        return user.getRequestOrders();
+    }
 }

@@ -37,4 +37,10 @@ public class CustomerController {
     public Iterable<RequestOrder> getAllRequests(){
         return requestOrderService.findAllRequest();
     }
+
+    @GetMapping("/myrequests")
+    public Iterable<RequestOrder> getMyRequests(Principal principal){
+        return requestOrderService.findRequestsByUsername(principal.getName());
+
+    }
 }
