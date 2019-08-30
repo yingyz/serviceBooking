@@ -23,7 +23,12 @@ public class RequestOrderService {
         requestOrder.setUser(user);
         requestOrder.setInfo(requestOrderRequest.getInfo());
         requestOrder.setTitle(requestOrderRequest.getTitle());
+        requestOrder.setActive(true);
         requestOrderRepo.save(requestOrder);
         return requestOrder;
+    }
+
+    public Iterable<RequestOrder> findAllRequest(){
+        return requestOrderRepo.findAll();
     }
 }
