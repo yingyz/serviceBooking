@@ -2,6 +2,7 @@ package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.ServiceRequest.ServiceProvideRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
+import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.models.User;
@@ -23,6 +24,7 @@ public class ServiceProvideService {
     @Autowired
     private ServiceProvideRepo serviceProvideRepo;
 
+
     public ServiceProvide updateService(ServiceProvideRequest serviceProvideRequest, String name) {
         User user = userRepo.findByUsername(name);
         ServiceProvide serviceProvide = user.getServiceProvide();
@@ -32,9 +34,18 @@ public class ServiceProvideService {
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
-
+        serviceProvide.setServiceType(serviceType);
         serviceProvideRepo.save(serviceProvide);
 
         return serviceProvide;
+    }
+
+    public Iterable<ServiceProvide> getServicesByName(String name) {
+        name = name.replaceAll("_", " ");
+        ServiceType serviceType = serviceTypeRepo.findByName(name);
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        return serviceProvideRepo.findAllByServiceType(serviceType);
     }
 }

@@ -15,7 +15,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/provide")
-public class ProviderController {
+public class ProvideController {
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -33,5 +33,9 @@ public class ProviderController {
         return new ResponseEntity<ServiceProvide>(serviceProvide, HttpStatus.CREATED);
     }
 
+    @GetMapping("/name/{serviceName}")
+    public Iterable<ServiceProvide> getServicesByName(@PathVariable String serviceName) {
+        return serviceProvideService.getServicesByName(serviceName);
+    }
 
 }

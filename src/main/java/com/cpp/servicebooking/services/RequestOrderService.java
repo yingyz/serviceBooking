@@ -1,6 +1,7 @@
 package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
+import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException;
 import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
@@ -35,5 +36,22 @@ public class RequestOrderService {
     public Iterable<RequestOrder> findRequestsByUsername(String name){
         User user = userRepo.findByUsername(name);
         return user.getRequestOrders();
+    }
+
+    public RequestOrder findById(String RequestId) {
+        long id = Long.parseLong(RequestId);
+        RequestOrder requestOrder = requestOrderRepo.findById(id);
+        if (requestOrder == null) {
+            throw new RequestOrderNotFoundException("RequestOrder not found!");
+        }
+        return requestOrder;
+    }
+
+    public void deleteRequest(String RequestId, String name) {
+        RequestOrder requestOrder = findById(RequestId);
+        if (!requestOrder.getUser().getUsername().equals(name)) {
+            throw new RequestOrderNotFoundException("RequestOrder is not yours!");
+        }
+        requestOrderRepo.delete(requestOrder);
     }
 }

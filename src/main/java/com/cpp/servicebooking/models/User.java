@@ -32,6 +32,7 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "serviceprovide_id")
+    @JsonIgnore
     private ServiceProvide serviceProvide;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
