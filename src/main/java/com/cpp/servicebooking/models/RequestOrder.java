@@ -22,14 +22,13 @@ public class RequestOrder {
 
     private Boolean active;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requestOrder")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requestOrder", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     private Date create_At;

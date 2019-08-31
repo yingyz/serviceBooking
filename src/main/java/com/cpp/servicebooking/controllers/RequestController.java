@@ -1,7 +1,6 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
-import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException;
 import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RequestOrderService;
@@ -39,22 +38,46 @@ public class RequestController {
         return requestOrderService.findAllRequest();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/active")
+    public Iterable<RequestOrder> getAllActiveRequests() {return requestOrderService.findAllActiveOrInactiveRequest(true);}
+
+    @GetMapping("/inactive")
+    public Iterable<RequestOrder> getAllInactiveRequests() {return requestOrderService.findAllActiveOrInactiveRequest(false);}
+
+
+    @GetMapping("/mine")
     public Iterable<RequestOrder> getMyRequests(Principal principal){
         return requestOrderService.findRequestsByUsername(principal.getName());
     }
 
-    //need to implemented
+    @GetMapping("/myactive")
+    public Iterable<RequestOrder> getMyActiveRequests(Principal principal){
+        return requestOrderService.findActiveOrInactiveRequestsByUsername(true, principal.getName());
+    }
+
+    @GetMapping("/myinactive")
+    public Iterable<RequestOrder> getMyInactiveRequests(Principal principal){
+        return requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName());
+    }
+
+
     @GetMapping("/id/{RequestId}")
     public ResponseEntity<?> getRequestById(@PathVariable String RequestId) {
         RequestOrder requestOrder = requestOrderService.findById(RequestId);
         return new ResponseEntity<RequestOrder>(requestOrder, HttpStatus.OK);
     }
 
-    //need to implemented
+
     @DeleteMapping("/id/{RequestId}")
     public ResponseEntity<?> deleteRequest(@PathVariable String RequestId, Principal principal) {
         requestOrderService.deleteRequest(RequestId, principal.getName());
         return new ResponseEntity<String>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
     }
+
+    @PutMapping("/id/{RequestId}")
+    public ResponseEntity<?> updateRequest(@PathVariable String RequestId, Principal principal) {
+        RequestOrder requestOrder = requestOrderService.updateRequest(RequestId, principal.getName());
+        return new ResponseEntity<RequestOrder>(requestOrder, HttpStatus.OK);
+    }
+
 }

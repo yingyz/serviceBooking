@@ -35,11 +35,11 @@ public class User implements UserDetails {
     @JsonIgnore
     private ServiceProvide serviceProvide;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
     private List<RequestOrder> requestOrders = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 

@@ -7,7 +7,11 @@ import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RequestOrderService {
@@ -33,9 +37,18 @@ public class RequestOrderService {
         return requestOrderRepo.findAll();
     }
 
+    public Iterable<RequestOrder> findAllActiveOrInactiveRequest(boolean active) {
+        return requestOrderRepo.findAllByActive(active);
+    }
+
     public Iterable<RequestOrder> findRequestsByUsername(String name){
         User user = userRepo.findByUsername(name);
         return user.getRequestOrders();
+    }
+
+    public Iterable<RequestOrder> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
+        User user = userRepo.findByUsername(name);
+        return requestOrderRepo.findAllByActiveAndUser(active, user);
     }
 
     public RequestOrder findById(String RequestId) {
@@ -52,6 +65,16 @@ public class RequestOrderService {
         if (!requestOrder.getUser().getUsername().equals(name)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
+
         requestOrderRepo.delete(requestOrder);
+    }
+
+    public RequestOrder updateRequest(String RequestId, String name) {
+        RequestOrder requestOrder = findById(RequestId);
+        if (!requestOrder.getUser().getUsername().equals(name)) {
+            throw new RequestOrderNotFoundException("RequestOrder is not yours!");
+        }
+        requestOrder.setActive(false);
+        return requestOrderRepo.save(requestOrder);
     }
 }
