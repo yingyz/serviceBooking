@@ -1,5 +1,8 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,7 +32,16 @@ public class User implements UserDetails {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "serviceprovide_id")
+    @JsonIgnore
     private ServiceProvide serviceProvide;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
+    private List<RequestOrder> requestOrders = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
@@ -38,6 +50,8 @@ public class User implements UserDetails {
 
     private Date create_At;
     private Date update_At;
+
+    public User(){};
 
     public Long getId() {
         return id;
@@ -62,7 +76,6 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public Role getRole() {
         return role;
@@ -106,6 +119,22 @@ public class User implements UserDetails {
 
     public void setServiceProvide(ServiceProvide serviceProvide) {
         this.serviceProvide = serviceProvide;
+    }
+
+    public List<RequestOrder> getRequestOrders() {
+        return requestOrders;
+    }
+
+    public void setRequestOrders(List<RequestOrder> requestOrders) {
+        this.requestOrders = requestOrders;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @PrePersist

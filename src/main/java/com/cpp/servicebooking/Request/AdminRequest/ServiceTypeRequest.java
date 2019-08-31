@@ -1,8 +1,8 @@
-package com.cpp.servicebooking.Request.UserRequest;
+package com.cpp.servicebooking.Request.AdminRequest;
 
 import javax.validation.constraints.NotBlank;
 
-public class RoleRequest {
+public class ServiceTypeRequest {
     @NotBlank(message = "Role name is required")
     private String name;
 

@@ -1,5 +1,7 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +27,7 @@ public class UserInfo {
 
     @OneToOne(mappedBy = "userInfo", cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH})
+    @JsonIgnore
     private User user;
 
     public UserInfo() {}

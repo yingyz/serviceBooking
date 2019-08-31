@@ -1,53 +1,29 @@
-package com.cpp.servicebooking.Request.UserRequest;
+package com.cpp.servicebooking.Request.UserInfoRequest;
 
 import javax.validation.constraints.NotBlank;
 
-public class SignUpRequest {
-    @NotBlank(message = "Email cannot be blank")
-    private String username;
+public class UserInfoUpdateRequest {
 
-    @NotBlank(message = "Password cannot be blank")
-    private String password;
-
-    @NotBlank(message = "firstname cannot be blank")
+    @NotBlank(message = "Name cannot be blank")
     private String firstname;
 
-    @NotBlank(message = "lastname cannot be blank")
+    @NotBlank(message = "Name cannot be blank")
     private String lastname;
 
-    @NotBlank(message = "streetname cannot be blank")
+    @NotBlank(message = "Street cannot be blank")
     private String streetname;
 
-    @NotBlank(message = "city cannot be blank")
+    @NotBlank(message = "City cannot be blank")
     private String city;
 
-    @NotBlank(message = "state cannot be blank")
+    @NotBlank(message = "State cannot be blank")
     private String state;
 
-    @NotBlank(message = "zipcode cannot be blank")
+    @NotBlank(message = "Zipcode cannot be blank")
     private String zipcode;
 
-    @NotBlank(message = "phone cannot be blank")
+    @NotBlank(message = "Phone number cannot be blank")
     private String phone;
-
-    @NotBlank(message = "Role cannot be blank")
-    private String role;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -103,13 +79,5 @@ public class SignUpRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }

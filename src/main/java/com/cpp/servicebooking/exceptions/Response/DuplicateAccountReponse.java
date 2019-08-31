@@ -1,4 +1,4 @@
-package com.cpp.servicebooking.exceptions;
+package com.cpp.servicebooking.exceptions.Response;
 
 public class DuplicateAccountReponse {
     private String username;

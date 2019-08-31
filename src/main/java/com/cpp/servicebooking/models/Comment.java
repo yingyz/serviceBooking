@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-public class ServiceProvide {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,18 +13,17 @@ public class ServiceProvide {
 
     private String detail;
 
-    private String price;
-
-    @OneToOne(mappedBy = "serviceProvide", cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private User user;
+    @JoinColumn(name = "requestOrder_id")
+    private RequestOrder requestOrder;
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "serviceType_id")
-    private ServiceType serviceType;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public ServiceProvide() {}
+    public Comment() {}
 
     public Long getId() {
         return id;
@@ -42,12 +41,12 @@ public class ServiceProvide {
         this.detail = detail;
     }
 
-    public String getPrice() {
-        return price;
+    public RequestOrder getRequestOrder() {
+        return requestOrder;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setRequestOrder(RequestOrder requestOrder) {
+        this.requestOrder = requestOrder;
     }
 
     public User getUser() {
@@ -56,13 +55,5 @@ public class ServiceProvide {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public ServiceType getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
     }
 }
