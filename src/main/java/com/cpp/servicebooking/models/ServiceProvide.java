@@ -17,7 +17,6 @@ public class ServiceProvide {
 
     @OneToOne(mappedBy = "serviceProvide", cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnore
     private User user;
 
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,

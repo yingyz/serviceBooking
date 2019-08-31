@@ -8,17 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/provide")
-public class ProviderController {
+public class ProvideController {
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -35,4 +32,10 @@ public class ProviderController {
 
         return new ResponseEntity<ServiceProvide>(serviceProvide, HttpStatus.CREATED);
     }
+
+    @GetMapping("/name/{serviceName}")
+    public Iterable<ServiceProvide> getServicesByName(@PathVariable String serviceName) {
+        return serviceProvideService.getServicesByName(serviceName);
+    }
+
 }
