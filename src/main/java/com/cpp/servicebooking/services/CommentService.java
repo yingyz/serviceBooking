@@ -10,9 +10,13 @@ import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.repository.CommentRepo;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
+import com.cpp.servicebooking.util.CommentComparator;
+import com.cpp.servicebooking.util.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,6 +30,12 @@ public class CommentService {
 
     @Autowired
     private CommentRepo commentRepo;
+
+    @Autowired
+    private DistanceCalculator distanceCalculator;
+
+    @Autowired
+    private CommentComparator commentComparator;
 
     public Comment saveComment(String RequestOrderId, CommentRequest commentRequest, String name) {
         RequestOrder requestOrder = requestOrderService.findById(RequestOrderId);
@@ -45,15 +55,26 @@ public class CommentService {
     }
 
 
-    public Iterable<Comment> getCommentsByRequestId(String RequestOrderId, String name) {
+    public List<Comment> getCommentsByRequestId(String RequestOrderId, String name) {
         RequestOrder requestOrder = requestOrderService.findById(RequestOrderId);
         User user = userRepo.findByUsername(name);
+        int zip = user.getUserInfo().getZipcode();
 
         if (!requestOrder.getUser().equals(user)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
 
-        return requestOrder.getComments();
+        List<Comment> ans = sortedList(zip, requestOrder.getComments());
+        return ans;
+    }
+
+    private List<Comment> sortedList(int zip, List<Comment> ans) {
+        for (Comment comment : ans) {
+            double dis = distanceCalculator.getDistance(zip, comment.getUser().getUserInfo().getZipcode());
+            comment.getUser().getUserInfo().setDistance(dis);
+        }
+        Collections.sort(ans, commentComparator);
+        return  ans;
     }
 
     public Comment findById(String CommentId) {

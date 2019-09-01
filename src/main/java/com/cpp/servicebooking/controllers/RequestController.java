@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/request")
@@ -34,29 +35,29 @@ public class RequestController {
     }
 
     @GetMapping("/all")
-    public Iterable<RequestOrder> getAllRequests(){
-        return requestOrderService.findAllRequest();
+    public List<RequestOrder> getAllRequests(Principal principal){
+        return requestOrderService.findAllRequest(principal.getName());
     }
 
     @GetMapping("/active")
-    public Iterable<RequestOrder> getAllActiveRequests() {return requestOrderService.findAllActiveOrInactiveRequest(true);}
+    public List<RequestOrder> getAllActiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(true, principal.getName());}
 
     @GetMapping("/inactive")
-    public Iterable<RequestOrder> getAllInactiveRequests() {return requestOrderService.findAllActiveOrInactiveRequest(false);}
+    public List<RequestOrder> getAllInactiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(false, principal.getName());}
 
 
     @GetMapping("/mine")
-    public Iterable<RequestOrder> getMyRequests(Principal principal){
+    public List<RequestOrder> getMyRequests(Principal principal){
         return requestOrderService.findRequestsByUsername(principal.getName());
     }
 
     @GetMapping("/myactive")
-    public Iterable<RequestOrder> getMyActiveRequests(Principal principal){
+    public List<RequestOrder> getMyActiveRequests(Principal principal){
         return requestOrderService.findActiveOrInactiveRequestsByUsername(true, principal.getName());
     }
 
     @GetMapping("/myinactive")
-    public Iterable<RequestOrder> getMyInactiveRequests(Principal principal){
+    public List<RequestOrder> getMyInactiveRequests(Principal principal){
         return requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName());
     }
 

@@ -21,9 +21,11 @@ public class UserInfo {
 
     private String state;
 
-    private String zipcode;
+    private Integer zipcode;
 
     private String phone;
+
+    private Double distance;
 
     @OneToOne(mappedBy = "userInfo", cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH})
@@ -32,7 +34,7 @@ public class UserInfo {
 
     public UserInfo() {}
 
-    public UserInfo(String firstname, String lastname, String streetname, String city, String state, String zipcode, String phone) {
+    public UserInfo(String firstname, String lastname, String streetname, String city, String state, Integer zipcode, String phone) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.streetname = streetname;
@@ -40,6 +42,7 @@ public class UserInfo {
         this.state = state;
         this.zipcode = zipcode;
         this.phone = phone;
+        this.distance = 0.0;
     }
 
     public Long getId() {
@@ -90,11 +93,11 @@ public class UserInfo {
         this.state = state;
     }
 
-    public String getZipcode() {
+    public Integer getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(String zipcode) {
+    public void setZipcode(Integer zipcode) {
         this.zipcode = zipcode;
     }
 
@@ -112,5 +115,13 @@ public class UserInfo {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

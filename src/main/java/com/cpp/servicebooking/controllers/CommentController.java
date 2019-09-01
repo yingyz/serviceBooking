@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -32,7 +33,7 @@ public class CommentController {
     }
 
     @GetMapping("/get/{RequestOrderId}")
-    public Iterable<Comment> getCommentsByRequestId(@PathVariable String RequestOrderId, Principal principal) {
+    public List<Comment> getCommentsByRequestId(@PathVariable String RequestOrderId, Principal principal) {
         return commentService.getCommentsByRequestId(RequestOrderId, principal.getName());
     }
 

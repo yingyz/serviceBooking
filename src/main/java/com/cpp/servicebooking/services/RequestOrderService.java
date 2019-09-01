@@ -6,12 +6,12 @@ import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
+import com.cpp.servicebooking.util.DistanceCalculator;
+import com.cpp.servicebooking.util.RequestOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RequestOrderService {
@@ -21,6 +21,12 @@ public class RequestOrderService {
 
     @Autowired
     private RequestOrderRepo requestOrderRepo;
+
+    @Autowired
+    private DistanceCalculator distanceCalculator;
+
+    @Autowired
+    private RequestOrderComparator requestOrderComparator;
 
     public RequestOrder createRequestOrder(RequestOrderRequest requestOrderRequest, String name) {
         User user = userRepo.findByUsername(name);
@@ -33,22 +39,41 @@ public class RequestOrderService {
         return requestOrder;
     }
 
-    public Iterable<RequestOrder> findAllRequest(){
-        return requestOrderRepo.findAll();
+    private List<RequestOrder> sortedList(int zip, List<RequestOrder> ans) {
+        for (RequestOrder requestOrder : ans) {
+            double dis = distanceCalculator.getDistance(zip, requestOrder.getUser().getUserInfo().getZipcode());
+            requestOrder.getUser().getUserInfo().setDistance(dis);
+        }
+        Collections.sort(ans, requestOrderComparator);
+        return ans;
     }
 
-    public Iterable<RequestOrder> findAllActiveOrInactiveRequest(boolean active) {
-        return requestOrderRepo.findAllByActive(active);
-    }
-
-    public Iterable<RequestOrder> findRequestsByUsername(String name){
+    public List<RequestOrder> findAllRequest(String name){
         User user = userRepo.findByUsername(name);
-        return user.getRequestOrders();
+        int zip = user.getUserInfo().getZipcode();
+        List<RequestOrder> ans = sortedList(zip, (ArrayList)requestOrderRepo.findAll());
+        return ans;
     }
 
-    public Iterable<RequestOrder> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
+    public List<RequestOrder> findAllActiveOrInactiveRequest(boolean active, String name) {
         User user = userRepo.findByUsername(name);
-        return requestOrderRepo.findAllByActiveAndUser(active, user);
+        int zip = user.getUserInfo().getZipcode();
+        List<RequestOrder> ans = sortedList(zip, (ArrayList)requestOrderRepo.findAllByActive(active));
+        return ans;
+    }
+
+    public List<RequestOrder> findRequestsByUsername(String name){
+        User user = userRepo.findByUsername(name);
+        int zip = user.getUserInfo().getZipcode();
+        List<RequestOrder> ans = sortedList(zip, user.getRequestOrders());
+        return ans;
+    }
+
+    public List<RequestOrder> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
+        User user = userRepo.findByUsername(name);
+        int zip = user.getUserInfo().getZipcode();
+        List<RequestOrder> ans = sortedList(zip, (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user));
+        return ans;
     }
 
     public RequestOrder findById(String RequestId) {

@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -44,7 +46,7 @@ public class UserService implements UserDetailsService {
             }
             user.setRole(role);
 
-            UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),signUpRequest.getZipcode(), signUpRequest.getPhone());
+            UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),Integer.parseInt(signUpRequest.getZipcode()), signUpRequest.getPhone());
             user.setUserInfo(userInfo);
 
             if (role.getName().equals("Service")) {
@@ -59,8 +61,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public Iterable<User> findAllUsers() {
-        return userRepo.findAll();
+    public List<User> findAllUsers() {
+        return (ArrayList)userRepo.findAll();
     }
 
     @Override

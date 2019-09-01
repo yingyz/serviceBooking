@@ -22,7 +22,7 @@ public class UserInfoService {
         userInfo.setStreetname(userInfoUpdateRequest.getStreetname());
         userInfo.setCity(userInfoUpdateRequest.getCity());
         userInfo.setState(userInfoUpdateRequest.getState());
-        userInfo.setZipcode(userInfoUpdateRequest.getZipcode());
+        userInfo.setZipcode(Integer.parseInt(userInfoUpdateRequest.getZipcode()));
         userInfo.setPhone(userInfoUpdateRequest.getPhone());
 
         user.setUserInfo(userInfo);

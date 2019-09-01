@@ -6,9 +6,8 @@ import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.models.*;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
-import com.cpp.servicebooking.services.RoleService;
-import com.cpp.servicebooking.services.ServicetypeService;
 import com.cpp.servicebooking.services.UserService;
+import com.cpp.servicebooking.util.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.security.Principal;
+import java.util.List;
 
 import static com.cpp.servicebooking.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -71,8 +71,9 @@ public class UserController {
 
 
     @GetMapping("/all")
-    public Iterable<User> getAllUsers() {
-        return userService.findAllUsers();
+    public List<User> getAllUsers() {
+        List<User> ans = userService.findAllUsers();
+        return ans;
     }
 
     @GetMapping("/me")
