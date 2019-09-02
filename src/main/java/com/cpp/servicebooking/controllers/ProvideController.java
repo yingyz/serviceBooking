@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/provide")
+@RequestMapping("/api/provider")
 public class ProvideController {
 
     @Autowired
@@ -30,12 +31,12 @@ public class ProvideController {
 
         ServiceProvide serviceProvide = serviceProvideService.updateService(serviceProvideRequest, principal.getName());
 
-        return new ResponseEntity<ServiceProvide>(serviceProvide, HttpStatus.CREATED);
+        return new ResponseEntity<>(serviceProvide, HttpStatus.CREATED);
     }
 
-    @GetMapping("/name/{serviceName}")
-    public Iterable<ServiceProvide> getServicesByName(@PathVariable String serviceName) {
-        return serviceProvideService.getServicesByName(serviceName);
+    @GetMapping("/{serviceName}")
+    public List<ServiceProvide> getServicesByName(@PathVariable String serviceName, Principal principal) {
+        return serviceProvideService.getServicesByName(serviceName, principal.getName());
     }
 
 }

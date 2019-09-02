@@ -38,14 +38,14 @@ public class CommentController {
     }
 
     @GetMapping("/id/{CommentId}")
-    public ResponseEntity<?> getCommentById(@PathVariable String CommentId) {
-        Comment comment = commentService.findById(CommentId);
-        return new ResponseEntity<Comment>(comment, HttpStatus.OK);
+    public ResponseEntity<?> getCommentById(@PathVariable String CommentId, Principal principal) {
+        Comment comment = commentService.findById(CommentId, principal.getName());
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
     @DeleteMapping("/id/{CommentId}")
     public ResponseEntity<?> deleteComment(@PathVariable String CommentId, Principal principal) {
         commentService.deleteComment(CommentId, principal.getName());
-        return new ResponseEntity<String>("Request with ID: '"+CommentId+"' was deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Request with ID: '"+CommentId+"' was deleted", HttpStatus.OK);
     }
 }

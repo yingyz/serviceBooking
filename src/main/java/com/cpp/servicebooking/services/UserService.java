@@ -1,5 +1,6 @@
 package com.cpp.servicebooking.services;
 
+import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
@@ -61,8 +62,33 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public User updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest, String name){
+        User user = userRepo.findByUsername(name);
+        UserInfo userInfo = user.getUserInfo();
+        userInfo.setFirstname(userInfoUpdateRequest.getFirstname());
+        userInfo.setLastname(userInfoUpdateRequest.getLastname());
+        userInfo.setStreetname(userInfoUpdateRequest.getStreetname());
+        userInfo.setCity(userInfoUpdateRequest.getCity());
+        userInfo.setState(userInfoUpdateRequest.getState());
+        userInfo.setZipcode(Integer.parseInt(userInfoUpdateRequest.getZipcode()));
+        userInfo.setPhone(userInfoUpdateRequest.getPhone());
+
+        user.setUserInfo(userInfo);
+        userRepo.save(user);
+
+        return user;
+    }
+
     public List<User> findAllUsers() {
         return (ArrayList)userRepo.findAll();
+    }
+
+    public User findUserByName(String name) {
+        User user = userRepo.findByUsername(name);
+        if (user == null) {
+            throw new DatabaseNotFoundException("User " + name + " not found!");
+        }
+        return user;
     }
 
     @Override

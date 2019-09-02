@@ -9,8 +9,13 @@ import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.repository.ServiceProvideRepo;
 import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import com.cpp.servicebooking.repository.UserRepo;
+import com.cpp.servicebooking.util.DistanceCalculator;
+import com.cpp.servicebooking.util.ServiceProvideComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class ServiceProvideService {
@@ -23,6 +28,12 @@ public class ServiceProvideService {
 
     @Autowired
     private ServiceProvideRepo serviceProvideRepo;
+
+    @Autowired
+    private DistanceCalculator distanceCalculator;
+
+    @Autowired
+    private ServiceProvideComparator serviceProvideComparator;
 
 
     public ServiceProvide updateService(ServiceProvideRequest serviceProvideRequest, String name) {
@@ -40,12 +51,23 @@ public class ServiceProvideService {
         return serviceProvide;
     }
 
-    public Iterable<ServiceProvide> getServicesByName(String name) {
-        name = name.replaceAll("_", " ");
-        ServiceType serviceType = serviceTypeRepo.findByName(name);
+    public List<ServiceProvide> getServicesByName(String serviceName, String name) {
+        ServiceType serviceType = serviceTypeRepo.findByName(serviceName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
-        return serviceProvideRepo.findAllByServiceType(serviceType);
+
+        User user = userRepo.findByUsername(name);
+        int zip = user.getUserInfo().getZipcode();
+        List<ServiceProvide> ans = serviceProvideRepo.findAllByServiceType(serviceType);
+
+        for (ServiceProvide serviceProvide : ans) {
+            double dis = distanceCalculator.getDistance(zip, serviceProvide.getUser().getUserInfo().getZipcode());
+            serviceProvide.getUser().getUserInfo().setDistance(dis);
+        }
+
+        Collections.sort(ans, serviceProvideComparator);
+
+        return ans;
     }
 }

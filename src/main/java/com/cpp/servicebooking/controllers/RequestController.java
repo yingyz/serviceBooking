@@ -31,7 +31,7 @@ public class RequestController {
 
         RequestOrder requestOrder = requestOrderService.createRequestOrder(requestOrderRequest, principal.getName());
 
-        return new ResponseEntity<RequestOrder>(requestOrder, HttpStatus.CREATED);
+        return new ResponseEntity<>(requestOrder, HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
@@ -39,46 +39,46 @@ public class RequestController {
         return requestOrderService.findAllRequest(principal.getName());
     }
 
-    @GetMapping("/active")
+    @GetMapping("/all/active")
     public List<RequestOrder> getAllActiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(true, principal.getName());}
 
-    @GetMapping("/inactive")
+    @GetMapping("/all/inactive")
     public List<RequestOrder> getAllInactiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(false, principal.getName());}
 
 
-    @GetMapping("/mine")
+    @GetMapping("/me")
     public List<RequestOrder> getMyRequests(Principal principal){
         return requestOrderService.findRequestsByUsername(principal.getName());
     }
 
-    @GetMapping("/myactive")
+    @GetMapping("/me/active")
     public List<RequestOrder> getMyActiveRequests(Principal principal){
         return requestOrderService.findActiveOrInactiveRequestsByUsername(true, principal.getName());
     }
 
-    @GetMapping("/myinactive")
+    @GetMapping("/me/inactive")
     public List<RequestOrder> getMyInactiveRequests(Principal principal){
         return requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName());
     }
 
 
-    @GetMapping("/id/{RequestId}")
+    @GetMapping("/list/{RequestId}")
     public ResponseEntity<?> getRequestById(@PathVariable String RequestId) {
         RequestOrder requestOrder = requestOrderService.findById(RequestId);
-        return new ResponseEntity<RequestOrder>(requestOrder, HttpStatus.OK);
+        return new ResponseEntity<>(requestOrder, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/id/{RequestId}")
     public ResponseEntity<?> deleteRequest(@PathVariable String RequestId, Principal principal) {
         requestOrderService.deleteRequest(RequestId, principal.getName());
-        return new ResponseEntity<String>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
     }
 
     @PutMapping("/id/{RequestId}")
     public ResponseEntity<?> updateRequest(@PathVariable String RequestId, Principal principal) {
         RequestOrder requestOrder = requestOrderService.updateRequest(RequestId, principal.getName());
-        return new ResponseEntity<RequestOrder>(requestOrder, HttpStatus.OK);
+        return new ResponseEntity<>(requestOrder, HttpStatus.OK);
     }
 
 }

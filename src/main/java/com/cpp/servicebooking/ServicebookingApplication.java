@@ -3,6 +3,7 @@ package com.cpp.servicebooking;
 import com.cpp.servicebooking.util.CommentComparator;
 import com.cpp.servicebooking.util.DistanceCalculator;
 import com.cpp.servicebooking.util.RequestOrderComparator;
+import com.cpp.servicebooking.util.ServiceProvideComparator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -26,4 +27,7 @@ public class ServicebookingApplication {
 
     @Bean
     public CommentComparator commentComparator() {return new CommentComparator();}
+
+    @Bean
+    public ServiceProvideComparator serviceProvideComparator() {return new ServiceProvideComparator();}
 }

@@ -7,7 +7,6 @@ import com.cpp.servicebooking.models.*;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.UserService;
-import com.cpp.servicebooking.util.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.security.Principal;
-import java.util.List;
 
 import static com.cpp.servicebooking.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -65,19 +62,6 @@ public class UserController {
         if(errorMap != null)return errorMap;
 
         User user = userService.saveUser(signUpRequest);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
-
-
-
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        List<User> ans = userService.findAllUsers();
-        return ans;
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<?> CurrentUser(Principal principal) {
-        return new ResponseEntity<Principal>(principal, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 }

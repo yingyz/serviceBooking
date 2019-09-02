@@ -77,17 +77,23 @@ public class CommentService {
         return  ans;
     }
 
-    public Comment findById(String CommentId) {
+    public Comment findById(String CommentId, String name) {
         long id = Long.parseLong(CommentId);
         Comment comment = commentRepo.findById(id);
         if (comment == null) {
             throw new CommentNotFoundException("Comment not found!");
         }
+
+        RequestOrder requestOrder = comment.getRequestOrder();
+
+        if (!comment.getUser().getUsername().equals(name) || !!comment.getUser().getUsername().equals(requestOrder.getUser().getUsername())) {
+            throw new CommentNotFoundException("You cannot view this comment");
+        }
         return comment;
     }
 
     public void deleteComment(String CommentId, String name) {
-        Comment comment = findById(CommentId);
+        Comment comment = findById(CommentId, name);
         if (!comment.getUser().getUsername().equals(name)) {
             throw new CommentNotFoundException("Comment is not yours!");
         }

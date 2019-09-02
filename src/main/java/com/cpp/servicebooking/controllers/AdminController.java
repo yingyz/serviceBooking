@@ -5,9 +5,11 @@ import com.cpp.servicebooking.Request.AdminRequest.RoleRequest;
 import com.cpp.servicebooking.Request.AdminRequest.ServiceTypeRequest;
 import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.ServiceType;
+import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RoleService;
 import com.cpp.servicebooking.services.ServicetypeService;
+import com.cpp.servicebooking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -24,7 +27,10 @@ public class AdminController {
     private RoleService roleService;
 
     @Autowired
-    private ServicetypeService saveServicetype;
+    private ServicetypeService servicetypeService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -34,23 +40,46 @@ public class AdminController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        Role role = new Role(roleRequest.getName());
-        Role newRole = roleService.saveRole(role);
-        return new ResponseEntity<Role>(newRole, HttpStatus.CREATED);
+        Role role = roleService.saveRole(roleRequest);
+        return new ResponseEntity<>(role, HttpStatus.CREATED);
     }
 
-    @PostMapping("/servicetype")
-    public ResponseEntity<?> saveServicetype(@Valid @RequestBody ServiceTypeRequest serviceTypeRequest, BindingResult result) {
+    @PostMapping("/serviceType")
+    public ResponseEntity<?> saveServiceType(@Valid @RequestBody ServiceTypeRequest serviceTypeRequest, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        ServiceType serviceType = new ServiceType(serviceTypeRequest.getName());
-        ServiceType newserviceType = saveServicetype.saveServicetype(serviceType);
-        return new ResponseEntity<ServiceType>(newserviceType, HttpStatus.CREATED);
+        ServiceType serviceType = servicetypeService.saveServicetype(serviceTypeRequest);
+        return new ResponseEntity<>(serviceType, HttpStatus.CREATED);
     }
 
-    @GetMapping("/roles")
-    public Iterable<Role> getRoles() {
+    @GetMapping("/role")
+    public List<Role> getRoles() {
         return roleService.findAllRoles();
     }
+
+    @GetMapping("/serviceType")
+    public List<ServiceType> getServiceTypes() {
+        return servicetypeService.findAllServiceTypes();
+    }
+
+    @GetMapping("/user")
+    public List<User> getAllUsers() {
+        List<User> ans = userService.findAllUsers();
+        return ans;
+    }
+
+    @GetMapping("/user/{name}")
+    public User getUserByName(@PathVariable String name) {
+        return userService.findUserByName(name);
+    }
+
+    @GetMapping("/role/{name}")
+    public Role getRoleByName(@PathVariable String name) { return roleService.findRoleByRolename(name);}
+
+    @GetMapping("/serviceType/{name}")
+    public ServiceType getServiceTypeByName(@PathVariable String name) {
+        return servicetypeService.findServiceByServicename(name);
+    }
+
 }
