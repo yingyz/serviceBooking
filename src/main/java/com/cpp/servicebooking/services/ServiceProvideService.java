@@ -39,6 +39,10 @@ public class ServiceProvideService {
     public ServiceProvide updateService(ServiceProvideRequest serviceProvideRequest, String name) {
         User user = userRepo.findByUsername(name);
         ServiceProvide serviceProvide = user.getServiceProvide();
+        if (serviceProvide == null) {
+            serviceProvide = new ServiceProvide();
+            user.setServiceProvide(serviceProvide);
+        }
         serviceProvide.setDetail(serviceProvideRequest.getDetail());
         serviceProvide.setPrice(serviceProvideRequest.getPrice());
         ServiceType serviceType = serviceTypeRepo.findByName(serviceProvideRequest.getServicename());

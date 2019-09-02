@@ -50,10 +50,6 @@ public class UserService implements UserDetailsService {
             UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),Integer.parseInt(signUpRequest.getZipcode()), signUpRequest.getPhone());
             user.setUserInfo(userInfo);
 
-            if (role.getName().equals("Service")) {
-                user.setServiceProvide(new ServiceProvide());
-            }
-
             return userRepo.save(user);
         } catch (DatabaseNotFoundException e) {
           throw e;
