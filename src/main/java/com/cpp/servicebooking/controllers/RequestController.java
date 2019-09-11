@@ -35,8 +35,8 @@ public class RequestController {
     }
 
     @GetMapping("/all")
-    public List<RequestOrder> getAllRequests(Principal principal){
-        return requestOrderService.findAllRequest(principal.getName());
+    public ResponseEntity<List<RequestOrder>> getAllRequests(Principal principal){
+        return new ResponseEntity<>(requestOrderService.findAllRequest(principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("/all/active")

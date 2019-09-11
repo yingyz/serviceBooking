@@ -1,0 +1,11 @@
+<app-guestheader *ngIf="!isAuthenticated; else Authenticated"></app-guestheader>
+<ng-template #Authenticated>
+  <app-authheader></app-authheader>
+</ng-template>
+<div class="container compomentmargin">
+  <div class="row">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

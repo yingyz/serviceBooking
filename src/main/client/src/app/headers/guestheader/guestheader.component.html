@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-sm fixed-top navbar-dark background_color">
+  <div class="container">
+    <a routerLink="/" routerLinkActive="active" class="navbar-brand font-weight-bold">Service Master</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown font-weight-bold">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">ACCOUNT</a>
+          <div class="dropdown-menu navbar_dropitem font-weight-normal">
+            <a routerLinkActive="active" routerLink="/auth/login" class="dropdown-item" >Login</a>
+            <div class="dropdown-divider"></div>
+            <a routerLinkActive="active" routerLink="/auth/register" class="dropdown-item" >Register</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

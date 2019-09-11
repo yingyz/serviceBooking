@@ -1,20 +1,14 @@
 package com.cpp.servicebooking.Request.UserRequest;
 
+import com.cpp.servicebooking.models.User;
+
 public class JWTLoginSucessReponse {
-    private boolean success;
     private String token;
+    private User user;
 
-    public JWTLoginSucessReponse(boolean success, String token) {
-        this.success = success;
+    public JWTLoginSucessReponse(String token, User user) {
         this.token = token;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
+        this.user = user;
     }
 
     public String getToken() {
@@ -25,11 +19,18 @@ public class JWTLoginSucessReponse {
         this.token = token;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "JWTLoginSucessReponse{" +
-                "success=" + success +
-                ", token='" + token + '\'' +
+                "token='" + token + '\'' +
                 '}';
     }
 }

@@ -1,0 +1,49 @@
+
+<div class="login-form">
+  <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class ="px-3 py-4 form_border login_center_div">
+    <div class="avatar text-center"><i class="fa fa-user-circle"></i></div>
+    <h1 class="text-center pt-3 font_color">Member Login</h1>
+    <div class="container pt-5">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class ="fa fa-envelope-o"></i></span>
+          </div>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            ngModel
+            name="email"
+            required
+            email
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
+          </div>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            ngModel
+            name="password"
+            required
+            minlength="6"
+          />
+        </div>
+      </div>
+
+      <div class="text-center pt-3 pb-5">
+        <button type="submit" class="btn background_color button_hover text-light btn-lg btn-block">Sign in</button>
+      </div>
+    </div>
+  </form>
+</div>
+
