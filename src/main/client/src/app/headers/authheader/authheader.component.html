@@ -13,11 +13,11 @@
         <li class="nav-item font-weight-bold">
           <a routerLink="/dashboard" class="nav-link mx-3">HOME</a>
         </li>
-        <li class="nav-item font-weight-bold">
+        <li class="nav-item font-weight-bold" *ngIf="userRole == 'Customer'">
           <a routerLink="/requests/new" class="nav-link mx-3">NEW REQUEST POST</a>
         </li>
         <li class="nav-item font-weight-bold">
-          <a routerLink="/requests" class="nav-link mx-3">MY REQUESTS</a>
+          <a routerLink="/requests" class="nav-link mx-3">REQUESTS</a>
         </li>
         <li class="nav-item dropdown font-weight-bold">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"

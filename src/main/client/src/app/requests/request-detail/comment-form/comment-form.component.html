@@ -1,0 +1,24 @@
+<form #commentForm="ngForm" (ngSubmit)="onSubmit(commentForm)" class ="px-3 py-4 form_border login_center_div">
+
+  <div class="row">
+    <div class="col-xs-12">
+      <button type="submit" class="btn btn-success" [disabled]="!commentForm.valid">Comment</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="detail">Detail</label>
+        <input
+          type="text"
+          id="detail"
+          class="form-control"
+          ngModel
+          name="detail"
+          required
+        />
+      </div>
+    </div>
+  </div>
+</form>

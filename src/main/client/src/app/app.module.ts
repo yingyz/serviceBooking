@@ -17,6 +17,8 @@ import { RequestItemComponent } from './requests/request-list/request-item/reque
 import {AuthInterceptor} from "./auth/auth-interceptor";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
+import { CommentsComponent } from './requests/request-detail/comments/comments.component';
+import { CommentFormComponent } from './requests/request-detail/comment-form/comment-form.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.comp
     RequestFormComponent,
     RequestItemComponent,
     DashboardComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    CommentsComponent,
+    CommentFormComponent
   ],
   imports: [
     BrowserModule,
