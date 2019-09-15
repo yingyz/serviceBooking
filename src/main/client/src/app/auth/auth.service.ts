@@ -57,7 +57,32 @@ export class AuthService {
   }
 
   logout() {
+    this.authStatusListener.next(false);
     this.user.next(null);
     this.router.navigate(['/auth/login']);
+  }
+
+  updateProfile(firstname: string, lastname: string, streetname: string, city: string, state: string, zipcode: string, phone: string) {
+    const profileData = {firstname: firstname, lastname: lastname, streetname: streetname, city: city, state: state, zipcode: zipcode, phone: phone};
+    this.http.put<{id: number, username: string, userInfo: any, fullName: string, role: any}>('http://localhost:8080/api/userinfo', profileData)
+      .subscribe(response => {
+
+        const user = new UserModel(
+          response.id,
+          response.username,
+          response.userInfo.firstname,
+          response.userInfo.lastname,
+          response.userInfo.streetname,
+          response.userInfo.city,
+          response.userInfo.state,
+          response.userInfo.zipcode,
+          response.userInfo.phone,
+          response.fullName,
+          response.role.name
+        );
+        this.user.next(user);
+
+        this.router.navigate(['dashboard']);
+      });
   }
 }

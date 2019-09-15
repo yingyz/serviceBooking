@@ -13,7 +13,7 @@ const appRoutes: Routes = [
   { path: 'auth/login', component: LoginComponent},
   { path: 'auth/register', component: RegisterComponent},
   { path: 'dashboard', component: DashboardComponent},
-  {path: 'editProfile', component: EditProfileComponent},
+  { path: 'editProfile', component: EditProfileComponent},
   { path: 'requests', component: RequestsComponent,
     children: [
       {path: 'new', component: RequestFormComponent},

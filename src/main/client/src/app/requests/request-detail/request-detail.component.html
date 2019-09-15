@@ -4,4 +4,4 @@
 <div>User: {{request.User.fullName}}</div>
 <div>Location: {{location}}</div>
 <div>Phone: {{request.User.phone}}</div>
-<button (click)="onEditRequest()">Edit</button>
+<button (click)="onEditRequest()" *ngIf="editAuth">Edit</button>

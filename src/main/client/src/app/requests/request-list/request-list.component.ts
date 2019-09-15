@@ -20,14 +20,18 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userSub = this.authService.user.subscribe( user => {
-        this.userRole = user.userRole;
+        if (user !== null) {
+          this.userRole = user.userRole;
+
+          this.requestService.getRequests(this.userRole);
+        }
       }
     );
-    this.requestService.getRequests(this.userRole);
+
     this.requestSub = this.requestService.getRequestUpdateListener()
       .subscribe(requests => {
         this.requests = requests;
-      })
+      });
   }
 
   ngOnDestroy(): void {
