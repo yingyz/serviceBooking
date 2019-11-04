@@ -4,10 +4,10 @@ import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
 import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException;
 import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.dto.RequestDto;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
-import com.cpp.servicebooking.util.DistanceCalculator;
-import com.cpp.servicebooking.util.RequestOrderComparator;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,70 +23,83 @@ public class RequestOrderService {
     private RequestOrderRepo requestOrderRepo;
 
     @Autowired
-    private DistanceCalculator distanceCalculator;
+    private ModelMapper modelMapper;
 
-    @Autowired
-    private RequestOrderComparator requestOrderComparator;
-
-    public RequestOrder createRequestOrder(RequestOrderRequest requestOrderRequest, String name) {
-        User user = userRepo.findByUsername(name);
+    public RequestDto createRequestOrder(RequestOrderRequest requestOrderRequest, String usernName) {
+        User user = userRepo.findByUsername(usernName);
         RequestOrder requestOrder = new RequestOrder();
         requestOrder.setUser(user);
         requestOrder.setInfo(requestOrderRequest.getInfo());
         requestOrder.setTitle(requestOrderRequest.getTitle());
         requestOrder.setActive(true);
         requestOrderRepo.save(requestOrder);
-        return requestOrder;
+
+        RequestDto requestDto = modelMapper.map(user.getUserInfo(), RequestDto.class);
+        requestDto.setActive(requestOrder.getActive());
+        requestDto.setInfo(requestOrder.getInfo());
+        requestDto.setTitle(requestOrder.getTitle());
+        requestDto.setCreate_At(requestOrder.getCreate_At());
+        requestDto.setUpdate_At(requestOrder.getUpdate_At());
+
+        return requestDto;
     }
 
-    private List<RequestOrder> sortedList(int zip, List<RequestOrder> ans) {
-        for (RequestOrder requestOrder : ans) {
-            double dis = distanceCalculator.getDistance(zip, requestOrder.getUser().getUserInfo().getZipcode());
-            requestOrder.getUser().getUserInfo().setDistance(dis);
+    private List<RequestDto> transferToDtos(List<RequestOrder> requestOrders) {
+        List<RequestDto> requestDtos = new ArrayList<>();
+        for (RequestOrder requestOrder : requestOrders) {
+            requestDtos.add(transferToDto(requestOrder));
         }
-        Collections.sort(ans, requestOrderComparator);
-        return ans;
+        return requestDtos;
     }
 
-    public List<RequestOrder> findAllRequest(String name){
+    private RequestDto transferToDto(RequestOrder requestOrder) {
+        RequestDto requestDto = modelMapper.map(requestOrder.getUser().getUserInfo(), RequestDto.class);
+        requestDto.setActive(requestOrder.getActive());
+        requestDto.setInfo(requestOrder.getInfo());
+        requestDto.setTitle(requestOrder.getTitle());
+        requestDto.setCreate_At(requestOrder.getCreate_At());
+        requestDto.setUpdate_At(requestOrder.getUpdate_At());
+        return requestDto;
+    }
+
+    public List<RequestDto> findAllRequest(){
+        List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findAllActiveOrInactiveRequest(boolean active) {
+        List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAllByActive(active);
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findRequestsByUsername(String name){
         User user = userRepo.findByUsername(name);
-        int zip = user.getUserInfo().getZipcode();
-        List<RequestOrder> ans = sortedList(zip, (ArrayList)requestOrderRepo.findAll());
-        return ans;
+        List<RequestOrder> requestOrders = user.getRequestOrders();
+        return transferToDtos(requestOrders);
     }
 
-    public List<RequestOrder> findAllActiveOrInactiveRequest(boolean active, String name) {
+    public List<RequestDto> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
         User user = userRepo.findByUsername(name);
-        int zip = user.getUserInfo().getZipcode();
-        List<RequestOrder> ans = sortedList(zip, (ArrayList)requestOrderRepo.findAllByActive(active));
-        return ans;
+        List<RequestOrder> requestOrders = (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user);
+        return transferToDtos(requestOrders);
     }
 
-    public List<RequestOrder> findRequestsByUsername(String name){
-        User user = userRepo.findByUsername(name);
-        int zip = user.getUserInfo().getZipcode();
-        List<RequestOrder> ans = sortedList(zip, user.getRequestOrders());
-        return ans;
-    }
-
-    public List<RequestOrder> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
-        User user = userRepo.findByUsername(name);
-        int zip = user.getUserInfo().getZipcode();
-        List<RequestOrder> ans = sortedList(zip, (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user));
-        return ans;
-    }
-
-    public RequestOrder findById(String RequestId) {
+    private RequestOrder findRequestById(String RequestId) {
         long id = Long.parseLong(RequestId);
         RequestOrder requestOrder = requestOrderRepo.findById(id);
         if (requestOrder == null) {
             throw new RequestOrderNotFoundException("RequestOrder not found!");
         }
-        return requestOrder;
+        return  requestOrder;
+    }
+
+    public RequestDto findById(String requestId) {
+
+        return transferToDto(findRequestById(requestId));
     }
 
     public void deleteRequest(String RequestId, String name) {
-        RequestOrder requestOrder = findById(RequestId);
+        RequestOrder requestOrder = findRequestById(RequestId);
         if (!requestOrder.getUser().getUsername().equals(name)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
@@ -94,12 +107,14 @@ public class RequestOrderService {
         requestOrderRepo.delete(requestOrder);
     }
 
-    public RequestOrder updateRequest(String RequestId, String name) {
-        RequestOrder requestOrder = findById(RequestId);
+    public RequestDto updateRequest(String RequestId, String name) {
+        RequestOrder requestOrder = findRequestById(RequestId);
         if (!requestOrder.getUser().getUsername().equals(name)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
         requestOrder.setActive(false);
-        return requestOrderRepo.save(requestOrder);
+        requestOrderRepo.save(requestOrder);
+
+        return transferToDto(requestOrder);
     }
 }

@@ -2,9 +2,10 @@ package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
 import com.cpp.servicebooking.models.User;
-import com.cpp.servicebooking.models.UserInfo;
+import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,17 +30,18 @@ public class UserInfoController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        User user = userService.updateUserInfo(userInfoUpdateRequest, principal.getName());
+        UserDto userDto = userService.updateUserInfo(userInfoUpdateRequest, principal.getName());
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
+
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUserInfo(Principal principal){
 
-        User user = userService.findUserByName(principal.getName());
+        UserDto userDto = userService.findUserByName(principal.getName());
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
 
     }
 }

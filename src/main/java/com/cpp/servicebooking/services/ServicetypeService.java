@@ -34,7 +34,7 @@ public class ServicetypeService {
         }
     }
 
-    public List<ServiceType> findAllServiceTypes() {
+    public Iterable<ServiceType> findAllServiceTypes() {
         return serviceTypeRepo.findAll();
     }
 }

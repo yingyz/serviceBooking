@@ -8,8 +8,10 @@ import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.UserInfo;
+import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.repository.RoleRepo;
 import com.cpp.servicebooking.repository.UserRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,11 +33,13 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepo roleRepo;
 
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User saveUser(SignUpRequest signUpRequest) {
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public void saveUser(SignUpRequest signUpRequest) {
         try {
             User user = new User();
             user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
@@ -47,10 +51,18 @@ public class UserService implements UserDetailsService {
             }
             user.setRole(role);
 
-            UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),Integer.parseInt(signUpRequest.getZipcode()), signUpRequest.getPhone());
+            UserInfo userInfo = UserInfo.builder()
+                    .firstname(signUpRequest.getFirstname())
+                    .lastname(signUpRequest.getLastname())
+                    .streetname(signUpRequest.getStreetname())
+                    .city(signUpRequest.getCity())
+                    .state(signUpRequest.getState())
+                    .zipcode(Integer.parseInt(signUpRequest.getZipcode()))
+                    .phone(signUpRequest.getPhone())
+                    .language(signUpRequest.getLanguage())
+                    .build();
             user.setUserInfo(userInfo);
 
-            return userRepo.save(user);
         } catch (DatabaseNotFoundException e) {
           throw e;
         } catch(Exception e) {
@@ -58,7 +70,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public User updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest, String name){
+    public UserDto updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest, String name){
         User user = userRepo.findByUsername(name);
         UserInfo userInfo = user.getUserInfo();
         userInfo.setFirstname(userInfoUpdateRequest.getFirstname());
@@ -72,19 +84,31 @@ public class UserService implements UserDetailsService {
         user.setUserInfo(userInfo);
         userRepo.save(user);
 
-        return user;
+        UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
+        userDto.setUsername(user.getUsername());
+
+        return userDto;
     }
 
-    public List<User> findAllUsers() {
-        return (ArrayList)userRepo.findAll();
+    public List<UserDto> findAllUsers() {
+        List<User> users = (ArrayList) userRepo.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
+            userDto.setUsername(user.getUsername());
+            userDtos.add(userDto);
+        }
+        return userDtos;
     }
 
-    public User findUserByName(String name) {
+    public UserDto findUserByName(String name) {
         User user = userRepo.findByUsername(name);
         if (user == null) {
             throw new DatabaseNotFoundException("User " + name + " not found!");
         }
-        return user;
+        UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
+        userDto.setUsername(user.getUsername());
+        return userDto;
     }
 
     @Override

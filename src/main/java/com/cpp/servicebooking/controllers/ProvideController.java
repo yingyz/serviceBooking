@@ -2,6 +2,7 @@ package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.ServiceRequest.ServiceProvideRequest;
 import com.cpp.servicebooking.models.ServiceProvide;
+import com.cpp.servicebooking.models.dto.ServiceDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.ServiceProvideService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,13 @@ public class ProvideController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        ServiceProvide serviceProvide = serviceProvideService.updateService(serviceProvideRequest, principal.getName());
+        ServiceDto serviceProvide = serviceProvideService.updateService(serviceProvideRequest, principal.getName());
 
         return new ResponseEntity<>(serviceProvide, HttpStatus.CREATED);
     }
 
     @GetMapping("/{serviceName}")
-    public List<ServiceProvide> getServicesByName(@PathVariable String serviceName, Principal principal) {
+    public List<ServiceDto> getServicesByName(@PathVariable String serviceName, Principal principal) {
         return serviceProvideService.getServicesByName(serviceName, principal.getName());
     }
 

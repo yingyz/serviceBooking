@@ -1,9 +1,6 @@
 package com.cpp.servicebooking;
 
-import com.cpp.servicebooking.util.CommentComparator;
-import com.cpp.servicebooking.util.DistanceCalculator;
-import com.cpp.servicebooking.util.RequestOrderComparator;
-import com.cpp.servicebooking.util.ServiceProvideComparator;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,14 +17,6 @@ public class ServicebookingApplication {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {return new BCryptPasswordEncoder();}
 
     @Bean
-    public DistanceCalculator distanceCalculator() {return new DistanceCalculator();}
+    public ModelMapper modelMapper() {return new ModelMapper();}
 
-    @Bean
-    public RequestOrderComparator requestOrderComparator() {return new RequestOrderComparator();}
-
-    @Bean
-    public CommentComparator commentComparator() {return new CommentComparator();}
-
-    @Bean
-    public ServiceProvideComparator serviceProvideComparator() {return new ServiceProvideComparator();}
 }

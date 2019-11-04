@@ -6,6 +6,7 @@ import com.cpp.servicebooking.Request.AdminRequest.ServiceTypeRequest;
 import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RoleService;
 import com.cpp.servicebooking.services.ServicetypeService;
@@ -17,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -54,24 +56,13 @@ public class AdminController {
     }
 
     @GetMapping("/role")
-    public List<Role> getRoles() {
+    public Iterable<Role> getRoles() {
         return roleService.findAllRoles();
     }
 
     @GetMapping("/serviceType")
-    public List<ServiceType> getServiceTypes() {
+    public Iterable<ServiceType> getServiceTypes() {
         return servicetypeService.findAllServiceTypes();
-    }
-
-    @GetMapping("/user")
-    public List<User> getAllUsers() {
-        List<User> ans = userService.findAllUsers();
-        return ans;
-    }
-
-    @GetMapping("/user/{name}")
-    public User getUserByName(@PathVariable String name) {
-        return userService.findUserByName(name);
     }
 
     @GetMapping("/role/{name}")
@@ -82,4 +73,14 @@ public class AdminController {
         return servicetypeService.findServiceByServicename(name);
     }
 
+    @GetMapping("/user")
+    public List<UserDto> getAllUsers() {
+
+        return userService.findAllUsers();
+    }
+
+    @GetMapping("/user/{name}")
+    public UserDto getUserByName(@PathVariable String name) {
+        return userService.findUserByName(name);
+    }
 }

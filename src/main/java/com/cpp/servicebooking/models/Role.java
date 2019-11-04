@@ -1,6 +1,10 @@
 package com.cpp.servicebooking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,28 +28,5 @@ public class Role {
     @OneToMany(mappedBy = "role", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
-
-    public Role () {}
-
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
 }

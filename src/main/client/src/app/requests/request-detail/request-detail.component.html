@@ -1,9 +1,0 @@
-<div>Id: {{request.requestId}}</div>
-<div>Title: {{request.requestTitle}}</div>
-<div>info: {{request.info}}</div>
-<div>User: {{request.User.fullName}}</div>
-<div>Location: {{location}}</div>
-<div>Phone: {{request.User.phone}}</div>
-<button (click)="onEditRequest()" *ngIf="editAuth">Edit</button>
-<app-comment-form *ngIf="userRole === 'Service'" [requestId] = "request.requestId"></app-comment-form>
-<app-comments *ngIf="userRole==='Customer'" [requestId] = "request.requestId"></app-comments>

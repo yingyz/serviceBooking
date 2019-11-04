@@ -7,6 +7,7 @@ import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.repository.RoleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.tools.jstat.Literal;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class RoleService {
         }
     }
 
-    public List<Role> findAllRoles() {
+    public Iterable<Role> findAllRoles() {
         return roleRepo.findAll();
     }
 }

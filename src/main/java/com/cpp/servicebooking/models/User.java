@@ -1,8 +1,10 @@
 package com.cpp.servicebooking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +14,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class User implements UserDetails {
 
     @Id
@@ -50,92 +56,6 @@ public class User implements UserDetails {
 
     private Date create_At;
     private Date update_At;
-
-    public User(){};
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public Date getCreate_At() {
-        return create_At;
-    }
-
-    public void setCreate_At(Date create_At) {
-        this.create_At = create_At;
-    }
-
-    public Date getUpdate_At() {
-        return update_At;
-    }
-
-    public void setUpdate_At(Date update_At) {
-        this.update_At = update_At;
-    }
-
-    public String getFullName() {
-        return userInfo.getFirstname() + " " + userInfo.getLastname();
-    }
-
-    public ServiceProvide getServiceProvide() {
-        return serviceProvide;
-    }
-
-    public void setServiceProvide(ServiceProvide serviceProvide) {
-        this.serviceProvide = serviceProvide;
-    }
-
-    public List<RequestOrder> getRequestOrders() {
-        return requestOrders;
-    }
-
-    public void setRequestOrders(List<RequestOrder> requestOrders) {
-        this.requestOrders = requestOrders;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
     @PrePersist
     protected void onCreate(){

@@ -1,7 +1,7 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
-import com.cpp.servicebooking.models.RequestOrder;
+import com.cpp.servicebooking.models.dto.RequestDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RequestOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,43 +29,47 @@ public class RequestController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        RequestOrder requestOrder = requestOrderService.createRequestOrder(requestOrderRequest, principal.getName());
+        RequestDto requestDto = requestOrderService.createRequestOrder(requestOrderRequest, principal.getName());
 
-        return new ResponseEntity<>(requestOrder, HttpStatus.CREATED);
+        return new ResponseEntity<>(requestDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<RequestOrder>> getAllRequests(Principal principal){
-        return new ResponseEntity<>(requestOrderService.findAllRequest(principal.getName()), HttpStatus.OK);
+    public ResponseEntity<List<RequestDto>> getAllRequests(){
+        return new ResponseEntity<>(requestOrderService.findAllRequest(), HttpStatus.OK);
     }
 
     @GetMapping("/all/active")
-    public List<RequestOrder> getAllActiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(true, principal.getName());}
+    public ResponseEntity<List<RequestDto>> getAllActiveRequests() {
+        return new ResponseEntity<>(requestOrderService.findAllActiveOrInactiveRequest(true), HttpStatus.OK);
+    }
 
     @GetMapping("/all/inactive")
-    public List<RequestOrder> getAllInactiveRequests(Principal principal) {return requestOrderService.findAllActiveOrInactiveRequest(false, principal.getName());}
+    public ResponseEntity<List<RequestDto>> getAllInactiveRequests() {
+        return new ResponseEntity<>(requestOrderService.findAllActiveOrInactiveRequest(false), HttpStatus.OK);
+    }
 
 
     @GetMapping("/me")
-    public List<RequestOrder> getMyRequests(Principal principal){
-        return requestOrderService.findRequestsByUsername(principal.getName());
+    public ResponseEntity<List<RequestDto>> getMyRequests(Principal principal){
+        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("/me/active")
-    public List<RequestOrder> getMyActiveRequests(Principal principal){
-        return requestOrderService.findActiveOrInactiveRequestsByUsername(true, principal.getName());
+    public ResponseEntity<List<RequestDto>> getMyActiveRequests(Principal principal){
+        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("/me/inactive")
-    public List<RequestOrder> getMyInactiveRequests(Principal principal){
-        return requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName());
+    public ResponseEntity<List<RequestDto>> getMyInactiveRequests(Principal principal){
+        return new ResponseEntity<>(requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName()), HttpStatus.OK);
     }
 
 
     @GetMapping("/list/{RequestId}")
     public ResponseEntity<?> getRequestById(@PathVariable String RequestId) {
-        RequestOrder requestOrder = requestOrderService.findById(RequestId);
-        return new ResponseEntity<>(requestOrder, HttpStatus.OK);
+        RequestDto requestDto = requestOrderService.findById(RequestId);
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
 
@@ -77,8 +81,8 @@ public class RequestController {
 
     @PutMapping("/id/{RequestId}")
     public ResponseEntity<?> updateRequest(@PathVariable String RequestId, Principal principal) {
-        RequestOrder requestOrder = requestOrderService.updateRequest(RequestId, principal.getName());
-        return new ResponseEntity<>(requestOrder, HttpStatus.OK);
+        RequestDto requestDto = requestOrderService.updateRequest(RequestId, principal.getName());
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
 }
