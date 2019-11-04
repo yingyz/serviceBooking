@@ -44,24 +44,6 @@ public class RequestOrderService {
         return requestDto;
     }
 
-    private List<RequestDto> transferToDtos(List<RequestOrder> requestOrders) {
-        List<RequestDto> requestDtos = new ArrayList<>();
-        for (RequestOrder requestOrder : requestOrders) {
-            requestDtos.add(transferToDto(requestOrder));
-        }
-        return requestDtos;
-    }
-
-    private RequestDto transferToDto(RequestOrder requestOrder) {
-        RequestDto requestDto = modelMapper.map(requestOrder.getUser().getUserInfo(), RequestDto.class);
-        requestDto.setActive(requestOrder.getActive());
-        requestDto.setInfo(requestOrder.getInfo());
-        requestDto.setTitle(requestOrder.getTitle());
-        requestDto.setCreate_At(requestOrder.getCreate_At());
-        requestDto.setUpdate_At(requestOrder.getUpdate_At());
-        return requestDto;
-    }
-
     public List<RequestDto> findAllRequest(){
         List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
         return transferToDtos(requestOrders);
@@ -84,7 +66,7 @@ public class RequestOrderService {
         return transferToDtos(requestOrders);
     }
 
-    private RequestOrder findRequestById(String RequestId) {
+    public RequestOrder findRequestById(String RequestId) {
         long id = Long.parseLong(RequestId);
         RequestOrder requestOrder = requestOrderRepo.findById(id);
         if (requestOrder == null) {
@@ -116,5 +98,23 @@ public class RequestOrderService {
         requestOrderRepo.save(requestOrder);
 
         return transferToDto(requestOrder);
+    }
+
+    private List<RequestDto> transferToDtos(List<RequestOrder> requestOrders) {
+        List<RequestDto> requestDtos = new ArrayList<>();
+        for (RequestOrder requestOrder : requestOrders) {
+            requestDtos.add(transferToDto(requestOrder));
+        }
+        return requestDtos;
+    }
+
+    private RequestDto transferToDto(RequestOrder requestOrder) {
+        RequestDto requestDto = modelMapper.map(requestOrder.getUser().getUserInfo(), RequestDto.class);
+        requestDto.setActive(requestOrder.getActive());
+        requestDto.setInfo(requestOrder.getInfo());
+        requestDto.setTitle(requestOrder.getTitle());
+        requestDto.setCreate_At(requestOrder.getCreate_At());
+        requestDto.setUpdate_At(requestOrder.getUpdate_At());
+        return requestDto;
     }
 }

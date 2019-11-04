@@ -7,16 +7,16 @@ import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException
 import com.cpp.servicebooking.models.Comment;
 import com.cpp.servicebooking.models.RequestOrder;
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.UserInfo;
+import com.cpp.servicebooking.models.dto.CommentDto;
+import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.repository.CommentRepo;
-import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
-import com.cpp.servicebooking.util.CommentComparator;
-import com.cpp.servicebooking.util.DistanceCalculator;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,13 +32,10 @@ public class CommentService {
     private CommentRepo commentRepo;
 
     @Autowired
-    private DistanceCalculator distanceCalculator;
+    private ModelMapper modelMapper;
 
-    @Autowired
-    private CommentComparator commentComparator;
-
-    public Comment saveComment(String RequestOrderId, CommentRequest commentRequest, String name) {
-        RequestOrder requestOrder = requestOrderService.findById(RequestOrderId);
+    public CommentDto saveComment(String RequestOrderId, CommentRequest commentRequest, String name) {
+        RequestOrder requestOrder = requestOrderService.findRequestById(RequestOrderId);
         User user = userRepo.findByUsername(name);
         Comment tmpComment = commentRepo.findCommentByRequestOrderAndUser(requestOrder, user);
         if(tmpComment != null) {
@@ -51,33 +48,24 @@ public class CommentService {
         comment.setUser(user);
 
         commentRepo.save(comment);
-        return comment;
+
+        return transferCommentDto(comment);
     }
 
-
-    public List<Comment> getCommentsByRequestId(String RequestOrderId, String name) {
-        RequestOrder requestOrder = requestOrderService.findById(RequestOrderId);
+    public List<CommentDto> getCommentsByRequestId(String RequestOrderId, String name) {
+        RequestOrder requestOrder = requestOrderService.findRequestById(RequestOrderId);
         User user = userRepo.findByUsername(name);
-        int zip = user.getUserInfo().getZipcode();
 
         if (!requestOrder.getUser().equals(user)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
 
-        List<Comment> ans = sortedList(zip, requestOrder.getComments());
-        return ans;
+        List<Comment> ans = requestOrder.getComments();
+
+        return transferCommentDtos(ans);
     }
 
-    private List<Comment> sortedList(int zip, List<Comment> ans) {
-        for (Comment comment : ans) {
-            double dis = distanceCalculator.getDistance(zip, comment.getUser().getUserInfo().getZipcode());
-            comment.getUser().getUserInfo().setDistance(dis);
-        }
-        Collections.sort(ans, commentComparator);
-        return  ans;
-    }
-
-    public Comment findById(String CommentId, String name) {
+    private Comment findCommentById(String CommentId, String name) {
         long id = Long.parseLong(CommentId);
         Comment comment = commentRepo.findById(id);
         if (comment == null) {
@@ -92,12 +80,48 @@ public class CommentService {
         return comment;
     }
 
+    public CommentDto findById(String CommentId, String name) {
+        Comment comment = findCommentById(CommentId, name);
+        return transferCommentDto(comment);
+    }
+
     public void deleteComment(String CommentId, String name) {
-        Comment comment = findById(CommentId, name);
+        Comment comment = findCommentById(CommentId, name);
         if (!comment.getUser().getUsername().equals(name)) {
             throw new CommentNotFoundException("Comment is not yours!");
         }
         commentRepo.delete(comment);
     }
 
+    private List<CommentDto> transferCommentDtos(List<Comment> comments) {
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentDtos.add(transferCommentDto(comment));
+        }
+        return  commentDtos;
+    }
+
+    private CommentDto transferCommentDto(Comment comment) {
+        User user = comment.getUser();
+        User requestUser = comment.getRequestOrder().getUser();
+
+        CommentDto commentDto = CommentDto.builder()
+                .active(comment.getRequestOrder().getActive())
+                .commentDetail(comment.getDetail())
+                .title(comment.getRequestOrder().getTitle())
+                .info(comment.getRequestOrder().getInfo())
+                .requestUser(transferUserDto(requestUser))
+                .userdto(transferUserDto(user))
+                .build();
+        return commentDto;
+    }
+
+    private UserDto transferUserDto(User user) {
+        UserInfo userInfo = user.getUserInfo();
+
+        UserDto userDto = modelMapper.map(userInfo, UserDto.class);
+        userDto.setUsername(user.getUsername());
+
+        return userDto;
+    }
 }

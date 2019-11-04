@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CommentDto {
-    private String commentdetail;
+    private String commentDetail;
     private String title;
     private String info;
     private Boolean active;
+    private UserDto requestUser;
     private UserDto userdto;
 }

@@ -84,8 +84,7 @@ public class UserService implements UserDetailsService {
         user.setUserInfo(userInfo);
         userRepo.save(user);
 
-        UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
-        userDto.setUsername(user.getUsername());
+        UserDto userDto = transferUserDto(user);
 
         return userDto;
     }
@@ -94,8 +93,7 @@ public class UserService implements UserDetailsService {
         List<User> users = (ArrayList) userRepo.findAll();
         List<UserDto> userDtos = new ArrayList<>();
         for (User user : users) {
-            UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
-            userDto.setUsername(user.getUsername());
+            UserDto userDto = transferUserDto(user);
             userDtos.add(userDto);
         }
         return userDtos;
@@ -106,8 +104,16 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new DatabaseNotFoundException("User " + name + " not found!");
         }
-        UserDto userDto = modelMapper.map(user.getUserInfo(), UserDto.class);
+        UserDto userDto = transferUserDto(user);
+        return userDto;
+    }
+
+    private UserDto transferUserDto(User user) {
+        UserInfo userInfo = user.getUserInfo();
+
+        UserDto userDto = modelMapper.map(userInfo, UserDto.class);
         userDto.setUsername(user.getUsername());
+
         return userDto;
     }
 

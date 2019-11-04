@@ -1,7 +1,7 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.CommentRequest.CommentRequest;
-import com.cpp.servicebooking.models.Comment;
+import com.cpp.servicebooking.models.dto.CommentDto;
 import com.cpp.servicebooking.services.CommentService;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +28,19 @@ public class CommentController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        Comment comment = commentService.saveComment(RequestOrderId, commentRequest, principal.getName());
-        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+        CommentDto commentDto = commentService.saveComment(RequestOrderId, commentRequest, principal.getName());
+        return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/get/{RequestOrderId}")
-    public List<Comment> getCommentsByRequestId(@PathVariable String RequestOrderId, Principal principal) {
+    public List<CommentDto> getCommentsByRequestId(@PathVariable String RequestOrderId, Principal principal) {
         return commentService.getCommentsByRequestId(RequestOrderId, principal.getName());
     }
 
     @GetMapping("/id/{CommentId}")
     public ResponseEntity<?> getCommentById(@PathVariable String CommentId, Principal principal) {
-        Comment comment = commentService.findById(CommentId, principal.getName());
-        return new ResponseEntity<>(comment, HttpStatus.OK);
+        CommentDto commentDto = commentService.findById(CommentId, principal.getName());
+        return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/id/{CommentId}")
