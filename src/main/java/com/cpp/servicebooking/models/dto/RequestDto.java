@@ -13,27 +13,15 @@ import java.util.Date;
 @Data
 public class RequestDto {
 
+    private Long requestId;
+
     private String title;
 
     private String info;
 
     private Boolean active;
 
-    private String firstname;
-
-    private String lastname;
-
-    private String streetname;
-
-    private String city;
-
-    private String state;
-
-    private Integer zipcode;
-
-    private String phone;
-
-    private String language;
+    private UserDto userDto;
 
     private Date create_At;
 

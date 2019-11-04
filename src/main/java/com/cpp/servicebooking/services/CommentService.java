@@ -32,7 +32,7 @@ public class CommentService {
     private CommentRepo commentRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private UserService userService;
 
     public CommentDto saveComment(String RequestOrderId, CommentRequest commentRequest, String name) {
         RequestOrder requestOrder = requestOrderService.findRequestById(RequestOrderId);
@@ -106,22 +106,15 @@ public class CommentService {
         User requestUser = comment.getRequestOrder().getUser();
 
         CommentDto commentDto = CommentDto.builder()
+                .commentId(comment.getId())
                 .active(comment.getRequestOrder().getActive())
                 .commentDetail(comment.getDetail())
                 .title(comment.getRequestOrder().getTitle())
                 .info(comment.getRequestOrder().getInfo())
-                .requestUser(transferUserDto(requestUser))
-                .userdto(transferUserDto(user))
+                .requestUser(userService.transferUserDto(requestUser))
+                .userdto(userService.transferUserDto(user))
                 .build();
         return commentDto;
     }
 
-    private UserDto transferUserDto(User user) {
-        UserInfo userInfo = user.getUserInfo();
-
-        UserDto userDto = modelMapper.map(userInfo, UserDto.class);
-        userDto.setUsername(user.getUsername());
-
-        return userDto;
-    }
 }

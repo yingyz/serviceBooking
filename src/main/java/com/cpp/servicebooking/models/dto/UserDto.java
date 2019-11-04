@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class UserDto {
 
+    private Long userId;
+
     private String username;
 
     private String firstname;
@@ -29,4 +31,5 @@ public class UserDto {
 
     private String language;
 
+    private String role;
 }

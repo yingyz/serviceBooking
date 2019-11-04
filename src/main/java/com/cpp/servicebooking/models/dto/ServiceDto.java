@@ -11,25 +11,13 @@ import lombok.NoArgsConstructor;
 @Data
 public class ServiceDto {
 
+    private Long serviceId;
+
     private String detail;
 
     private String price;
 
     private String servicetype;
 
-    private String firstname;
-
-    private String lastname;
-
-    private String streetname;
-
-    private String city;
-
-    private String state;
-
-    private Integer zipcode;
-
-    private String phone;
-
-    private String language;
+    private UserDto userDto;
 }

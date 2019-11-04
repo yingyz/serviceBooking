@@ -7,7 +7,6 @@ import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.dto.RequestDto;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.UserRepo;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class RequestOrderService {
     private RequestOrderRepo requestOrderRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private UserService userService;
 
     public RequestDto createRequestOrder(RequestOrderRequest requestOrderRequest, String usernName) {
         User user = userRepo.findByUsername(usernName);
@@ -34,12 +33,7 @@ public class RequestOrderService {
         requestOrder.setActive(true);
         requestOrderRepo.save(requestOrder);
 
-        RequestDto requestDto = modelMapper.map(user.getUserInfo(), RequestDto.class);
-        requestDto.setActive(requestOrder.getActive());
-        requestDto.setInfo(requestOrder.getInfo());
-        requestDto.setTitle(requestOrder.getTitle());
-        requestDto.setCreate_At(requestOrder.getCreate_At());
-        requestDto.setUpdate_At(requestOrder.getUpdate_At());
+        RequestDto requestDto = transferToDto(requestOrder);
 
         return requestDto;
     }
@@ -109,12 +103,15 @@ public class RequestOrderService {
     }
 
     private RequestDto transferToDto(RequestOrder requestOrder) {
-        RequestDto requestDto = modelMapper.map(requestOrder.getUser().getUserInfo(), RequestDto.class);
-        requestDto.setActive(requestOrder.getActive());
-        requestDto.setInfo(requestOrder.getInfo());
-        requestDto.setTitle(requestOrder.getTitle());
-        requestDto.setCreate_At(requestOrder.getCreate_At());
-        requestDto.setUpdate_At(requestOrder.getUpdate_At());
+        RequestDto requestDto = RequestDto.builder()
+                .active(requestOrder.getActive())
+                .create_At(requestOrder.getCreate_At())
+                .info(requestOrder.getInfo())
+                .requestId(requestOrder.getId())
+                .title(requestOrder.getTitle())
+                .update_At(requestOrder.getUpdate_At())
+                .userDto(userService.transferUserDto(requestOrder.getUser()))
+                .build();
         return requestDto;
     }
 }

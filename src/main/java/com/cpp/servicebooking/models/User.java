@@ -57,6 +57,10 @@ public class User implements UserDetails {
     private Date create_At;
     private Date update_At;
 
+    public String getFullName() {
+        return this.userInfo.getFirstname() + " " + this.userInfo.getLastname();
+    }
+
     @PrePersist
     protected void onCreate(){
         this.create_At = new Date();

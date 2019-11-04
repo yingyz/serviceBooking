@@ -29,7 +29,7 @@ public class ServiceProvideService {
     private ServiceProvideRepo serviceProvideRepo;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private UserService userService;
 
     public ServiceDto updateService(ServiceProvideRequest serviceProvideRequest, String name) {
         User user = userRepo.findByUsername(name);
@@ -47,10 +47,7 @@ public class ServiceProvideService {
         serviceProvide.setServiceType(serviceType);
         serviceProvideRepo.save(serviceProvide);
 
-        ServiceDto serviceDto = modelMapper.map(serviceProvide.getUser().getUserInfo(), ServiceDto.class);
-        serviceDto.setDetail(serviceProvide.getDetail());
-        serviceDto.setPrice(serviceProvide.getPrice());
-        serviceDto.setServicetype(serviceProvide.getServiceType().getName());
+        ServiceDto serviceDto = transferServiceDto(serviceProvide);
 
         return serviceDto;
     }
@@ -65,13 +62,20 @@ public class ServiceProvideService {
 
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (ServiceProvide serviceProvide : serviceProvides) {
-            ServiceDto serviceDto = modelMapper.map(serviceProvide.getUser().getUserInfo(), ServiceDto.class);
-            serviceDto.setDetail(serviceProvide.getDetail());
-            serviceDto.setPrice(serviceProvide.getPrice());
-            serviceDto.setServicetype(serviceProvide.getServiceType().getName());
-            serviceDtos.add(serviceDto);
+            serviceDtos.add(transferServiceDto(serviceProvide));
         }
 
         return serviceDtos;
+    }
+
+    private ServiceDto transferServiceDto(ServiceProvide serviceProvide) {
+        ServiceDto serviceDto = ServiceDto.builder()
+                .detail(serviceProvide.getDetail())
+                .price(serviceProvide.getPrice())
+                .serviceId(serviceProvide.getId())
+                .servicetype(serviceProvide.getServiceType().getName())
+                .userDto(userService.transferUserDto(serviceProvide.getUser()))
+                .build();
+        return serviceDto;
     }
 }

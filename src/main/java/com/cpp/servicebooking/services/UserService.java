@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
                     .language(signUpRequest.getLanguage())
                     .build();
             user.setUserInfo(userInfo);
-
+            userRepo.save(user);
         } catch (DatabaseNotFoundException e) {
           throw e;
         } catch(Exception e) {
@@ -80,6 +80,7 @@ public class UserService implements UserDetailsService {
         userInfo.setState(userInfoUpdateRequest.getState());
         userInfo.setZipcode(Integer.parseInt(userInfoUpdateRequest.getZipcode()));
         userInfo.setPhone(userInfoUpdateRequest.getPhone());
+        userInfo.setLanguage(userInfoUpdateRequest.getLanguage());
 
         user.setUserInfo(userInfo);
         userRepo.save(user);
@@ -108,11 +109,13 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
-    private UserDto transferUserDto(User user) {
+    public UserDto transferUserDto(User user) {
         UserInfo userInfo = user.getUserInfo();
 
         UserDto userDto = modelMapper.map(userInfo, UserDto.class);
         userDto.setUsername(user.getUsername());
+        userDto.setRole(user.getRole().getName());
+        userDto.setUserId(user.getId());
 
         return userDto;
     }

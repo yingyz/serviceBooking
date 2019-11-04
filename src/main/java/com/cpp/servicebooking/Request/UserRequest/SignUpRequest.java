@@ -42,6 +42,6 @@ public class SignUpRequest {
     @NotBlank(message = "Role cannot be blank")
     private String role;
 
-    @NotBlank(message = "Role cannot be blank")
+    @NotBlank(message = "Language cannot be blank")
     private String language;
 }
