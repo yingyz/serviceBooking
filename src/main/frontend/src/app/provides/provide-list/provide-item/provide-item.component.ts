@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {RequestModel} from "../../../models/request.model";
+import {ServiceProvideModel} from "../../../models/serviceProvide.model";
 
 @Component({
   selector: 'app-provide-item',
@@ -8,7 +8,7 @@ import {RequestModel} from "../../../models/request.model";
 })
 export class ProvideItemComponent implements OnInit {
 
-  @Input() provideItem: RequestModel;
+  @Input() provideItem: ServiceProvideModel;
   @Input() index: number;
   constructor() { }
 

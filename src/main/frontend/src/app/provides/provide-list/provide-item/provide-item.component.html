@@ -1,1 +1,13 @@
-<p>provide-item works!</p>
+<div>
+  <div>{{provideItem.serviceId}}</div>
+  <div>{{provideItem.serviceType}}</div>
+  <div>{{provideItem.price}}</div>
+  <div>{{index}}</div>
+  <a
+    style="cursor: pointer"
+    [routerLink]="index"
+    routerLinkActive="active"
+    role="button">
+    View Detail
+  </a>
+</div>

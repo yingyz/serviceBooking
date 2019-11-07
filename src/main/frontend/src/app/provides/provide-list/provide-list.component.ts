@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ProvideModel} from "../provide.model";
-import {Subject, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
+import {ServiceProvideModel} from "../../models/serviceProvide.model";
+import {UserModel} from "../../models/user.model";
 
 @Component({
   selector: 'app-provide-list',
@@ -9,7 +10,9 @@ import {Subject, Subscription} from "rxjs";
 })
 export class ProvideListComponent implements OnInit {
 
-  provides: ProvideModel[] = [];
+  provides: ServiceProvideModel[] = [
+    new ServiceProvideModel(1, "Detail", "10", "House Moving", new UserModel(4,"Henry","Henry","Liu","street","city","CA",92831,"110","English","Service"))
+  ];
   providesSub: Subscription;
 
   constructor() { }
