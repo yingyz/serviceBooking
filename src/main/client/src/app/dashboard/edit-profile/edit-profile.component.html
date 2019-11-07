@@ -1,3 +1,37 @@
-<p>
-  edit-profile works!
-</p>
+
+<div class="container bg-light border">
+  <form class="px-3 py-3">
+    <h1 class="pt-3 font_color">Update Your Profile</h1>
+    <hr/>
+    <div class="h6 pt-3">Name:  {{user.firstname}} {{user.lastname}}</div>
+    <div class="h6 py-3">Email:  {{user.userName}}</div>
+
+    <div class="form-group">
+      <label for="street">Street</label>
+      <input class="form-control" type ="text" id = "street">
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <input class="form-control" type ="text" id = "city">
+    </div>
+    <div class="form-group">
+      <label for="state">State</label>
+      <input class="form-control" type ="text" id = "state">
+    </div>
+    <div class="form-group">
+      <label for="zipcode">Zip Code</label>
+      <input class="form-control" type ="text" id = "zipcode">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input class="form-control" type ="text" id="phone" placeholder="xxx-xxx-xxxx">
+    </div>
+    <div class="form-group">
+      <label for="language">Language</label>
+      <input class="form-control" type ="text" id = "language">
+    </div>
+    <div class="text-center pt-3">
+      <button type="button" class="btn btn_background btn-lg">Update</button>
+    </div>
+  </form>
+</div>

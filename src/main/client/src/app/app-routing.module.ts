@@ -1,5 +1,4 @@
 import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./auth/login/login.component";
 import {RegisterComponent} from "./auth/register/register.component";
 import {RequestsComponent} from "./requests/requests.component";
@@ -7,6 +6,7 @@ import {RequestFormComponent} from "./requests/request-form/request-form.compone
 import {RequestDetailComponent} from "./requests/request-detail/request-detail.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {EditProfileComponent} from "./dashboard/edit-profile/edit-profile.component";
+import {RouterModule, Routes} from "@angular/router";
 
 const appRoutes: Routes = [
   { path:'', redirectTo: '/requests', pathMatch: 'full'},
