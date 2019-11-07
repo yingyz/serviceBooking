@@ -1,202 +1,147 @@
-
-<div class="login-form">
-  <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class ="px-3 py-4 form_border login_center_div">
-    <div class="avatar text-center"><i class="fa fa-user-circle"></i></div>
-    <h1 class="text-center pt-3 font_color">Member Login</h1>
+<div class="login-form center_div">
+  <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class ="px-3 py-4 form_border bg-white">
+    <h1 class="text-center pt-3 font_color">Create an Account</h1>
     <div class="container pt-5">
       <div class="form-group">
-        <label for="email">Email Address</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-envelope-o"></i></span>
-          </div>
-          <input
-            type="email"
-            id="email"
-            class="form-control"
-            ngModel
-            name="email"
-            required
-            email
-          />
-        </div>
+        <label for="email">Email Address<span class="text-danger"> *</span></label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          ngModel
+          name="email"
+          required
+          email
+        />
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="password"
-            id="password"
-            class="form-control"
-            ngModel
-            name="password"
-            required
-            minlength="6"
-          />
-        </div>
+        <label for="password">Password<span class="text-danger"> *</span></label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          ngModel
+          name="password"
+          required
+          minlength="6"
+        />
       </div>
 
       <div class="form-group">
-        <label for="firstname">Firstname</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="firstname"
-            class="form-control"
-            ngModel
-            name="firstname"
-            required
-          />
-        </div>
+        <label for="firstname">First Name<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="firstname"
+          class="form-control"
+          ngModel
+          name="firstname"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="lastname">Lastname</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="lastname"
-            class="form-control"
-            ngModel
-            name="lastname"
-            required
-          />
-        </div>
+        <label for="lastname">Last Name<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="lastname"
+          class="form-control"
+          ngModel
+          name="lastname"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="streetname">Streetname</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="streetname"
-            class="form-control"
-            ngModel
-            name="streetname"
-            required
-          />
-        </div>
+        <label for="streetname">Street<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="streetname"
+          class="form-control"
+          ngModel
+          name="streetname"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="city">City</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="city"
-            class="form-control"
-            ngModel
-            name="city"
-            required
-          />
-        </div>
+        <label for="city">City<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="city"
+          class="form-control"
+          ngModel
+          name="city"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="state">State</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="state"
-            class="form-control"
-            ngModel
-            name="state"
-            required
-          />
-        </div>
+        <label for="state">State<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="state"
+          class="form-control"
+          ngModel
+          name="state"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="zipcode">Zipcode</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="zipcode"
-            class="form-control"
-            ngModel
-            name="zipcode"
-            required
-          />
-        </div>
+        <label for="zipcode">Zip Code<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="zipcode"
+          class="form-control"
+          ngModel
+          name="zipcode"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="phone">Phone</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="phone"
-            class="form-control"
-            ngModel
-            name="phone"
-            required
-          />
-        </div>
+        <label for="phone">Phone Number<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="phone"
+          class="form-control"
+          ngModel
+          name="phone"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="role">Role</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="role"
-            class="form-control"
-            ngModel
-            name="role"
-            required
-          />
-        </div>
+        <label for="role">Role<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="role"
+          class="form-control"
+          placeholder="Service Provider, Customer..."
+          ngModel
+          name="role"
+          required
+        />
       </div>
 
       <div class="form-group">
-        <label for="language">Language</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class ="fa fa-lock mr-1"></i></span>
-          </div>
-          <input
-            type="text"
-            id="language"
-            class="form-control"
-            ngModel
-            name="language"
-            required
-          />
-        </div>
+        <label for="language">Language<span class="text-danger"> *</span></label>
+        <input
+          type="text"
+          id="language"
+          class="form-control"
+          placeholder="English, Chinese, Spanish"
+          ngModel
+          name="language"
+          required
+        />
       </div>
 
-      <div class="text-center pt-3 pb-5">
-        <button type="submit" class="btn background_color button_hover text-light btn-lg btn-block">Sign Up</button>
+      <div class="text-center pt-5 pb-5">
+        <button type="submit" class="btn btn_background button_hover text-white btn-lg">Sign Up</button>
       </div>
     </div>
   </form>
 </div>
-
+<hr/>

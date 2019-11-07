@@ -34,17 +34,17 @@ export class SignupComponent implements OnInit {
     const registerData = new RegisterDataModel(
       email,
       password,
-      city,
       firstname,
       lastname,
       streetname,
+      city,
       state,
       zipcode,
       phone,
       language,
       role
     );
-    //console.log(registerData);
+
     this.authService.signup(registerData);
   }
 }

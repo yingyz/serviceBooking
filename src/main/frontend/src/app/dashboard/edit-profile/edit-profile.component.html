@@ -1,3 +1,50 @@
+<div class="container bg-light border">
+  <form class="px-3 py-3" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <h1 class="pt-3 font_color">Update Your Profile</h1>
+    <hr/>
+    <div class="h6 pt-3">Name:  {{user.firstname}} {{user.lastname}}</div>
+    <div class="h6 py-3">Email:  {{user.username}}</div>
+
+    <div class="form-group">
+      <label for="firstname">First Name</label>
+      <input class="form-control" type ="text" id = "firstname" formControlName="firstname">
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last Name</label>
+      <input class="form-control" type ="text" id = "lastname" formControlName="lastname">
+    </div>
+    <div class="form-group">
+      <label for="street">Street</label>
+      <input class="form-control" type ="text" id = "street" formControlName="streetname">
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <input class="form-control" type ="text" id = "city" formControlName="city">
+    </div>
+    <div class="form-group">
+      <label for="state">State</label>
+      <input class="form-control" type ="text" id = "state" formControlName="state">
+    </div>
+    <div class="form-group">
+      <label for="zipcode">Zip Code</label>
+      <input class="form-control" type ="text" id = "zipcode" formControlName="zipcode">
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input class="form-control" type ="text" id="phone" formControlName="phone" placeholder="xxx-xxx-xxxx">
+    </div>
+    <div class="form-group">
+      <label for="language">Language</label>
+      <input class="form-control" type ="text" id = "language" formControlName="language">
+    </div>
+    <div class="text-center pt-3">
+      <button type="submit" class="btn btn_background btn-lg" [disabled]="!profileForm.valid">Update</button>
+    </div>
+  </form>
+</div>
+
+
+<!--
 <div class = "row">
   <div class = "col-xs-12">
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
@@ -115,3 +162,4 @@
     </form>
   </div>
 </div>
+-->

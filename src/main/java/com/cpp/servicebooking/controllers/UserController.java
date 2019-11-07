@@ -4,6 +4,7 @@ import com.cpp.servicebooking.models.dto.JWTLoginSucessReponse;
 import com.cpp.servicebooking.Request.UserRequest.LoginRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.models.*;
+import com.cpp.servicebooking.models.dto.TextResponse;
 import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
@@ -66,6 +67,6 @@ public class UserController {
         if(errorMap != null)return errorMap;
 
         userService.saveUser(signUpRequest);
-        return new ResponseEntity<>("User Registered!", HttpStatus.CREATED);
+        return new ResponseEntity<>(new TextResponse("User Registered!"), HttpStatus.CREATED);
     }
 }

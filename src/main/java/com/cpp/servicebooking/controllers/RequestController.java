@@ -34,6 +34,15 @@ public class RequestController {
         return new ResponseEntity<>(requestDto, HttpStatus.CREATED);
     }
 
+    @PutMapping("/id/{RequestId}")
+    public ResponseEntity<?> updateRequest(@PathVariable String RequestId, @Valid @RequestBody RequestOrderRequest requestOrderRequest, BindingResult result, Principal principal) {
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null) return errorMap;
+
+        RequestDto requestDto = requestOrderService.updateRequest(RequestId, requestOrderRequest, principal.getName());
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<RequestDto>> getAllRequests(){
         return new ResponseEntity<>(requestOrderService.findAllRequest(), HttpStatus.OK);
@@ -77,12 +86,6 @@ public class RequestController {
     public ResponseEntity<?> deleteRequest(@PathVariable String RequestId, Principal principal) {
         requestOrderService.deleteRequest(RequestId, principal.getName());
         return new ResponseEntity<>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
-    }
-
-    @PutMapping("/id/{RequestId}")
-    public ResponseEntity<?> updateRequest(@PathVariable String RequestId, Principal principal) {
-        RequestDto requestDto = requestOrderService.updateRequest(RequestId, principal.getName());
-        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
 }

@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-provide-item
+      *ngFor="let provideEL of provides; let i = index"
+      [provideItem]="provideEL"
+      [index]="i"></app-provide-item>
+  </div>
+</div>

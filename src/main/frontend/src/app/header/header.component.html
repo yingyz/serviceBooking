@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-sm fixed-top navbar-dark background_color">
+
   <div *ngIf="userIsAuthenticated" class="container">
     <a class="navbar-brand font-weight-bold" >Service Master</a>
     <button
@@ -14,11 +15,13 @@
           <a routerLinkActive="active" routerLink="/dashboard/profile" class="nav-link mx-3">HOME</a>
         </li>
 
-        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold" >
-          <a class="nav-link mx-3">List of Users</a>
+        <li *ngIf="user.role == 'Customer'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/provides" class="nav-link mx-3">All Service Providers</a>
         </li>
-        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold">
-          <a class="nav-link mx-3">List of Service Types</a>
+
+        <li class="nav-item font-weight-bold">
+          <a *ngIf="user.role == 'Customer'" routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">My Requests</a>
+          <a *ngIf="user.role == 'Service'" routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">All Requests</a>
         </li>
 
         <li class="nav-item dropdown font-weight-bold">
@@ -36,7 +39,11 @@
       </ul>
     </div>
   </div>
+
+
+
   <!--guest-->
+
   <div *ngIf="!userIsAuthenticated" class="container">
     <a class="navbar-brand font-weight-bold" >Service Master</a>
     <button
@@ -63,5 +70,6 @@
       </ul>
     </div>
   </div>
+
 </nav>
 

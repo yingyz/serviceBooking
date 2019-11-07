@@ -1,0 +1,24 @@
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="card-title font_color">{{request.title}}</h4>
+    <p class="card-subtitle mt-1 text-muted medium">
+      <span>{{fullName}}</span>
+      <span class="pl-4">{{request.create_At|date: "short"}}</span>
+    </p>
+    <hr/>
+    <div class="container">
+      <h5 class="card-text text-align-center">{{request.info}}</h5>
+      <div class="py-2">
+        <span class="text-muted pr-1 h6">Location:</span>
+        <span class="pl-1">{{location}}</span>
+      </div>
+      <div>
+        <span class="text-muted pr-1 h6">Phone:</span>
+        <span class="pl-4">{{request.userModel.phone}}</span>
+      </div>
+      <div class="float-right">
+        <button (click)="onEditRequest()" class="btn btn_background text-white px-2 mt-1">Edit Request</button>
+      </div>
+    </div>
+  </div>
+</div>

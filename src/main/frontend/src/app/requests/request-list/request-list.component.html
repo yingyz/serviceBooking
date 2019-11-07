@@ -1,0 +1,8 @@
+<div class="row">
+  <div class="col-xs-12">
+    <app-request-item
+      *ngFor="let requestEL of requests; let i = index"
+      [requestItem]="requestEL"
+      [index]="i"></app-request-item>
+  </div>
+</div>

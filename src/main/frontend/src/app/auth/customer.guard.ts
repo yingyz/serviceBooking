@@ -1,8 +1,10 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
-import {Observable} from "rxjs";
+import {Injectable} from "@angular/core";
 import {AuthService} from "./auth.service";
+import {Observable} from "rxjs";
 
-export class AdminGuard implements CanActivate{
+@Injectable()
+export class CustomerGuard implements CanActivate{
   constructor(private authService: AuthService, private router: Router){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -11,7 +13,7 @@ export class AdminGuard implements CanActivate{
       this.router.navigate(['/auth/login']);
       return false;
     }
-    const isAdmin = this.authService.getUser().role == 'Admin';
+    const isAdmin = this.authService.getUser().role == 'Customer';
     if (!isAdmin) {
       this.router.navigate(['/dashboard/profile']);
       return false;

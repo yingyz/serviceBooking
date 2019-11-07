@@ -5,6 +5,7 @@ import {AuthService} from "../../auth/auth.service";
 import {Subscription} from "rxjs";
 import {UserModel} from "../../models/user.model";
 import {RegisterDataModel} from "../../auth/register-data.model";
+import {UserInfoModel} from "../UserInfo.model";
 
 @Component({
   selector: 'app-edit-profile',
@@ -64,9 +65,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    const registerData = new RegisterDataModel(
-      null,
-      null,
+    const registerData = new UserInfoModel(
       this.profileForm.value.city,
       this.profileForm.value.firstname,
       this.profileForm.value.lastname,
@@ -75,7 +74,6 @@ export class EditProfileComponent implements OnInit {
       this.profileForm.value.zipcode,
       this.profileForm.value.phone,
       this.profileForm.value.language,
-      null
     );
     this.authService.updateProfile(registerData);
   }

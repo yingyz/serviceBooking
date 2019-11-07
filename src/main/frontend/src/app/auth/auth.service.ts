@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {RegisterDataModel} from "./register-data.model";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserInfoModel} from "../dashboard/UserInfo.model";
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 
@@ -66,13 +67,13 @@ export class AuthService {
           this.router.navigate(["/auth/login"]);
         },
         error => {
-          console.log(error);
+          console.log("Error");
           this.authStatusListener.next(false);
         }
       );
   }
 
-  updateProfile(profileData: RegisterDataModel) {
+  updateProfile(profileData: UserInfoModel) {
     this.http.put<UserModel>('http://localhost:8080/api/userinfo', profileData)
       .subscribe(
         user => {

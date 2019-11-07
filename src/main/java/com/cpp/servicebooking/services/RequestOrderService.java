@@ -38,6 +38,18 @@ public class RequestOrderService {
         return requestDto;
     }
 
+    public RequestDto updateRequest(String RequestId, RequestOrderRequest requestOrderRequest, String name) {
+        RequestOrder requestOrder = findRequestById(RequestId);
+        if (!requestOrder.getUser().getUsername().equals(name)) {
+            throw new RequestOrderNotFoundException("RequestOrder is not yours!");
+        }
+        requestOrder.setInfo(requestOrderRequest.getInfo());
+        requestOrder.setTitle(requestOrderRequest.getTitle());
+        requestOrderRepo.save(requestOrder);
+
+        return transferToDto(requestOrder);
+    }
+
     public List<RequestDto> findAllRequest(){
         List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
         return transferToDtos(requestOrders);
@@ -81,17 +93,6 @@ public class RequestOrderService {
         }
 
         requestOrderRepo.delete(requestOrder);
-    }
-
-    public RequestDto updateRequest(String RequestId, String name) {
-        RequestOrder requestOrder = findRequestById(RequestId);
-        if (!requestOrder.getUser().getUsername().equals(name)) {
-            throw new RequestOrderNotFoundException("RequestOrder is not yours!");
-        }
-        requestOrder.setActive(false);
-        requestOrderRepo.save(requestOrder);
-
-        return transferToDto(requestOrder);
     }
 
     private List<RequestDto> transferToDtos(List<RequestOrder> requestOrders) {
