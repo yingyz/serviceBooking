@@ -4,17 +4,18 @@ import {UserModel} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {RegisterDataModel} from "./register-data.model";
+import {ActivatedRoute, Router} from "@angular/router";
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 
 @Injectable({providedIn: "root"})
 export class AuthService {
-  private isAuthenticated = false;
+  private isAuthenticated: boolean = false;
   private authStatusListener = new Subject<boolean>();
   private token: string = '';
   private user: UserModel = null;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute){}
 
   getToken() {
     return this.token;
@@ -28,7 +29,7 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  gerUser() {
+  getUser() {
     return this.user;
   }
 
@@ -39,8 +40,9 @@ export class AuthService {
         response => {
           this.token = response.token;
           this.user = response.user;
-          this.authStatusListener.next(true);
-          console.log(response);
+          this.isAuthenticated = true;
+          this.authStatusListener.next(this.isAuthenticated);
+          this.router.navigate(['/dashboard/profile'], {relativeTo: this.route});
         },
         error => {
           console.log(error);
@@ -51,7 +53,9 @@ export class AuthService {
 
   logout() {
     this.user = null;
-    this.authStatusListener.next(false);
+    this.isAuthenticated = false;
+    this.authStatusListener.next(this.isAuthenticated);
+    this.router.navigate(["/auth/login"]);
   }
 
   signup(registerData: RegisterDataModel) {
@@ -59,10 +63,22 @@ export class AuthService {
       .subscribe(
         response => {
           console.log(response.message);
+          this.router.navigate(["/auth/login"]);
         },
         error => {
           console.log(error);
           this.authStatusListener.next(false);
+        }
+      );
+  }
+
+  updateProfile(profileData: RegisterDataModel) {
+    this.http.put<UserModel>('http://localhost:8080/api/userinfo', profileData)
+      .subscribe(
+        user => {
+          this.user = user;
+          this.authStatusListener.next(true);
+          this.router.navigate(['/dashboard/profile'], {relativeTo: this.route});
         }
       );
   }

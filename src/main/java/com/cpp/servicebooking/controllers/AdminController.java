@@ -56,31 +56,31 @@ public class AdminController {
     }
 
     @GetMapping("/role")
-    public Iterable<Role> getRoles() {
-        return roleService.findAllRoles();
+    public ResponseEntity<Iterable<Role>> getRoles() {
+        return ResponseEntity.ok(roleService.findAllRoles());
     }
 
     @GetMapping("/serviceType")
-    public Iterable<ServiceType> getServiceTypes() {
-        return servicetypeService.findAllServiceTypes();
+    public ResponseEntity<Iterable<ServiceType>> getServiceTypes() {
+        return ResponseEntity.ok(servicetypeService.findAllServiceTypes());
     }
 
     @GetMapping("/role/{name}")
-    public Role getRoleByName(@PathVariable String name) { return roleService.findRoleByRolename(name);}
+    public ResponseEntity<Role> getRoleByName(@PathVariable String name) { return ResponseEntity.ok(roleService.findRoleByRolename(name));}
 
     @GetMapping("/serviceType/{name}")
-    public ServiceType getServiceTypeByName(@PathVariable String name) {
-        return servicetypeService.findServiceByServicename(name);
+    public ResponseEntity<ServiceType> getServiceTypeByName(@PathVariable String name) {
+        return ResponseEntity.ok(servicetypeService.findServiceByServicename(name));
     }
 
     @GetMapping("/user")
-    public List<UserDto> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
 
-        return userService.findAllUsers();
+        return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @GetMapping("/user/{name}")
-    public UserDto getUserByName(@PathVariable String name) {
-        return userService.findUserByName(name);
+    public ResponseEntity<UserDto> getUserByName(@PathVariable String name) {
+        return ResponseEntity.ok(userService.findUserByName(name));
     }
 }

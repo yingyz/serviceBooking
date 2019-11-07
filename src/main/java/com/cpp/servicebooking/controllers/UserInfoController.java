@@ -1,11 +1,9 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
-import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

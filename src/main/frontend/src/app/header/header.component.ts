@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(
       userIsAuthenticated => {
         this.userIsAuthenticated = userIsAuthenticated;
-        this.user = this.authService.gerUser();
+        this.user = this.authService.getUser();
       }
     );
   }

@@ -9,13 +9,17 @@ import { SignupComponent } from './auth/signup/signup.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AuthInterceptor} from "./auth/auth-interceptor";
+import { ProfileComponent } from './dashboard/profile/profile.component';
+import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
