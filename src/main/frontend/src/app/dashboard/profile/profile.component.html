@@ -23,8 +23,34 @@
         </div>
       </div>
     </div>
-    <div class="text-right pt-4">
-      <button type="button" class="btn btn_background text-light btn-sm py-1 px-2">View My Requests</button>
+    <div *ngIf="user.role == 'Customer'" class="text-right pt-4">
+      <button type="button" class="btn btn_background text-light btn-sm py-1 px-2" (click)="onRequests()">All Requests</button>
     </div>
-  </div>
+    <!--Service-->
+    <div *ngIf="user.role == 'Service'" class="card-body">
+      <div *ngIf="myProvide != null">
+        <div class="py-3">
+          <div class="card-title pl-2 h4">Service Type: {{myProvide.servicetype}}</div>
+        </div>
+        <hr/>
+        <div class="container bg-white">
+          <div class="row py-3">
+            <div class="col-3">
+              <div class="h6 font_color pt-3">Price:</div>
+              <div class="h6 font_color pt-4">Detail:</div>
+            </div>
+            <div class="col">
+              <div class="h6 pt-3">{{myProvide.price}}</div>
+              <div class="h6 pt-4">{{myProvide.detail}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="myProvide == null">
+        Please fill your service information
+      </div>
+    </div>
+    <div *ngIf="user.role == 'Service'" class="text-right pt-4">
+      <button type="button" class="btn btn_background text-light btn-sm py-1 px-2" (click)="onServiceUpdate()">Update my Service</button>
+    </div>
 </div>

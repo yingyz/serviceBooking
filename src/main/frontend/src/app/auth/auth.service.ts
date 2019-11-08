@@ -6,6 +6,7 @@ import {environment} from "../../environments/environment";
 import {RegisterDataModel} from "./register-data.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserInfoModel} from "../dashboard/UserInfo.model";
+import {ProvideService} from "../provides/provide.service";
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 
@@ -16,7 +17,7 @@ export class AuthService {
   private token: string = '';
   private user: UserModel = null;
 
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute){}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private provideService: ProvideService){}
 
   getToken() {
     return this.token;
@@ -42,6 +43,9 @@ export class AuthService {
           this.token = response.token;
           this.user = response.user;
           this.isAuthenticated = true;
+          if (this.user.role == 'Service') {
+            this.provideService.getMyProvideFromAPI();
+          }
           this.authStatusListener.next(this.isAuthenticated);
           this.router.navigate(['/dashboard/profile'], {relativeTo: this.route});
         },
@@ -55,6 +59,7 @@ export class AuthService {
   logout() {
     this.user = null;
     this.isAuthenticated = false;
+    this.provideService.setMyProvide();
     this.authStatusListener.next(this.isAuthenticated);
     this.router.navigate(["/auth/login"]);
   }

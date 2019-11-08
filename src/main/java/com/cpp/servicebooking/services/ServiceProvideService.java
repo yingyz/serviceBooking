@@ -52,7 +52,14 @@ public class ServiceProvideService {
         return serviceDto;
     }
 
-    public List<ServiceDto> getServicesByName(String serviceName, String name) {
+    public ServiceDto getServiceByUserName(String name) {
+        User user = userRepo.findByUsername(name);
+        ServiceProvide serviceProvide = user.getServiceProvide();
+        if (serviceProvide == null) return null;
+        return transferServiceDto(serviceProvide);
+    }
+
+    public List<ServiceDto> getServicesByName(String serviceName) {
         ServiceType serviceType = serviceTypeRepo.findByName(serviceName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
@@ -60,6 +67,17 @@ public class ServiceProvideService {
 
         List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByServiceType(serviceType);
 
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for (ServiceProvide serviceProvide : serviceProvides) {
+            serviceDtos.add(transferServiceDto(serviceProvide));
+        }
+
+        return serviceDtos;
+    }
+
+    public List<ServiceDto> getServices() {
+
+        List<ServiceProvide> serviceProvides = (ArrayList)serviceProvideRepo.findAll();
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (ServiceProvide serviceProvide : serviceProvides) {
             serviceDtos.add(transferServiceDto(serviceProvide));

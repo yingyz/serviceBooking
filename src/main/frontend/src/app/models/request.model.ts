@@ -5,7 +5,7 @@ export class RequestModel {
   title: string;
   info: string;
   active: boolean;
-  userModel: UserModel;
+  userDto: UserModel;
   create_At: Date;
   update_At: Date;
 
@@ -14,7 +14,7 @@ export class RequestModel {
     this.title = title;
     this.info = info;
     this.active = active;
-    this.userModel = userModel;
+    this.userDto = userModel;
     this.create_At = create_At;
     this.update_At = update_At;
   }

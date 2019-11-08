@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {ServiceProvideModel} from "../../models/serviceProvide.model";
 import {UserModel} from "../../models/user.model";
+import {ProvideService} from "../provide.service";
 
 @Component({
   selector: 'app-provide-list',
@@ -10,14 +11,23 @@ import {UserModel} from "../../models/user.model";
 })
 export class ProvideListComponent implements OnInit {
 
-  provides: ServiceProvideModel[] = [
-    new ServiceProvideModel(1, "Detail", "10", "House Moving", new UserModel(4,"Henry","Henry","Liu","street","city","CA",92831,"110","English","Service"))
-  ];
+  provides: ServiceProvideModel[] = [];
   providesSub: Subscription;
+  provideType: string = null;
 
-  constructor() { }
+  constructor(private provideService: ProvideService) { }
 
   ngOnInit() {
+    this.provideService.getProvidesFromAPI(null);
+    this.providesSub = this.provideService.getProvidesChanged()
+      .subscribe(
+        provides => {
+          this.provides = provides;
+        }
+      );
   }
 
+  onSearchByName() {
+    this.provideService.getProvidesFromAPI(this.provideType);
+  }
 }

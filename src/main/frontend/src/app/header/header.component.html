@@ -19,9 +19,8 @@
           <a routerLinkActive="active" routerLink="/provides" class="nav-link mx-3">All Service Providers</a>
         </li>
 
-        <li class="nav-item font-weight-bold">
-          <a *ngIf="user.role == 'Customer'" routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">My Requests</a>
-          <a *ngIf="user.role == 'Service'" routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">All Requests</a>
+        <li *ngIf="user.role == 'Service'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">All Requests</a>
         </li>
 
         <li class="nav-item dropdown font-weight-bold">

@@ -23,9 +23,9 @@ export class RequestDetailComponent implements OnInit {
         (params: Params) => {
           this.index = +params.id;
           this.request = this.requestService.getRequestyIdx(this.index);
-          this.location = this.request.userModel.streetname + ", " + this.request.userModel.city + ", " + this.request.userModel.state
-            + ", " + this.request.userModel.zipcode;
-          this.fullName = this.request.userModel.firstname + " " + this.request.userModel.lastname;
+          this.location = this.request.userDto.streetname + ", " + this.request.userDto.city + ", " + this.request.userDto.state
+            + ", " + this.request.userDto.zipcode;
+          this.fullName = this.request.userDto.firstname + " " + this.request.userDto.lastname;
         }
       );
   }

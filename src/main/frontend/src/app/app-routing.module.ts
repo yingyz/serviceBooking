@@ -10,12 +10,15 @@ import {RequestFormComponent} from "./requests/request-form/request-form.compone
 import {RequestDetailComponent} from "./requests/request-detail/request-detail.component";
 import {ProvidesComponent} from "./provides/provides.component";
 import {ProvideDetailComponent} from "./provides/provide-detail/provide-detail.component";
+import {EditProfileServiceComponent} from "./dashboard/edit-profile-service/edit-profile-service.component";
+import {ProvideGuard} from "./auth/provide.guard";
 
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard/profile', pathMatch: 'full'},
   {path: 'dashboard/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'dashboard/editProfile', component: EditProfileComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard/editService', component: EditProfileServiceComponent, canActivate:[AuthGuard, ProvideGuard]},
   {path: 'provides', component: ProvidesComponent, canActivate: [AuthGuard],
     children: [
       {path: ':id', component: ProvideDetailComponent}
@@ -35,6 +38,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard, ProvideGuard]
 })
 export class AppRoutingModule { }

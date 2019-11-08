@@ -20,6 +20,7 @@ import { ProvidesComponent } from './provides/provides.component';
 import { ProvideDetailComponent } from './provides/provide-detail/provide-detail.component';
 import { ProvideListComponent } from './provides/provide-list/provide-list.component';
 import { ProvideItemComponent } from './provides/provide-list/provide-item/provide-item.component';
+import { EditProfileServiceComponent } from './dashboard/edit-profile-service/edit-profile-service.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProvideItemComponent } from './provides/provide-list/provide-item/provi
     ProvidesComponent,
     ProvideDetailComponent,
     ProvideListComponent,
-    ProvideItemComponent
+    ProvideItemComponent,
+    EditProfileServiceComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,6 @@ import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
 import com.cpp.servicebooking.models.Role;
-import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.UserInfo;
 import com.cpp.servicebooking.models.dto.UserDto;
