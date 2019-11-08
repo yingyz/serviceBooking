@@ -23,6 +23,13 @@ import { ProvideItemComponent } from './provides/provide-list/provide-item/provi
 import { EditProfileServiceComponent } from './dashboard/edit-profile-service/edit-profile-service.component';
 import { CommentFormComponent } from './requests/request-detail/comment-form/comment-form.component';
 import { CommentsComponent } from './requests/request-detail/comments/comments.component';
+import { UsersComponent } from './admin/users/users.component';
+import { ServiceTypesComponent } from './admin/service-types/service-types.component';
+import { ServicelistComponent } from './admin/service-types/servicelist/servicelist.component';
+import { ServiceformComponent } from './admin/service-types/serviceform/serviceform.component';
+import { RolesComponent } from './admin/roles/roles.component';
+import { RolesListComponent } from './admin/roles/roles-list/roles-list.component';
+import { RolesFormComponent } from './admin/roles/roles-form/roles-form.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +50,14 @@ import { CommentsComponent } from './requests/request-detail/comments/comments.c
     ProvideItemComponent,
     EditProfileServiceComponent,
     CommentFormComponent,
-    CommentsComponent
+    CommentsComponent,
+    UsersComponent,
+    ServiceTypesComponent,
+    ServicelistComponent,
+    ServiceformComponent,
+    RolesComponent,
+    RolesListComponent,
+    RolesFormComponent
   ],
   imports: [
     BrowserModule,

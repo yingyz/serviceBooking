@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.tools.jstat.Literal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class RoleService {
         }
     }
 
-    public Iterable<Role> findAllRoles() {
-        return roleRepo.findAll();
+    public List<Role> findAllRoles() {
+        return (ArrayList)roleRepo.findAll();
     }
 }

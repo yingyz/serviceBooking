@@ -23,6 +23,18 @@
           <a routerLinkActive="active" routerLink="/requests" class="nav-link mx-3">All Requests</a>
         </li>
 
+        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/admin/users" class="nav-link mx-3">All Users</a>
+        </li>
+
+        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/admin/serviceTypes" class="nav-link mx-3">Service Types</a>
+        </li>
+
+        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/admin/roles" class="nav-link mx-3">Roles</a>
+        </li>
+
         <li class="nav-item dropdown font-weight-bold">
           <a style="cursor: pointer" class="nav-link dropdown-toggle" data-toggle="dropdown"
           >ACCOUNT</a

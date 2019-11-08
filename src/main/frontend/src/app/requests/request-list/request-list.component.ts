@@ -18,7 +18,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
     this.requestService.getRequestsFromAPI();
     this.requestSub = this.requestService.getRequestsChanged()
       .subscribe(
-        requests => {
+        (requests: any[]) => {
           this.requests = requests;
         }
       );

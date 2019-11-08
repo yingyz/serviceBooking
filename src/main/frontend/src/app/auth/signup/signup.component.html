@@ -114,15 +114,11 @@
 
       <div class="form-group">
         <label for="role">Role<span class="text-danger"> *</span></label>
-        <input
-          type="text"
-          id="role"
-          class="form-control"
-          placeholder="Service Provider, Customer..."
-          ngModel
-          name="role"
-          required
-        />
+        <select id="role" required ngModel name="role">
+          <option *ngFor="let role of roles" [value]="role">
+            {{role}}
+          </option>
+        </select>
       </div>
 
       <div class="form-group">

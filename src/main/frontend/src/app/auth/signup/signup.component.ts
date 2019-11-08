@@ -10,9 +10,16 @@ import {RegisterDataModel} from "../register-data.model";
 })
 export class SignupComponent implements OnInit {
 
+  roles: string[] = [];
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.getRoles().subscribe(
+      (roles: string[]) => {
+        this.roles = roles;
+      }
+    );
   }
 
   onSubmit(form: NgForm) {

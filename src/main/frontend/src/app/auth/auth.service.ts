@@ -7,6 +7,7 @@ import {RegisterDataModel} from "./register-data.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserInfoModel} from "../dashboard/UserInfo.model";
 import {ProvideService} from "../provides/provide.service";
+import {map} from "rxjs/operators";
 
 const BACKEND_URL = environment.apiUrl + '/users/';
 
@@ -86,6 +87,36 @@ export class AuthService {
           this.authStatusListener.next(true);
           this.router.navigate(['/dashboard/profile'], {relativeTo: this.route});
         }
+      );
+  }
+
+  getRoles() {
+    return this.http.get(BACKEND_URL + 'role')
+      .pipe(
+        map(
+          (roles: any[]) => {
+            return roles.map(
+              role => {
+                return role.name;
+              }
+            );
+          }
+        )
+      );
+  }
+
+  getProvideTypes() {
+    return this.http.get(BACKEND_URL + 'serviceType')
+      .pipe(
+        map(
+          (provideTypes: any[]) => {
+            return provideTypes.map(
+              provideType => {
+                return provideType.name;
+              }
+            );
+          }
+        )
       );
   }
 }

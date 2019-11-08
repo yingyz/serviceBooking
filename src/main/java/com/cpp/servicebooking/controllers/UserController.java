@@ -8,6 +8,8 @@ import com.cpp.servicebooking.models.dto.TextResponse;
 import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.security.JwtTokenProvider;
 import com.cpp.servicebooking.services.MapValidationErrorService;
+import com.cpp.servicebooking.services.RoleService;
+import com.cpp.servicebooking.services.ServicetypeService;
 import com.cpp.servicebooking.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
+import java.util.List;
+
 import static com.cpp.servicebooking.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
@@ -32,6 +36,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private ServicetypeService servicetypeService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -68,5 +78,22 @@ public class UserController {
 
         userService.saveUser(signUpRequest);
         return new ResponseEntity<>(new TextResponse("User Registered!"), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<List<Role>> getRoles() {
+        List<Role> ans = roleService.findAllRoles();
+        for (Role r : ans) {
+            if (r.getName().equals("Admin")) {
+                ans.remove(r);
+                break;
+            }
+        }
+        return ResponseEntity.ok(ans);
+    }
+
+    @GetMapping("/serviceType")
+    public ResponseEntity<Iterable<ServiceType>> getServiceTypes() {
+        return ResponseEntity.ok(servicetypeService.findAllServiceTypes());
     }
 }

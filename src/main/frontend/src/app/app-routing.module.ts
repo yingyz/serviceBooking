@@ -12,6 +12,9 @@ import {ProvidesComponent} from "./provides/provides.component";
 import {ProvideDetailComponent} from "./provides/provide-detail/provide-detail.component";
 import {EditProfileServiceComponent} from "./dashboard/edit-profile-service/edit-profile-service.component";
 import {ProvideGuard} from "./auth/provide.guard";
+import {UsersComponent} from "./admin/users/users.component";
+import {ServiceTypesComponent} from "./admin/service-types/service-types.component";
+import {RolesComponent} from "./admin/roles/roles.component";
 
 
 const routes: Routes = [
@@ -19,6 +22,9 @@ const routes: Routes = [
   {path: 'dashboard/profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'dashboard/editProfile', component: EditProfileComponent, canActivate: [AuthGuard]},
   {path: 'dashboard/editService', component: EditProfileServiceComponent, canActivate:[AuthGuard, ProvideGuard]},
+  {path: 'admin/users', component: UsersComponent, canActivate: [AuthGuard]},
+  {path: 'admin/serviceTypes', component: ServiceTypesComponent, canActivate: [AuthGuard]},
+  {path: 'admin/roles', component:RolesComponent, canActivate: [AuthGuard]},
   {path: 'provides', component: ProvidesComponent, canActivate: [AuthGuard],
     children: [
       {path: ':id', component: ProvideDetailComponent}

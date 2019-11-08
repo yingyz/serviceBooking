@@ -1,8 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {RequestModel} from "../../models/request.model";
 import {Subscription} from "rxjs";
-import {UserModel} from "../../models/user.model";
 import {ServiceProvideModel} from "../../models/serviceProvide.model";
 import {AuthService} from "../../auth/auth.service";
 import {ProvideService} from "../../provides/provide.service";
@@ -17,6 +15,7 @@ export class EditProfileServiceComponent implements OnInit, OnDestroy {
   provideForm: FormGroup;
   myProvide: ServiceProvideModel;
   private provideListenerSubs: Subscription;
+  provideTypes: string[] = [];
 
   constructor(private authService: AuthService, private provideService: ProvideService) { }
 
@@ -33,6 +32,14 @@ export class EditProfileServiceComponent implements OnInit, OnDestroy {
           this.initForm();
         }
       );
+
+    this.authService.getProvideTypes()
+      .subscribe(
+        provideTypes => {
+          this.provideTypes = provideTypes;
+        }
+      );
+
   }
 
   initForm() {
