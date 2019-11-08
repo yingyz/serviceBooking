@@ -59,7 +59,7 @@ export class AuthService {
   logout() {
     this.user = null;
     this.isAuthenticated = false;
-    this.provideService.setMyProvide();
+    this.provideService.clearMyProvide();
     this.authStatusListener.next(this.isAuthenticated);
     this.router.navigate(["/auth/login"]);
   }

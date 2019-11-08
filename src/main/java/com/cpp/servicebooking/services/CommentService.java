@@ -52,6 +52,14 @@ public class CommentService {
         return transferCommentDto(comment);
     }
 
+    public CommentDto checkDuplicateComment(String RequestOrderId, String name) {
+        RequestOrder requestOrder = requestOrderService.findRequestById(RequestOrderId);
+        User user = userRepo.findByUsername(name);
+        Comment tmpComment = commentRepo.findCommentByRequestOrderAndUser(requestOrder, user);
+        if (tmpComment == null) return null;
+        return transferCommentDto(tmpComment);
+    }
+
     public List<CommentDto> getCommentsByRequestId(String RequestOrderId, String name) {
         RequestOrder requestOrder = requestOrderService.findRequestById(RequestOrderId);
         User user = userRepo.findByUsername(name);

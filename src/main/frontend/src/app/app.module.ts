@@ -21,6 +21,8 @@ import { ProvideDetailComponent } from './provides/provide-detail/provide-detail
 import { ProvideListComponent } from './provides/provide-list/provide-list.component';
 import { ProvideItemComponent } from './provides/provide-list/provide-item/provide-item.component';
 import { EditProfileServiceComponent } from './dashboard/edit-profile-service/edit-profile-service.component';
+import { CommentFormComponent } from './requests/request-detail/comment-form/comment-form.component';
+import { CommentsComponent } from './requests/request-detail/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { EditProfileServiceComponent } from './dashboard/edit-profile-service/ed
     ProvideDetailComponent,
     ProvideListComponent,
     ProvideItemComponent,
-    EditProfileServiceComponent
+    EditProfileServiceComponent,
+    CommentFormComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ export class CommentModel {
   info: string;
   active: boolean;
   requestUser: UserModel;
-  userModel: UserModel;
+  userdto: UserModel;
 
   constructor(commentId: bigint, commentDetail: string, title: string, info: string, active: boolean, requestUser: UserModel, userModel: UserModel) {
     this.commentId = commentId;
@@ -16,6 +16,6 @@ export class CommentModel {
     this.info = info;
     this.active = active;
     this.requestUser = requestUser;
-    this.userModel = userModel;
+    this.userdto = userModel;
   }
 }

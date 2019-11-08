@@ -15,7 +15,6 @@ import {ProvideService} from "../../provides/provide.service";
 export class EditProfileServiceComponent implements OnInit, OnDestroy {
   editMode = false;
   provideForm: FormGroup;
-  private authListenerSubs: Subscription;
   myProvide: ServiceProvideModel;
   private provideListenerSubs: Subscription;
 
@@ -25,12 +24,6 @@ export class EditProfileServiceComponent implements OnInit, OnDestroy {
     this.myProvide = this.provideService.getMyProvide();
     this.editMode = this.myProvide != null;
     this.initForm();
-    this.authListenerSubs = this.authService.getAuthStatusListener()
-      .subscribe(
-        isAuth => {
-          this.myProvide = this.provideService.getMyProvide();
-        }
-      );
 
     this.provideListenerSubs = this.provideService.getProvideStatusListener()
       .subscribe(
@@ -65,6 +58,6 @@ export class EditProfileServiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.authListenerSubs.unsubscribe();
+    this.provideListenerSubs.unsubscribe();
   }
 }

@@ -16,9 +16,13 @@
         <span class="text-muted pr-1 h6">Phone:</span>
         <span class="pl-4">{{request.userDto.phone}}</span>
       </div>
-      <div class="float-right">
+      <div *ngIf="editAuth" class="float-right">
         <button (click)="onEditRequest()" class="btn btn_background text-white px-2 mt-1">Edit Request</button>
       </div>
     </div>
   </div>
+</div>
+<div>
+  <app-comment-form *ngIf="userRole === 'Service'" [requestId] = "request.requestId"></app-comment-form>
+  <app-comments *ngIf="userRole==='Customer'" [requestId] = "request.requestId"></app-comments>
 </div>

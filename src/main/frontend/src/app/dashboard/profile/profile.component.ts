@@ -27,7 +27,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe(
         response => {
           this.user = this.authService.getUser();
-          this.myProvide = this.provideService.getMyProvide();
         }
       );
     this.provideListenerSubs = this.provideService.getProvideStatusListener()

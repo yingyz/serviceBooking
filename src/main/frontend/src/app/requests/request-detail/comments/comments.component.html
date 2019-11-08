@@ -1,0 +1,6 @@
+<div>Comments begin: </div>
+<div *ngFor="let comment of comments">
+  <div>{{comment.commentDetail}}</div>
+  <div>Service Full Name: {{comment.userdto.firstname}} {{comment.userdto.lastname}}</div>
+  <div>Phone: {{comment.userdto.phone}}</div>
+</div>

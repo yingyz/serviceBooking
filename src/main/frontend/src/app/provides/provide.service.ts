@@ -5,8 +5,6 @@ import {ServiceProvideModel} from "../models/serviceProvide.model";
 import {Subject} from "rxjs";
 import {environment} from "../../environments/environment";
 import {map} from "rxjs/operators";
-import {AuthService} from "../auth/auth.service";
-import {error} from "util";
 
 const BACKEND_URL = environment.apiUrl + '/provider/';
 
@@ -31,8 +29,9 @@ export class ProvideService {
     return this.provides[index];
   }
 
-  setMyProvide() {
+  clearMyProvide() {
     this.myProvide = null;
+    this.myProvideChanged.next(null);
   }
 
   getProvideStatusListener() {

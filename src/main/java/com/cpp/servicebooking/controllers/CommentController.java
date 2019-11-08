@@ -48,4 +48,10 @@ public class CommentController {
         commentService.deleteComment(CommentId, principal.getName());
         return new ResponseEntity<>("Request with ID: '"+CommentId+"' was deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/check/{RequestOrderId}")
+    public ResponseEntity<?> checkDuplicateComment(@PathVariable String RequestOrderId, Principal principal){
+        CommentDto commentDto = commentService.checkDuplicateComment(RequestOrderId, principal.getName());
+        return ResponseEntity.ok(commentDto);
+    }
 }
