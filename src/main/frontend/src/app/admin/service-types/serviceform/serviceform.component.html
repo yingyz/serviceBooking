@@ -1,0 +1,14 @@
+<div class="container bg-light border">
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
+    <h2 class="text-center font_color pt-3">Create new Service</h2>
+    <hr/>
+    <div class="form-group">
+      <label for="name">Service Name</label>
+      <input class="form-control" type ="text" id="name" formControlName="name" placeholder="Service Name">
+    </div>
+
+    <div class="text-center py-4">
+      <button type="submit" class="btn btn_background text-white px-4 py-2" [disabled]="!serviceForm.valid">Submit</button>
+    </div>
+  </form>
+</div>

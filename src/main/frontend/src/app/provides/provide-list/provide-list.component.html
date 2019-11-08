@@ -1,0 +1,12 @@
+<div>
+  <input type="text" [(ngModel)]="provideType">
+  <button (click)="onSearchByName()"></button>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-provide-item
+      *ngFor="let provideEL of provides; let i = index"
+      [provideItem]="provideEL"
+      [index]="i"></app-provide-item>
+  </div>
+</div>

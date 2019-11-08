@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+.center_div {
+  margin: 0 auto;
+  width: 75%;
+  margin-top: 5%;
+}
+
+.login_center_div {
+  margin: 0 auto;
+  width: 50%;
+  margin-top: 10%;
+}
+
+
+.font_color {
+  color: #3941af;
+}
+
+.form_border {
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.compomentmargin {
+  margin-top: 80px;
+}

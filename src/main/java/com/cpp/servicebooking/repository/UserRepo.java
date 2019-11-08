@@ -1,6 +1,8 @@
 package com.cpp.servicebooking.repository;
 
 import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.dto.UserDto;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

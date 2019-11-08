@@ -1,7 +1,7 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.ServiceRequest.ServiceProvideRequest;
-import com.cpp.servicebooking.models.ServiceProvide;
+import com.cpp.servicebooking.models.dto.ServiceDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.ServiceProvideService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/provide")
+@RequestMapping("/api/provider")
 public class ProvideController {
 
     @Autowired
@@ -28,14 +29,24 @@ public class ProvideController {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        ServiceProvide serviceProvide = serviceProvideService.updateService(serviceProvideRequest, principal.getName());
+        ServiceDto serviceProvide = serviceProvideService.updateService(serviceProvideRequest, principal.getName());
 
-        return new ResponseEntity<ServiceProvide>(serviceProvide, HttpStatus.CREATED);
+        return new ResponseEntity<>(serviceProvide, HttpStatus.CREATED);
     }
 
-    @GetMapping("/name/{serviceName}")
-    public Iterable<ServiceProvide> getServicesByName(@PathVariable String serviceName) {
-        return serviceProvideService.getServicesByName(serviceName);
+    @GetMapping()
+    public ResponseEntity<List<ServiceDto>> getServices() {
+        return ResponseEntity.ok(serviceProvideService.getServices());
+    }
+
+    @GetMapping("/{serviceName}")
+    public ResponseEntity<List<ServiceDto>> getServicesByName(@PathVariable String serviceName) {
+        return ResponseEntity.ok(serviceProvideService.getServicesByName(serviceName));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ServiceDto> getServiceByUserName(Principal principal) {
+        return ResponseEntity.ok(serviceProvideService.getServiceByUserName(principal.getName()));
     }
 
 }

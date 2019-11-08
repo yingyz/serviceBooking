@@ -5,7 +5,9 @@ import com.cpp.servicebooking.models.ServiceType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+
 @Repository
 public interface ServiceProvideRepo extends CrudRepository<ServiceProvide, Long> {
-    Iterable<ServiceProvide> findAllByServiceType(ServiceType serviceType);
+    ArrayList<ServiceProvide> findAllByServiceType(ServiceType serviceType);
 }

@@ -1,14 +1,16 @@
 package com.cpp.servicebooking.services;
 
+import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
 import com.cpp.servicebooking.models.Role;
-import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.UserInfo;
+import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.repository.RoleRepo;
 import com.cpp.servicebooking.repository.UserRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,11 +32,13 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepo roleRepo;
 
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User saveUser(SignUpRequest signUpRequest) {
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public void saveUser(SignUpRequest signUpRequest) {
         try {
             User user = new User();
             user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
@@ -44,14 +50,18 @@ public class UserService implements UserDetailsService {
             }
             user.setRole(role);
 
-            UserInfo userInfo = new UserInfo(signUpRequest.getFirstname(), signUpRequest.getLastname(), signUpRequest.getStreetname(), signUpRequest.getCity(),signUpRequest.getState(),signUpRequest.getZipcode(), signUpRequest.getPhone());
+            UserInfo userInfo = UserInfo.builder()
+                    .firstname(signUpRequest.getFirstname())
+                    .lastname(signUpRequest.getLastname())
+                    .streetname(signUpRequest.getStreetname())
+                    .city(signUpRequest.getCity())
+                    .state(signUpRequest.getState())
+                    .zipcode(Integer.parseInt(signUpRequest.getZipcode()))
+                    .phone(signUpRequest.getPhone())
+                    .language(signUpRequest.getLanguage())
+                    .build();
             user.setUserInfo(userInfo);
-
-            if (role.getName().equals("Service")) {
-                user.setServiceProvide(new ServiceProvide());
-            }
-
-            return userRepo.save(user);
+            userRepo.save(user);
         } catch (DatabaseNotFoundException e) {
           throw e;
         } catch(Exception e) {
@@ -59,8 +69,54 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public Iterable<User> findAllUsers() {
-        return userRepo.findAll();
+    public UserDto updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest, String name){
+        User user = userRepo.findByUsername(name);
+        UserInfo userInfo = user.getUserInfo();
+        userInfo.setFirstname(userInfoUpdateRequest.getFirstname());
+        userInfo.setLastname(userInfoUpdateRequest.getLastname());
+        userInfo.setStreetname(userInfoUpdateRequest.getStreetname());
+        userInfo.setCity(userInfoUpdateRequest.getCity());
+        userInfo.setState(userInfoUpdateRequest.getState());
+        userInfo.setZipcode(Integer.parseInt(userInfoUpdateRequest.getZipcode()));
+        userInfo.setPhone(userInfoUpdateRequest.getPhone());
+        userInfo.setLanguage(userInfoUpdateRequest.getLanguage());
+
+        user.setUserInfo(userInfo);
+        userRepo.save(user);
+
+        UserDto userDto = transferUserDto(user);
+
+        return userDto;
+    }
+
+    public List<UserDto> findAllUsers() {
+        List<User> users = (ArrayList) userRepo.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            UserDto userDto = transferUserDto(user);
+            userDtos.add(userDto);
+        }
+        return userDtos;
+    }
+
+    public UserDto findUserByName(String name) {
+        User user = userRepo.findByUsername(name);
+        if (user == null) {
+            throw new DatabaseNotFoundException("User " + name + " not found!");
+        }
+        UserDto userDto = transferUserDto(user);
+        return userDto;
+    }
+
+    public UserDto transferUserDto(User user) {
+        UserInfo userInfo = user.getUserInfo();
+
+        UserDto userDto = modelMapper.map(userInfo, UserDto.class);
+        userDto.setUsername(user.getUsername());
+        userDto.setRole(user.getRole().getName());
+        userDto.setUserId(user.getId());
+
+        return userDto;
     }
 
     @Override

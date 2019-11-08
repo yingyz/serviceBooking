@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title font_color">{{requestItem.title}}</h5>
+    <hr/>
+    <p class="card-text h6">{{requestItem.info}}</p>
+    <p class="text-secondary pt-1">Post on: {{requestItem.create_At|date:'short'}}</p>
+    <div class="text-right">
+      <a
+        style="cursor: pointer"
+        [routerLink]="index"
+        routerLinkActive="active"
+        class="btn btn_background btn-sm text-white" role="button">
+        View Detail
+      </a>
+    </div>
+  </div>
+</div>
+<br/>

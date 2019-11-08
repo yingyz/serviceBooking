@@ -1,0 +1,12 @@
+.card_header_color {
+  background-color: #3941af;
+}
+
+.btn_background {
+  background-color: #afa939;
+}
+
+.btn:hover {
+  text-decoration: none;
+  background-color: #a39e45;
+}

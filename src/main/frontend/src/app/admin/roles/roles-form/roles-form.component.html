@@ -1,0 +1,14 @@
+<div class="container bg-light border">
+  <form [formGroup]="roleForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
+    <h2 class="text-center font_color pt-3">Create new Roles</h2>
+    <hr/>
+    <div class="form-group">
+      <label for="name">Role Name</label>
+      <input class="form-control" type ="text" id="name" formControlName="name" placeholder="Role Name">
+    </div>
+
+    <div class="text-center py-4">
+      <button type="submit" class="btn btn_background text-white px-4 py-2" [disabled]="!roleForm.valid">Submit</button>
+    </div>
+  </form>
+</div>
