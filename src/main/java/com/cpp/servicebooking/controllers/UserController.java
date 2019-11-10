@@ -7,11 +7,7 @@ import com.cpp.servicebooking.models.*;
 import com.cpp.servicebooking.models.dto.TextResponse;
 import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.security.JwtTokenProvider;
-import com.cpp.servicebooking.services.MapValidationErrorService;
-import com.cpp.servicebooking.services.RoleService;
-import com.cpp.servicebooking.services.ServicetypeService;
-import com.cpp.servicebooking.services.UserService;
-import org.modelmapper.ModelMapper;
+import com.cpp.servicebooking.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +39,9 @@ public class UserController {
     private ServicetypeService servicetypeService;
 
     @Autowired
+    private LanguageService languageService;
+
+    @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
     @Autowired
@@ -66,8 +64,8 @@ public class UserController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = TOKEN_PREFIX +  tokenProvider.generateToken(authentication);
-        UserDto userDto = userService.findUserByName(loginRequest.getUsername());
 
+        UserDto userDto = userService.findUserByName(loginRequest.getUsername());
         return ResponseEntity.ok(new JWTLoginSucessReponse(jwt, userDto));
     }
 
@@ -95,5 +93,10 @@ public class UserController {
     @GetMapping("/serviceType")
     public ResponseEntity<Iterable<ServiceType>> getServiceTypes() {
         return ResponseEntity.ok(servicetypeService.findAllServiceTypes());
+    }
+
+    @GetMapping("/language")
+    public ResponseEntity<Iterable<Language>> getLanguages() {
+        return ResponseEntity.ok(languageService.getLanguages());
     }
 }

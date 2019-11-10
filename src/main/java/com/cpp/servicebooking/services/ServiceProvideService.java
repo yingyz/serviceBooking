@@ -2,10 +2,12 @@ package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.ServiceRequest.ServiceProvideRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
+import com.cpp.servicebooking.models.Language;
 import com.cpp.servicebooking.models.ServiceProvide;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.dto.ServiceDto;
+import com.cpp.servicebooking.repository.LanguageRepo;
 import com.cpp.servicebooking.repository.ServiceProvideRepo;
 import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import com.cpp.servicebooking.repository.UserRepo;
@@ -21,6 +23,9 @@ public class ServiceProvideService {
 
     @Autowired
     private ServiceTypeRepo serviceTypeRepo;
+
+    @Autowired
+    private LanguageRepo languageRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -46,6 +51,8 @@ public class ServiceProvideService {
             throw new DatabaseNotFoundException("Service not found in database");
         }
         serviceProvide.setServiceType(serviceType);
+        serviceProvide.setLanguage(user.getUserInfo().getLanguage());
+
         serviceProvideRepo.save(serviceProvide);
         ServiceDto serviceDto = transferServiceDto(serviceProvide);
 
@@ -75,8 +82,43 @@ public class ServiceProvideService {
         return serviceDtos;
     }
 
-    public List<ServiceDto> getServices() {
+    public List<ServiceDto> getServiceByLanguage(String languageName) {
+        Language language = languageRepo.findByName(languageName);
+        if (language == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
 
+        List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByLanguage(language);
+
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for (ServiceProvide serviceProvide : serviceProvides) {
+            serviceDtos.add(transferServiceDto(serviceProvide));
+        }
+
+        return serviceDtos;
+    }
+
+    public List<ServiceDto> getServiceByNameAndService(String serviceName, String languageName) {
+        ServiceType serviceType = serviceTypeRepo.findByName(serviceName);
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        Language language = languageRepo.findByName(languageName);
+        if (language == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+
+        List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByServiceTypeAndLanguage(serviceType, language);
+
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for (ServiceProvide serviceProvide : serviceProvides) {
+            serviceDtos.add(transferServiceDto(serviceProvide));
+        }
+
+        return serviceDtos;
+    }
+
+    public List<ServiceDto> getServices() {
         List<ServiceProvide> serviceProvides = (ArrayList)serviceProvideRepo.findAll();
 
         List<ServiceDto> serviceDtos = new ArrayList<>();

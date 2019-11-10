@@ -2,10 +2,16 @@
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
     <h2 class="text-center font_color pt-3">Post New Request</h2>
     <hr/>
+
     <div class="form-group">
-      <label for="title">Request Title</label>
-      <input class="form-control" type ="text" id="title" formControlName="title" placeholder="Title">
+      <label for="servicetype">Service Type</label>
+      <select id="servicetype" required formControlName="title" name="title">
+        <option *ngFor="let title of provideTypes" [value]="title">
+          {{title}}
+        </option>
+      </select>
     </div>
+
     <div class="form-group">
       <label for="detail">Request Detail</label>
       <textarea class="form-control" type ="message" id="detail" rows="3" formControlName="info" placeholder="Enter request details..."></textarea>

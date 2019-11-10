@@ -1,5 +1,6 @@
 package com.cpp.servicebooking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,4 +32,8 @@ public class ServiceProvide {
     @JoinColumn(name = "serviceType_id")
     private ServiceType serviceType;
 
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "language_id")
+    private Language language;
 }

@@ -1,7 +1,16 @@
 <div>
-  <select [(ngModel)]="provideType" (change)="onSelect(select)">
+  <span>Service Type: </span>
+  <select [(ngModel)]="provideType" (change)="onSelect()">
     <option *ngFor="let servicetype of provideTypes" [value]="servicetype">
       {{servicetype}}
+    </option>
+  </select>
+</div>
+<div>
+  <span>Lanugage: </span>
+  <select [(ngModel)]="language" (change)="onSelect()">
+    <option *ngFor="let language of languages" [value]="language">
+      {{language}}
     </option>
   </select>
 </div>

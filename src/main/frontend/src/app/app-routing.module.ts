@@ -15,6 +15,7 @@ import {ProvideGuard} from "./auth/provide.guard";
 import {UsersComponent} from "./admin/users/users.component";
 import {ServiceTypesComponent} from "./admin/service-types/service-types.component";
 import {RolesComponent} from "./admin/roles/roles.component";
+import {LanguagesComponent} from "./admin/languages/languages.component";
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'admin/users', component: UsersComponent, canActivate: [AuthGuard]},
   {path: 'admin/serviceTypes', component: ServiceTypesComponent, canActivate: [AuthGuard]},
   {path: 'admin/roles', component:RolesComponent, canActivate: [AuthGuard]},
+  {path: 'admin/languages', component: LanguagesComponent, canActivate: [AuthGuard]},
   {path: 'provides', component: ProvidesComponent, canActivate: [AuthGuard],
     children: [
       {path: ':id', component: ProvideDetailComponent}

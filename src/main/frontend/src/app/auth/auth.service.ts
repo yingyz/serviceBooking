@@ -119,4 +119,19 @@ export class AuthService {
         )
       );
   }
+
+  getLanguages() {
+    return this.http.get(BACKEND_URL + 'language')
+      .pipe(
+        map(
+          (languages: any[]) => {
+            return languages.map(
+              language => {
+                return language.name;
+              }
+            );
+          }
+        )
+      );
+  }
 }

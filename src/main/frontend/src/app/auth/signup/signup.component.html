@@ -123,15 +123,11 @@
 
       <div class="form-group">
         <label for="language">Language<span class="text-danger"> *</span></label>
-        <input
-          type="text"
-          id="language"
-          class="form-control"
-          placeholder="English, Chinese, Spanish"
-          ngModel
-          name="language"
-          required
-        />
+        <select id="language" required ngModel name="language">
+          <option *ngFor="let language of languages" [value]="language">
+            {{language}}
+          </option>
+        </select>
       </div>
 
       <div class="text-center pt-5 pb-5">

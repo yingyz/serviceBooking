@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../auth/auth.service";
 import {Subscription} from "rxjs";
 import {UserModel} from "../../models/user.model";
-import {RegisterDataModel} from "../../auth/register-data.model";
 import {UserInfoModel} from "../UserInfo.model";
 
 @Component({
@@ -16,6 +15,7 @@ export class EditProfileComponent implements OnInit {
   profileForm: FormGroup;
   private authListenerSubs: Subscription;
   user: UserModel;
+  languages: string[] = [];
 
   constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute) { }
 
@@ -27,6 +27,13 @@ export class EditProfileComponent implements OnInit {
         response => {
           this.user = this.authService.getUser();
           this.initForm();
+        }
+      );
+
+    this.authService.getLanguages()
+      .subscribe(
+        languages => {
+          this.languages = languages;
         }
       );
   }

@@ -33,17 +33,14 @@ public class UserInfo {
 
     private String phone;
 
-    private String language;
-
     @OneToOne(mappedBy = "userInfo", cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH})
     @JsonIgnore
     private User user;
-/*
+
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "language_id")
-    private ServiceType language;
-    */
+    private Language language;
 
 }

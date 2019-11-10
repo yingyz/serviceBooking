@@ -2,7 +2,7 @@ import {UserModel} from "./user.model";
 
 export class RequestModel {
   requestId: bigint;
-  title: string;
+  servicetype: string;
   info: string;
   active: boolean;
   userDto: UserModel;
@@ -11,7 +11,7 @@ export class RequestModel {
 
   constructor(requestId: bigint, title: string, info: string, active: boolean, userModel: UserModel, create_At: Date, update_At: Date) {
     this.requestId = requestId;
-    this.title = title;
+    this.servicetype = title;
     this.info = info;
     this.active = active;
     this.userDto = userModel;

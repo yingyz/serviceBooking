@@ -42,11 +42,16 @@ export class ProvideService {
     return this.myProvide;
   }
 
-  getProvidesFromAPI(provideName: string) {
+  getProvidesFromAPI(provideName: string, languageName: string) {
     let URL = BACKEND_URL;
-    if (provideName != 'All') {
-      URL += provideName;
+    if (provideName != 'All' && languageName != 'All') {
+      URL += provideName + '/' + languageName;
+    } else if (provideName != 'All') {
+      URL += 'name' + '/' + provideName;
+    } else if (languageName != 'All') {
+      URL += 'language' + '/' + languageName;
     }
+
     this.http.get(URL)
       .pipe(
         map(

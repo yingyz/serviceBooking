@@ -14,7 +14,7 @@ import java.util.Date;
 public class RequestDto {
 
     private Long requestId;
-    private String title;
+    private String servicetype;
     private String info;
     private Boolean active;
     private UserDto userDto;

@@ -30,6 +30,9 @@ import { ServiceformComponent } from './admin/service-types/serviceform/servicef
 import { RolesComponent } from './admin/roles/roles.component';
 import { RolesListComponent } from './admin/roles/roles-list/roles-list.component';
 import { RolesFormComponent } from './admin/roles/roles-form/roles-form.component';
+import { LanguagesComponent } from './admin/languages/languages.component';
+import { LanguagesListComponent } from './admin/languages/languages-list/languages-list.component';
+import { LanguagesFormComponent } from './admin/languages/languages-form/languages-form.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,10 @@ import { RolesFormComponent } from './admin/roles/roles-form/roles-form.componen
     ServiceformComponent,
     RolesComponent,
     RolesListComponent,
-    RolesFormComponent
+    RolesFormComponent,
+    LanguagesComponent,
+    LanguagesListComponent,
+    LanguagesFormComponent
   ],
   imports: [
     BrowserModule,
