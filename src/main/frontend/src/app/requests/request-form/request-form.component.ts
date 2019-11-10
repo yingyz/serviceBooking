@@ -3,6 +3,7 @@ import {RequestsService} from "../requests.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {RequestModel} from "../../models/request.model";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-request-form',
@@ -14,8 +15,9 @@ export class RequestFormComponent implements OnInit {
   editMode = false;
   requestForm: FormGroup;
   request: RequestModel;
+  provideTypes: string[] = [];
 
-  constructor(private requestService: RequestsService, private route: ActivatedRoute) { }
+  constructor(private requestService: RequestsService, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
     this.route.params
@@ -26,6 +28,13 @@ export class RequestFormComponent implements OnInit {
           this.initForm();
         }
       );
+
+    this.authService.getProvideTypes()
+      .subscribe(
+        provideTypes => {
+          this.provideTypes = provideTypes;
+        }
+      );
   }
 
   initForm() {
@@ -34,7 +43,7 @@ export class RequestFormComponent implements OnInit {
 
     if (this.editMode) {
       this.request = this.requestService.getRequestyIdx(this.index);
-      title = this.request.title;
+      title = this.request.servicetype;
       info = this.request.info;
     }
 

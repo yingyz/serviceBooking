@@ -35,6 +35,10 @@
           <a routerLinkActive="active" routerLink="/admin/roles" class="nav-link mx-3">Roles</a>
         </li>
 
+        <li *ngIf="user.role == 'Admin'" class="nav-item font-weight-bold">
+          <a routerLinkActive="active" routerLink="/admin/languages" class="nav-link mx-3">Languages</a>
+        </li>
+
         <li class="nav-item dropdown font-weight-bold">
           <a style="cursor: pointer" class="nav-link dropdown-toggle" data-toggle="dropdown"
           >ACCOUNT</a

@@ -43,10 +43,16 @@ public class RequestController {
         return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/All")
     public ResponseEntity<List<RequestDto>> getAllRequests(){
         return new ResponseEntity<>(requestOrderService.findAllRequest(), HttpStatus.OK);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<RequestDto>> getMyRequests(Principal principal){
+        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);
+    }
+
 
     @GetMapping("/all/active")
     public ResponseEntity<List<RequestDto>> getAllActiveRequests() {
@@ -56,12 +62,6 @@ public class RequestController {
     @GetMapping("/all/inactive")
     public ResponseEntity<List<RequestDto>> getAllInactiveRequests() {
         return new ResponseEntity<>(requestOrderService.findAllActiveOrInactiveRequest(false), HttpStatus.OK);
-    }
-
-
-    @GetMapping("/me")
-    public ResponseEntity<List<RequestDto>> getMyRequests(Principal principal){
-        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("/me/active")

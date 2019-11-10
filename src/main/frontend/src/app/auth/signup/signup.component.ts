@@ -11,6 +11,7 @@ import {RegisterDataModel} from "../register-data.model";
 export class SignupComponent implements OnInit {
 
   roles: string[] = [];
+  languages: string[] = [];
 
   constructor(private authService: AuthService) { }
 
@@ -18,6 +19,12 @@ export class SignupComponent implements OnInit {
     this.authService.getRoles().subscribe(
       (roles: string[]) => {
         this.roles = roles;
+      }
+    );
+
+    this.authService.getLanguages().subscribe(
+      (languages: any[]) => {
+        this.languages = languages;
       }
     );
   }

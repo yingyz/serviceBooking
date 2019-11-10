@@ -34,7 +34,7 @@ export class RequestsService {
     if (userRole === 'Customer') {
       URL += 'me';
     } else if (userRole === 'Service') {
-      URL += 'all';
+      URL += 'All';
     }
 
     this.http.get(URL)
@@ -44,7 +44,7 @@ export class RequestsService {
               request => {
                 return new RequestModel(
                   request.requestId,
-                  request.title,
+                  request.servicetype,
                   request.info,
                   request.active,
                   request.userDto,

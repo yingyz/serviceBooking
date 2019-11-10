@@ -109,7 +109,7 @@ public class RequestOrderService {
                 .create_At(requestOrder.getCreate_At())
                 .info(requestOrder.getInfo())
                 .requestId(requestOrder.getId())
-                .title(requestOrder.getTitle())
+                .servicetype(requestOrder.getTitle())
                 .update_At(requestOrder.getUpdate_At())
                 .userDto(userService.transferUserDto(requestOrder.getUser()))
                 .build();

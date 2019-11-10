@@ -4,10 +4,12 @@ import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
+import com.cpp.servicebooking.models.Language;
 import com.cpp.servicebooking.models.Role;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.UserInfo;
 import com.cpp.servicebooking.models.dto.UserDto;
+import com.cpp.servicebooking.repository.LanguageRepo;
 import com.cpp.servicebooking.repository.RoleRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -33,6 +35,9 @@ public class UserService implements UserDetailsService {
     private RoleRepo roleRepo;
 
     @Autowired
+    private LanguageRepo languageRepo;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -43,12 +48,18 @@ public class UserService implements UserDetailsService {
             User user = new User();
             user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
             user.setUsername(signUpRequest.getUsername());
-            Role role = roleRepo.findByName(signUpRequest.getRole());
 
+            Role role = roleRepo.findByName(signUpRequest.getRole());
             if (role == null) {
                 throw new DatabaseNotFoundException("Role not found in database");
             }
             user.setRole(role);
+
+            Language language = languageRepo.findByName(signUpRequest.getLanguage());
+
+            if (language == null) {
+                throw new DatabaseNotFoundException("Role not found in database");
+            }
 
             UserInfo userInfo = UserInfo.builder()
                     .firstname(signUpRequest.getFirstname())
@@ -58,8 +69,9 @@ public class UserService implements UserDetailsService {
                     .state(signUpRequest.getState())
                     .zipcode(Integer.parseInt(signUpRequest.getZipcode()))
                     .phone(signUpRequest.getPhone())
-                    .language(signUpRequest.getLanguage())
+                    .language(language)
                     .build();
+
             user.setUserInfo(userInfo);
             userRepo.save(user);
         } catch (DatabaseNotFoundException e) {
@@ -72,6 +84,7 @@ public class UserService implements UserDetailsService {
     public UserDto updateUserInfo(UserInfoUpdateRequest userInfoUpdateRequest, String name){
         User user = userRepo.findByUsername(name);
         UserInfo userInfo = user.getUserInfo();
+
         userInfo.setFirstname(userInfoUpdateRequest.getFirstname());
         userInfo.setLastname(userInfoUpdateRequest.getLastname());
         userInfo.setStreetname(userInfoUpdateRequest.getStreetname());
@@ -79,7 +92,14 @@ public class UserService implements UserDetailsService {
         userInfo.setState(userInfoUpdateRequest.getState());
         userInfo.setZipcode(Integer.parseInt(userInfoUpdateRequest.getZipcode()));
         userInfo.setPhone(userInfoUpdateRequest.getPhone());
-        userInfo.setLanguage(userInfoUpdateRequest.getLanguage());
+
+        Language language = languageRepo.findByName(userInfoUpdateRequest.getLanguage());
+
+        if (language == null) {
+            throw new DatabaseNotFoundException("Role not found in database");
+        }
+
+        userInfo.setLanguage(language);
 
         user.setUserInfo(userInfo);
         userRepo.save(user);
@@ -104,6 +124,7 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new DatabaseNotFoundException("User " + name + " not found!");
         }
+
         UserDto userDto = transferUserDto(user);
         return userDto;
     }
@@ -111,10 +132,19 @@ public class UserService implements UserDetailsService {
     public UserDto transferUserDto(User user) {
         UserInfo userInfo = user.getUserInfo();
 
-        UserDto userDto = modelMapper.map(userInfo, UserDto.class);
-        userDto.setUsername(user.getUsername());
-        userDto.setRole(user.getRole().getName());
-        userDto.setUserId(user.getId());
+        UserDto userDto = UserDto.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .firstname(userInfo.getFirstname())
+                .lastname(userInfo.getLastname())
+                .streetname(userInfo.getStreetname())
+                .city(userInfo.getCity())
+                .state(userInfo.getState())
+                .zipcode(userInfo.getZipcode())
+                .phone(userInfo.getPhone())
+                .language(userInfo.getLanguage().getName())
+                .role(user.getRole().getName())
+                .build();
 
         return userDto;
     }

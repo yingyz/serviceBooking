@@ -12,6 +12,9 @@ export class AdminService {
   roles: any[] = [];
   rolesChanged = new Subject<any[]>();
 
+  languages: any[] = [];
+  languagesChanged = new Subject<any[]>();
+
   constructor(private http: HttpClient){}
 
   getServiceTypes() {
@@ -34,6 +37,14 @@ export class AdminService {
     return this.rolesChanged.asObservable();
   }
 
+  getLanguages() {
+    return this.languages;
+  }
+
+  getLanguageStatusListener() {
+    return this.languagesChanged.asObservable();
+  }
+
   getRolesFromAPI() {
     this.http.get(BACKEND_URL + 'role')
       .subscribe(
@@ -54,11 +65,22 @@ export class AdminService {
       );
   }
 
+  getLanguagesFromAPI() {
+    this.http.get(BACKEND_URL + 'language')
+      .subscribe(
+        (languages: any[]) => {
+          this.languages = languages;
+          this.languagesChanged.next([...this.languages]);
+        }
+      );
+  }
+
   addService(name: string) {
     this.http.post(BACKEND_URL + 'serviceType', {name : name})
       .subscribe(
         (serviceType: any) => {
           this.serviceTypes.push(serviceType);
+          console.log(serviceType);
           this.serviceTypesChanged.next([...this.serviceTypes]);
         }
       );
@@ -70,6 +92,16 @@ export class AdminService {
         (role: any) => {
           this.roles.push(role);
           this.rolesChanged.next([...this.roles]);
+        }
+      );
+  }
+
+  addLanguage(name: string) {
+    this.http.post(BACKEND_URL + 'language', {name: name})
+      .subscribe(
+        (language: any) => {
+          this.languages.push(language);
+          this.languagesChanged.next([...this.languages]);
         }
       );
   }

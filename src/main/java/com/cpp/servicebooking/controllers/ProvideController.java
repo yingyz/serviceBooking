@@ -39,9 +39,19 @@ public class ProvideController {
         return ResponseEntity.ok(serviceProvideService.getServices());
     }
 
-    @GetMapping("/{serviceName}")
+    @GetMapping("/name/{serviceName}")
     public ResponseEntity<List<ServiceDto>> getServicesByName(@PathVariable String serviceName) {
         return ResponseEntity.ok(serviceProvideService.getServicesByName(serviceName));
+    }
+
+    @GetMapping("/language/{languageName}")
+    public ResponseEntity<List<ServiceDto>> getServiceByLanguage(@PathVariable String languageName) {
+        return ResponseEntity.ok(serviceProvideService.getServiceByLanguage(languageName));
+    }
+
+    @GetMapping("/{serviceName}/{languageName}")
+    public ResponseEntity<List<ServiceDto>> getServiceByNameAndService(@PathVariable String serviceName, @PathVariable String languageName) {
+        return ResponseEntity.ok(serviceProvideService.getServiceByNameAndService(serviceName, languageName));
     }
 
     @GetMapping("/me")

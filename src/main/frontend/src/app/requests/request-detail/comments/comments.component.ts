@@ -27,6 +27,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   constructor(private commentService:CommentService) { }
 
   ngOnInit() {
+    this.comments = this.commentService.getComments();
     this.commentsListenerSubs = this.commentService.getCommentUpdateListener()
       .subscribe(
         comments => {

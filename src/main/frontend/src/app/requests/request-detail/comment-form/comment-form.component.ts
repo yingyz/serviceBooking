@@ -29,7 +29,7 @@ export class CommentFormComponent implements OnInit {
           this.comment = new CommentModel(
             comment.commentId,
             comment.commentDetail,
-            comment.title,
+            comment.servicetype,
             comment.info,
             comment.active,
             comment.requestUser,
