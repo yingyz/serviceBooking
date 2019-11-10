@@ -39,5 +39,11 @@ public class UserInfo {
             CascadeType.REFRESH})
     @JsonIgnore
     private User user;
+/*
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "language_id")
+    private ServiceType language;
+    */
 
 }

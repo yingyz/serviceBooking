@@ -44,7 +44,7 @@ export class ProvideService {
 
   getProvidesFromAPI(provideName: string) {
     let URL = BACKEND_URL;
-    if (provideName != null) {
+    if (provideName != 'All') {
       URL += provideName;
     }
     this.http.get(URL)
