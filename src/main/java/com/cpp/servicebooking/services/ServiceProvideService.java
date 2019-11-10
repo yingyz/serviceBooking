@@ -36,6 +36,7 @@ public class ServiceProvideService {
         ServiceProvide serviceProvide = user.getServiceProvide();
         if (serviceProvide == null) {
             serviceProvide = new ServiceProvide();
+            serviceProvide.setUser(user);//important
             user.setServiceProvide(serviceProvide);
         }
         serviceProvide.setDetail(serviceProvideRequest.getDetail());
@@ -46,7 +47,6 @@ public class ServiceProvideService {
         }
         serviceProvide.setServiceType(serviceType);
         serviceProvideRepo.save(serviceProvide);
-
         ServiceDto serviceDto = transferServiceDto(serviceProvide);
 
         return serviceDto;
@@ -78,6 +78,7 @@ public class ServiceProvideService {
     public List<ServiceDto> getServices() {
 
         List<ServiceProvide> serviceProvides = (ArrayList)serviceProvideRepo.findAll();
+
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (ServiceProvide serviceProvide : serviceProvides) {
             serviceDtos.add(transferServiceDto(serviceProvide));

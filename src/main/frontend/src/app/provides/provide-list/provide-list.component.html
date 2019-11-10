@@ -1,6 +1,9 @@
 <div>
-  <input type="text" [(ngModel)]="provideType">
-  <button (click)="onSearchByName()"></button>
+  <select [(ngModel)]="provideType" (change)="onSelect(select)">
+    <option *ngFor="let servicetype of provideTypes" [value]="servicetype">
+      {{servicetype}}
+    </option>
+  </select>
 </div>
 <div class="row">
   <div class="col-xs-12">

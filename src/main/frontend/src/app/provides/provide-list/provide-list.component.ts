@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {ServiceProvideModel} from "../../models/serviceProvide.model";
-import {UserModel} from "../../models/user.model";
 import {ProvideService} from "../provide.service";
+import {AuthService} from "../../auth/auth.service";
 
 @Component({
   selector: 'app-provide-list',
@@ -13,21 +13,29 @@ export class ProvideListComponent implements OnInit {
 
   provides: ServiceProvideModel[] = [];
   providesSub: Subscription;
-  provideType: string = null;
+  provideType: string = 'All';
+  provideTypes: string[] = [];
 
-  constructor(private provideService: ProvideService) { }
+  constructor(private provideService: ProvideService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.provideService.getProvidesFromAPI(null);
+    this.provideService.getProvidesFromAPI(this.provideType);
     this.providesSub = this.provideService.getProvidesChanged()
       .subscribe(
         provides => {
           this.provides = provides;
         }
       );
+
+    this.authService.getProvideTypes()
+      .subscribe(
+        provideTypes => {
+          this.provideTypes = ['All', ...provideTypes];
+        }
+      );
   }
 
-  onSearchByName() {
+  onSelect() {
     this.provideService.getProvidesFromAPI(this.provideType);
   }
 }

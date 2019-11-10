@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from "../auth/auth.service";
+import {UserModel} from "../models/user.model";
 
 @Component({
   selector: 'app-requests',
@@ -8,9 +10,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class RequestsComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  user: UserModel;
+
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
+    this.user = this.authService.getUser();
   }
 
   onNewRequest() {
