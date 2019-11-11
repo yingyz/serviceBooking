@@ -16,6 +16,10 @@
         <span class="text-muted pr-1 h6">Phone:</span>
         <span class="pl-4">{{request.userDto.phone}}</span>
       </div>
+      <div>
+        <span class="text-muted pr-1 h6">Language:</span>
+        <span class="pl-4">{{request.userDto.language}}</span>
+      </div>
       <div *ngIf="editAuth" class="float-right">
         <button (click)="onEditRequest()" class="btn btn_background text-white px-2 mt-1">Edit Request</button>
       </div>

@@ -48,6 +48,21 @@ public class RequestController {
         return new ResponseEntity<>(requestOrderService.findAllRequest(), HttpStatus.OK);
     }
 
+    @GetMapping("/name/{serviceName}")
+    public ResponseEntity<List<RequestDto>> getRequestsByServiceType(@PathVariable String serviceName) {
+        return ResponseEntity.ok(requestOrderService.findRequestByServiceType(serviceName));
+    }
+
+    @GetMapping("/language/{languageName}")
+    public ResponseEntity<List<RequestDto>> getRequestByLanguage(@PathVariable String languageName) {
+        return ResponseEntity.ok(requestOrderService.findRequestByLanguage(languageName));
+    }
+
+    @GetMapping("/{serviceName}/{languageName}")
+    public ResponseEntity<List<RequestDto>> getRequestByServiceTypeAndLanguage(@PathVariable String serviceName, @PathVariable String languageName) {
+        return ResponseEntity.ok(requestOrderService.findRequestByServiceTypeAndLanguage(serviceName, languageName));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<List<RequestDto>> getMyRequests(Principal principal){
         return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);

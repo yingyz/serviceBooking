@@ -10,16 +10,10 @@ import {UserModel} from "../models/user.model";
 })
 export class RequestsComponent implements OnInit {
 
-  user: UserModel;
-
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.user = this.authService.getUser();
-  }
 
-  onNewRequest() {
-    this.router.navigate(['new'], {relativeTo: this.route});
   }
 
 }

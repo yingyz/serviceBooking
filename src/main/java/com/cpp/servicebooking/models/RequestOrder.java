@@ -22,7 +22,10 @@ public class RequestOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "serviceType_id")
+    private ServiceType serviceType;
 
     private String info;
 
@@ -36,6 +39,11 @@ public class RequestOrder {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "requestOrder", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "language_id")
+    private Language language;
 
     private Date create_At;
     private Date update_At;

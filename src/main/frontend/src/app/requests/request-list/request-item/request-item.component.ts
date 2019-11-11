@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RequestModel} from "../../../models/request.model";
+import {UserModel} from "../../../models/user.model";
 
 @Component({
   selector: 'app-request-item',
@@ -10,6 +11,7 @@ export class RequestItemComponent implements OnInit {
 
   @Input() requestItem: RequestModel;
   @Input() index: number;
+  @Input() user: UserModel;
 
   constructor() { }
 

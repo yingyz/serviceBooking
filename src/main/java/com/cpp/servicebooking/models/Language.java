@@ -32,4 +32,8 @@ public class Language {
     @OneToMany(mappedBy = "language", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<ServiceProvide> serviceProvides = new HashSet<>();
+
+    @OneToMany(mappedBy = "language", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<RequestOrder> requestOrders = new HashSet<>();
 }

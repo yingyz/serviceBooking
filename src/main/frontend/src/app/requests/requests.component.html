@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-md-5">
     <h5 class="font_color pb-3">My Requests</h5>
-    <button *ngIf="user.role == 'Customer'" (click)="onNewRequest()">New Request</button>
     <app-request-list></app-request-list>
   </div>
   <div class="col-md-7 pt-5">

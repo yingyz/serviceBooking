@@ -4,12 +4,10 @@ import com.cpp.servicebooking.Request.UserInfoRequest.UserInfoUpdateRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
-import com.cpp.servicebooking.models.Language;
-import com.cpp.servicebooking.models.Role;
-import com.cpp.servicebooking.models.User;
-import com.cpp.servicebooking.models.UserInfo;
+import com.cpp.servicebooking.models.*;
 import com.cpp.servicebooking.models.dto.UserDto;
 import com.cpp.servicebooking.repository.LanguageRepo;
+import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.RoleRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -20,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -33,6 +32,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private RoleRepo roleRepo;
+
+    @Autowired
+    private RequestOrderRepo requestOrderRepo;
 
     @Autowired
     private LanguageRepo languageRepo;
@@ -97,6 +99,16 @@ public class UserService implements UserDetailsService {
 
         if (language == null) {
             throw new DatabaseNotFoundException("Role not found in database");
+        }
+
+        //update request language
+        if (!user.getUserInfo().getLanguage().getName().equals(language.getName())) {
+            List<RequestOrder> requestOrders = user.getRequestOrders();
+
+            for (RequestOrder requestOrder : requestOrders) {
+                requestOrder.setLanguage(language);
+                System.out.println(requestOrder.getLanguage().getName());
+            }
         }
 
         userInfo.setLanguage(language);

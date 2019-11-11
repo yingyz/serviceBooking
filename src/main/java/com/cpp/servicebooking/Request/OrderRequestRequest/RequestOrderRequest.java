@@ -5,17 +5,17 @@ import javax.validation.constraints.NotBlank;
 public class RequestOrderRequest {
 
     @NotBlank(message = "title cannot be blank")
-    private String title;
+    private String servicetype;
 
     @NotBlank(message = "title cannot be blank")
     private String info;
 
-    public String getTitle() {
-        return title;
+    public String getServicetype() {
+        return servicetype;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setServicetype(String servicetype) {
+        this.servicetype = servicetype;
     }
 
     public String getInfo() {

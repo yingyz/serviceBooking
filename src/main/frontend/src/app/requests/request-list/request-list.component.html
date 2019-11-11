@@ -1,8 +1,27 @@
+<button *ngIf="user.role == 'Customer'" (click)="onNewRequest()">New Request</button>
+<div *ngIf="user.role == 'Service'">
+  <span>Service Type: </span>
+  <select [(ngModel)]="provideType" (change)="onSelect()">
+    <option *ngFor="let servicetype of provideTypes" [value]="servicetype">
+      {{servicetype}}
+    </option>
+  </select>
+</div>
+<div *ngIf="user.role == 'Service'">
+  <span>Lanugage: </span>
+  <select [(ngModel)]="language" (change)="onSelect()">
+    <option *ngFor="let language of languages" [value]="language">
+      {{language}}
+    </option>
+  </select>
+</div>
+
 <div class="row">
   <div class="col-xs-12">
     <app-request-item
       *ngFor="let requestEL of requests; let i = index"
       [requestItem]="requestEL"
-      [index]="i"></app-request-item>
+      [index]="i"
+      [user]="user"></app-request-item>
   </div>
 </div>

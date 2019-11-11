@@ -1,11 +1,16 @@
 package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
+import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException;
+import com.cpp.servicebooking.models.Language;
 import com.cpp.servicebooking.models.RequestOrder;
+import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.models.User;
 import com.cpp.servicebooking.models.dto.RequestDto;
+import com.cpp.servicebooking.repository.LanguageRepo;
 import com.cpp.servicebooking.repository.RequestOrderRepo;
+import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,14 +27,25 @@ public class RequestOrderService {
     private RequestOrderRepo requestOrderRepo;
 
     @Autowired
+    private ServiceTypeRepo serviceTypeRepo;
+
+    @Autowired
+    private LanguageRepo languageRepo;
+
+    @Autowired
     private UserService userService;
 
     public RequestDto createRequestOrder(RequestOrderRequest requestOrderRequest, String usernName) {
+        ServiceType serviceType = serviceTypeRepo.findByName(requestOrderRequest.getServicetype());
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
         User user = userRepo.findByUsername(usernName);
         RequestOrder requestOrder = new RequestOrder();
         requestOrder.setUser(user);
+        requestOrder.setLanguage(user.getUserInfo().getLanguage());
         requestOrder.setInfo(requestOrderRequest.getInfo());
-        requestOrder.setTitle(requestOrderRequest.getTitle());
+        requestOrder.setServiceType(serviceType);
         requestOrder.setActive(true);
         requestOrderRepo.save(requestOrder);
 
@@ -43,8 +59,14 @@ public class RequestOrderService {
         if (!requestOrder.getUser().getUsername().equals(name)) {
             throw new RequestOrderNotFoundException("RequestOrder is not yours!");
         }
+
+        ServiceType serviceType = serviceTypeRepo.findByName(requestOrderRequest.getServicetype());
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+
         requestOrder.setInfo(requestOrderRequest.getInfo());
-        requestOrder.setTitle(requestOrderRequest.getTitle());
+        requestOrder.setServiceType(serviceType);
         requestOrderRepo.save(requestOrder);
 
         return transferToDto(requestOrder);
@@ -69,6 +91,37 @@ public class RequestOrderService {
     public List<RequestDto> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
         User user = userRepo.findByUsername(name);
         List<RequestOrder> requestOrders = (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user);
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findRequestByServiceType(String serviceTypeName) {
+        ServiceType serviceType = serviceTypeRepo.findByName(serviceTypeName);
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        List<RequestOrder> requestOrders = requestOrderRepo.findAllByServiceType(serviceType);
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findRequestByLanguage(String languageName) {
+        Language language = languageRepo.findByName(languageName);
+        if (language == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        List<RequestOrder> requestOrders = requestOrderRepo.findAllByLanguage(language);
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findRequestByServiceTypeAndLanguage(String serviceTypeName, String languageName) {
+        ServiceType serviceType = serviceTypeRepo.findByName(serviceTypeName);
+        if (serviceType == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        Language language = languageRepo.findByName(languageName);
+        if (language == null) {
+            throw new DatabaseNotFoundException("Service not found in database");
+        }
+        List<RequestOrder> requestOrders = requestOrderRepo.findAllByServiceTypeAndLanguage(serviceType, language);
         return transferToDtos(requestOrders);
     }
 
@@ -109,7 +162,7 @@ public class RequestOrderService {
                 .create_At(requestOrder.getCreate_At())
                 .info(requestOrder.getInfo())
                 .requestId(requestOrder.getId())
-                .servicetype(requestOrder.getTitle())
+                .servicetype(requestOrder.getServiceType().getName())
                 .update_At(requestOrder.getUpdate_At())
                 .userDto(userService.transferUserDto(requestOrder.getUser()))
                 .build();

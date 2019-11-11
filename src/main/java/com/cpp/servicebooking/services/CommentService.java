@@ -117,7 +117,7 @@ public class CommentService {
                 .commentId(comment.getId())
                 .active(comment.getRequestOrder().getActive())
                 .commentDetail(comment.getDetail())
-                .title(comment.getRequestOrder().getTitle())
+                .servicetype(comment.getRequestOrder().getServiceType().getName())
                 .info(comment.getRequestOrder().getInfo())
                 .requestUser(userService.transferUserDto(requestUser))
                 .userdto(userService.transferUserDto(user))

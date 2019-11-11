@@ -28,13 +28,21 @@ export class RequestsService {
     return this.requests[idx];
   }
 
-  getRequestsFromAPI() {
+  getRequestsFromAPI(provideName: string, languageName: string) {
     let URL = BACKEND_URL;
     let userRole = this.authService.getUser().role;
     if (userRole === 'Customer') {
       URL += 'me';
     } else if (userRole === 'Service') {
-      URL += 'All';
+      if (provideName != 'All' && languageName != 'All') {
+        URL += provideName + '/' + languageName;
+      } else if (provideName != 'All') {
+        URL += 'name' + '/' + provideName;
+      } else if (languageName != 'All') {
+        URL += 'language' + '/' + languageName;
+      } else {
+        URL += 'All';
+      }
     }
 
     this.http.get(URL)
@@ -64,8 +72,8 @@ export class RequestsService {
       );
   }
 
-  addRequest(title: string, info: string) {
-    let requestData = {title: title, info: info};
+  addRequest(servicetype: string, info: string) {
+    let requestData = {servicetype: servicetype, info: info};
     this.http.post(BACKEND_URL, requestData)
       .subscribe(
         (request: any) => {
@@ -85,9 +93,9 @@ export class RequestsService {
       );
   }
 
-  updateRequest(title: string, info: string, index: number) {
+  updateRequest(servicetype: string, info: string, index: number) {
     let currentRequest: RequestModel = this.requests[index];
-    let requestData = {title: title, info: info};
+    let requestData = {servicetype: servicetype, info: info};
     this.http.put(BACKEND_URL + 'id/' + currentRequest.requestId, requestData)
       .subscribe(
         (request: any) => {
