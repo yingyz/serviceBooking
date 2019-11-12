@@ -1,6 +1,7 @@
 package com.cpp.servicebooking.controllers;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
+import com.cpp.servicebooking.Response.RequestsResponse;
 import com.cpp.servicebooking.models.dto.RequestDto;
 import com.cpp.servicebooking.services.MapValidationErrorService;
 import com.cpp.servicebooking.services.RequestOrderService;
@@ -44,12 +45,12 @@ public class RequestController {
     }
 
     @GetMapping("/All")
-    public ResponseEntity<List<RequestDto>> getAllRequests(@RequestParam(value = "page", defaultValue = "0") int page,
+    public ResponseEntity<RequestsResponse> getAllRequests(@RequestParam(value = "page", defaultValue = "0") int page,
                                                            @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit){
         List<RequestDto> requestDtos = requestOrderService.findAllRequest(page, limit);
         int size = requestOrderService.findAllRequest();
 
-        return new ResponseEntity<>(requestDtos, HttpStatus.OK);
+        return new ResponseEntity<>(new RequestsResponse(requestDtos, size), HttpStatus.OK);
     }
 
     @GetMapping("/name/{serviceName}")
