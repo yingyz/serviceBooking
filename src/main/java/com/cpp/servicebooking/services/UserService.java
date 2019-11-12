@@ -42,9 +42,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     public void saveUser(SignUpRequest signUpRequest) {
         try {
             User user = new User();
@@ -103,12 +100,7 @@ public class UserService implements UserDetailsService {
 
         //update request language
         if (!user.getUserInfo().getLanguage().getName().equals(language.getName())) {
-            List<RequestOrder> requestOrders = user.getRequestOrders();
-
-            for (RequestOrder requestOrder : requestOrders) {
-                requestOrder.setLanguage(language);
-                System.out.println(requestOrder.getLanguage().getName());
-            }
+            requestOrderRepo.updateRequestOrderLanguage(user.getUserInfo().getLanguage(), user);
         }
 
         userInfo.setLanguage(language);

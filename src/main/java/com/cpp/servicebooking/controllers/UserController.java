@@ -1,6 +1,6 @@
 package com.cpp.servicebooking.controllers;
 
-import com.cpp.servicebooking.models.dto.JWTLoginSucessReponse;
+import com.cpp.servicebooking.Response.JWTLoginSucessReponse;
 import com.cpp.servicebooking.Request.UserRequest.LoginRequest;
 import com.cpp.servicebooking.Request.UserRequest.SignUpRequest;
 import com.cpp.servicebooking.models.*;

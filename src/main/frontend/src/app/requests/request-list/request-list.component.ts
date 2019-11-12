@@ -23,6 +23,8 @@ export class RequestListComponent implements OnInit, OnDestroy {
   language: string = 'All';
   languages: string[] = [];
 
+  page: number = 0;
+
   constructor(private requestService: RequestsService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {

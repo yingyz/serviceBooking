@@ -13,6 +13,10 @@ import com.cpp.servicebooking.repository.RequestOrderRepo;
 import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -72,8 +76,16 @@ public class RequestOrderService {
         return transferToDto(requestOrder);
     }
 
-    public List<RequestDto> findAllRequest(){
+    public int findAllRequest(){
         List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
+        return requestOrders.size();
+    }
+
+    public List<RequestDto> findAllRequest(int page, int limit){
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<RequestOrder> page1 = requestOrderRepo.findAll(pageableRequest);
+        List<RequestOrder> requestOrders = page1.getContent();
+
         return transferToDtos(requestOrders);
     }
 

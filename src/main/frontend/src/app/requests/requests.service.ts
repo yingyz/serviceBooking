@@ -28,7 +28,8 @@ export class RequestsService {
     return this.requests[idx];
   }
 
-  getRequestsFromAPI(provideName: string, languageName: string) {
+  getRequestsFromAPI(provideName: string, languageName: string, page: number = 0) {
+    let limit = 2;
     let URL = BACKEND_URL;
     let userRole = this.authService.getUser().role;
     if (userRole === 'Customer') {
@@ -43,6 +44,7 @@ export class RequestsService {
       } else {
         URL += 'All';
       }
+      URL += '?page='+page+'&limit='+limit;
     }
 
     this.http.get(URL)

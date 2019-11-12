@@ -1,6 +1,6 @@
-package com.cpp.servicebooking.models.dto;
+package com.cpp.servicebooking.Response;
 
-import com.cpp.servicebooking.models.User;
+import com.cpp.servicebooking.models.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

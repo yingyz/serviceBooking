@@ -44,8 +44,12 @@ public class RequestController {
     }
 
     @GetMapping("/All")
-    public ResponseEntity<List<RequestDto>> getAllRequests(){
-        return new ResponseEntity<>(requestOrderService.findAllRequest(), HttpStatus.OK);
+    public ResponseEntity<List<RequestDto>> getAllRequests(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                           @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit){
+        List<RequestDto> requestDtos = requestOrderService.findAllRequest(page, limit);
+        int size = requestOrderService.findAllRequest();
+
+        return new ResponseEntity<>(requestDtos, HttpStatus.OK);
     }
 
     @GetMapping("/name/{serviceName}")
