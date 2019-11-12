@@ -76,16 +76,8 @@ public class RequestOrderService {
         return transferToDto(requestOrder);
     }
 
-    public int findAllRequest(){
+    public List<RequestDto> findAllRequest(){
         List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
-        return requestOrders.size();
-    }
-
-    public List<RequestDto> findAllRequest(int page, int limit){
-        Pageable pageableRequest = PageRequest.of(page, limit);
-        Page<RequestOrder> page1 = requestOrderRepo.findAll(pageableRequest);
-        List<RequestOrder> requestOrders = page1.getContent();
-
         return transferToDtos(requestOrders);
     }
 
