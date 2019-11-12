@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {RequestModel} from "../models/request.model";
 import {Subject} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 import {map} from "rxjs/operators";
 
@@ -12,13 +12,9 @@ const BACKEND_URL = environment.apiUrl + '/request/';
 @Injectable({providedIn: 'root'})
 export class RequestsService {
   private requests: RequestModel[] = [];
-  private reqestsChanged = new Subject<RequestModel[]>();
+  private reqestsChanged = new Subject<{requests: RequestModel[], size: number}>();
 
   constructor(private authService: AuthService, private http: HttpClient, private router: Router){}
-
-  getRequests() {
-    return this.requests;
-  }
 
   getRequestsChanged() {
     return this.reqestsChanged.asObservable();
@@ -28,8 +24,7 @@ export class RequestsService {
     return this.requests[idx];
   }
 
-  getRequestsFromAPI(provideName: string, languageName: string, page: number = 0) {
-    let limit = 2;
+  getRequestsFromAPI(provideName: string, languageName: string, page: number = 0, limit: number) {
     let URL = BACKEND_URL;
     let userRole = this.authService.getUser().role;
     if (userRole === 'Customer') {
@@ -44,13 +39,14 @@ export class RequestsService {
       } else {
         URL += 'All';
       }
-      URL += '?page='+page+'&limit='+limit;
     }
 
-    this.http.get(URL)
+    URL += '?page='+page+'&limit='+limit;
+    this.http.get<{requestDtoList: any, size: number}>(URL)
       .pipe(
-        map( (requests: any[]) => {
-            return requests.map(
+        map( requestData => {
+          return {
+            requests: requestData.requestDtoList.map(
               request => {
                 return new RequestModel(
                   request.requestId,
@@ -62,14 +58,18 @@ export class RequestsService {
                   request.update_At
                 );
               }
-            );
+            ),
+            size: requestData.size
           }
-        )
+        })
       )
       .subscribe(
         transformedRequests => {
-          this.requests = transformedRequests;
-          this.reqestsChanged.next([...this.requests]);
+          this.requests = transformedRequests.requests;
+          this.reqestsChanged.next({
+            requests: [...this.requests],
+            size: transformedRequests.size
+          });
         }
       );
   }
@@ -81,7 +81,7 @@ export class RequestsService {
         (request: any) => {
           let newRequest = new RequestModel(
             request.requestId,
-            request.title,
+            request.servicetype,
             request.info,
             request.active,
             request.userDto,
@@ -89,7 +89,10 @@ export class RequestsService {
             request.update_At
           );
           this.requests.push(newRequest);
-          this.reqestsChanged.next([...this.requests]);
+          this.reqestsChanged.next({
+            requests: [...this.requests],
+            size: this.requests.length
+          });
           this.router.navigateByUrl('/requests');
         }
       );
@@ -103,7 +106,7 @@ export class RequestsService {
         (request: any) => {
           let newRequest = new RequestModel(
             request.requestId,
-            request.title,
+            request.servicetype,
             request.info,
             request.active,
             request.userDto,
@@ -111,7 +114,10 @@ export class RequestsService {
             request.update_At
           );
           this.requests[index] = newRequest;
-          this.reqestsChanged.next([...this.requests]);
+          this.reqestsChanged.next({
+            requests: [...this.requests],
+            size: this.requests.length
+          });
           this.router.navigateByUrl('/requests');
         }
       );

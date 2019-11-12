@@ -16,6 +16,12 @@
   </select>
 </div>
 
+<div>
+  <button *ngIf="page > 0" (click)="onPre()">Prev</button>
+  <button *ngIf="page < pageNumber - 1" (click)="onNext()">Next</button>
+  <span>Page: {{page + 1}}</span>
+</div>
+
 <div class="row">
   <div class="col-xs-12">
     <app-request-item

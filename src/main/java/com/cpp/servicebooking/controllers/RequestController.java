@@ -47,33 +47,54 @@ public class RequestController {
     @GetMapping("/All")
     public ResponseEntity<RequestsResponse> getAllRequests(@RequestParam(value = "page", defaultValue = "0") int page,
                                                            @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit){
-        List<RequestDto> requestDtos = requestOrderService.findAllRequest(page, limit);
-        int size = requestOrderService.findAllRequest();
-
-        return new ResponseEntity<>(new RequestsResponse(requestDtos, size), HttpStatus.OK);
-    }
-
-    @GetMapping("/name/{serviceName}")
-    public ResponseEntity<List<RequestDto>> getRequestsByServiceType(@PathVariable String serviceName) {
-        return ResponseEntity.ok(requestOrderService.findRequestByServiceType(serviceName));
-    }
-
-    @GetMapping("/language/{languageName}")
-    public ResponseEntity<List<RequestDto>> getRequestByLanguage(@PathVariable String languageName) {
-        return ResponseEntity.ok(requestOrderService.findRequestByLanguage(languageName));
-    }
-
-    @GetMapping("/{serviceName}/{languageName}")
-    public ResponseEntity<List<RequestDto>> getRequestByServiceTypeAndLanguage(@PathVariable String serviceName, @PathVariable String languageName) {
-        return ResponseEntity.ok(requestOrderService.findRequestByServiceTypeAndLanguage(serviceName, languageName));
+        return new ResponseEntity<>(requestOrderService.findAllRequest(page, limit), HttpStatus.OK);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<RequestDto>> getMyRequests(Principal principal){
-        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName()), HttpStatus.OK);
+    public ResponseEntity<RequestsResponse> getMyRequests(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                          @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit,
+                                                          Principal principal){
+        return new ResponseEntity<>(requestOrderService.findRequestsByUsername(principal.getName(), page, limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{serviceName}")
+    public ResponseEntity<RequestsResponse> getRequestsByServiceType(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                     @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit,
+                                                                     @PathVariable String serviceName) {
+        return new ResponseEntity<>(requestOrderService.findRequestByServiceType(serviceName, page, limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/language/{languageName}")
+    public ResponseEntity<RequestsResponse> getRequestByLanguage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                 @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit,
+                                                                 @PathVariable String languageName) {
+        return new ResponseEntity<>(requestOrderService.findRequestByLanguage(languageName, page, limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/{serviceName}/{languageName}")
+    public ResponseEntity<RequestsResponse> getRequestByServiceTypeAndLanguage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                               @RequestParam(value = "limit", defaultValue = "Integer.MAX_VALUE") int limit,
+                                                                               @PathVariable String serviceName, @PathVariable String languageName) {
+        return new ResponseEntity<>(requestOrderService.findRequestByServiceTypeAndLanguage(serviceName, languageName, page, limit), HttpStatus.OK);
+    }
+
+    @GetMapping("/list/{RequestId}")
+    public ResponseEntity<?> getRequestById(@PathVariable String RequestId) {
+        RequestDto requestDto = requestOrderService.findById(RequestId);
+        return new ResponseEntity<>(requestDto, HttpStatus.OK);
     }
 
 
+    @DeleteMapping("/id/{RequestId}")
+    public ResponseEntity<?> deleteRequest(@PathVariable String RequestId, Principal principal) {
+        requestOrderService.deleteRequest(RequestId, principal.getName());
+        return new ResponseEntity<>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
+    }
+
+    /*
+     * update
+     */
+    /*
     @GetMapping("/all/active")
     public ResponseEntity<List<RequestDto>> getAllActiveRequests() {
         return new ResponseEntity<>(requestOrderService.findAllActiveOrInactiveRequest(true), HttpStatus.OK);
@@ -93,19 +114,6 @@ public class RequestController {
     public ResponseEntity<List<RequestDto>> getMyInactiveRequests(Principal principal){
         return new ResponseEntity<>(requestOrderService.findActiveOrInactiveRequestsByUsername(false, principal.getName()), HttpStatus.OK);
     }
-
-
-    @GetMapping("/list/{RequestId}")
-    public ResponseEntity<?> getRequestById(@PathVariable String RequestId) {
-        RequestDto requestDto = requestOrderService.findById(RequestId);
-        return new ResponseEntity<>(requestDto, HttpStatus.OK);
-    }
-
-
-    @DeleteMapping("/id/{RequestId}")
-    public ResponseEntity<?> deleteRequest(@PathVariable String RequestId, Principal principal) {
-        requestOrderService.deleteRequest(RequestId, principal.getName());
-        return new ResponseEntity<>("Request with ID: '"+RequestId+"' was deleted", HttpStatus.OK);
-    }
+    */
 
 }

@@ -1,6 +1,7 @@
 package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.OrderRequestRequest.RequestOrderRequest;
+import com.cpp.servicebooking.Response.RequestsResponse;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.exceptions.Exception.RequestOrderNotFoundException;
 import com.cpp.servicebooking.models.Language;
@@ -76,55 +77,53 @@ public class RequestOrderService {
         return transferToDto(requestOrder);
     }
 
-    public int findAllRequest(){
-        List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAll();
-        return requestOrders.size();
-    }
-
-    public List<RequestDto> findAllRequest(int page, int limit){
+    //All Request
+    public RequestsResponse findAllRequest(int page, int limit){
+        List<RequestOrder> allRequestOrders = (ArrayList)requestOrderRepo.findAll();
         Pageable pageableRequest = PageRequest.of(page, limit);
         Page<RequestOrder> page1 = requestOrderRepo.findAll(pageableRequest);
         List<RequestOrder> requestOrders = page1.getContent();
-
-        return transferToDtos(requestOrders);
+        return new RequestsResponse(transferToDtos(requestOrders), allRequestOrders.size());
     }
 
-    public List<RequestDto> findAllActiveOrInactiveRequest(boolean active) {
-        List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAllByActive(active);
-        return transferToDtos(requestOrders);
-    }
-
-    public List<RequestDto> findRequestsByUsername(String name){
+    //Customer request
+    public RequestsResponse findRequestsByUsername(String name, int page, int limit){
         User user = userRepo.findByUsername(name);
-        List<RequestOrder> requestOrders = user.getRequestOrders();
-        return transferToDtos(requestOrders);
+        List<RequestOrder> allRequestOrders = user.getRequestOrders();
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<RequestOrder> page1 = requestOrderRepo.findAllByUser(user, pageableRequest);
+        List<RequestOrder> requestOrders = page1.getContent();
+        return new RequestsResponse(transferToDtos(requestOrders), allRequestOrders.size());
     }
 
-    public List<RequestDto> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
-        User user = userRepo.findByUsername(name);
-        List<RequestOrder> requestOrders = (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user);
-        return transferToDtos(requestOrders);
-    }
-
-    public List<RequestDto> findRequestByServiceType(String serviceTypeName) {
+    //By Service Type
+    public RequestsResponse findRequestByServiceType(String serviceTypeName, int page, int limit) {
         ServiceType serviceType = serviceTypeRepo.findByName(serviceTypeName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
-        List<RequestOrder> requestOrders = requestOrderRepo.findAllByServiceType(serviceType);
-        return transferToDtos(requestOrders);
+        List<RequestOrder> allRequestOrders = requestOrderRepo.findAllByServiceType(serviceType);
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<RequestOrder> page1 = requestOrderRepo.findAllByServiceType(serviceType, pageableRequest);
+        List<RequestOrder> requestOrders = page1.getContent();
+        return new RequestsResponse(transferToDtos(requestOrders), allRequestOrders.size());
     }
 
-    public List<RequestDto> findRequestByLanguage(String languageName) {
+    //language
+    public RequestsResponse findRequestByLanguage(String languageName, int page, int limit) {
         Language language = languageRepo.findByName(languageName);
         if (language == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
-        List<RequestOrder> requestOrders = requestOrderRepo.findAllByLanguage(language);
-        return transferToDtos(requestOrders);
+        List<RequestOrder> allRequestOrders = requestOrderRepo.findAllByLanguage(language);
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<RequestOrder> page1 = requestOrderRepo.findAllByLanguage(language, pageableRequest);
+        List<RequestOrder> requestOrders = page1.getContent();
+        return new RequestsResponse(transferToDtos(requestOrders), allRequestOrders.size());
     }
 
-    public List<RequestDto> findRequestByServiceTypeAndLanguage(String serviceTypeName, String languageName) {
+    //service and language
+    public RequestsResponse findRequestByServiceTypeAndLanguage(String serviceTypeName, String languageName, int page, int limit) {
         ServiceType serviceType = serviceTypeRepo.findByName(serviceTypeName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
@@ -133,8 +132,11 @@ public class RequestOrderService {
         if (language == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
-        List<RequestOrder> requestOrders = requestOrderRepo.findAllByServiceTypeAndLanguage(serviceType, language);
-        return transferToDtos(requestOrders);
+        List<RequestOrder> allRequestOrders = requestOrderRepo.findAllByServiceTypeAndLanguage(serviceType, language);
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<RequestOrder> page1 = requestOrderRepo.findAllByServiceTypeAndLanguage(serviceType, language, pageableRequest);
+        List<RequestOrder> requestOrders = page1.getContent();
+        return new RequestsResponse(transferToDtos(requestOrders), allRequestOrders.size());
     }
 
     public RequestOrder findRequestById(String RequestId) {
@@ -147,7 +149,6 @@ public class RequestOrderService {
     }
 
     public RequestDto findById(String requestId) {
-
         return transferToDto(findRequestById(requestId));
     }
 
@@ -159,6 +160,18 @@ public class RequestOrderService {
 
         requestOrderRepo.delete(requestOrder);
     }
+    /*
+    public List<RequestDto> findAllActiveOrInactiveRequest(boolean active) {
+        List<RequestOrder> requestOrders = (ArrayList)requestOrderRepo.findAllByActive(active);
+        return transferToDtos(requestOrders);
+    }
+
+    public List<RequestDto> findActiveOrInactiveRequestsByUsername(boolean active, String name) {
+        User user = userRepo.findByUsername(name);
+        List<RequestOrder> requestOrders = (ArrayList) requestOrderRepo.findAllByActiveAndUser(active, user);
+        return transferToDtos(requestOrders);
+    }
+    */
 
     private List<RequestDto> transferToDtos(List<RequestOrder> requestOrders) {
         List<RequestDto> requestDtos = new ArrayList<>();

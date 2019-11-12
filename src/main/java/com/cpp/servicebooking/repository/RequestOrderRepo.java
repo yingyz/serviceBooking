@@ -18,20 +18,25 @@ import java.util.List;
 public interface RequestOrderRepo extends PagingAndSortingRepository<RequestOrder, Long> {
     RequestOrder findById(long id);
 
-    Iterable<RequestOrder> findAllByActive(boolean active);
-
-    Iterable<RequestOrder> findAllByActiveAndUser(boolean active, User user);
-
+    /*
+    * Requests
+    * */
     List<RequestOrder> findAllByServiceType(ServiceType serviceType);
-
     List<RequestOrder> findAllByLanguage(Language language);
-
     List<RequestOrder> findAllByServiceTypeAndLanguage(ServiceType serviceType, Language language);
+    //Iterable<RequestOrder> findAllByActive(boolean active);
+    //Iterable<RequestOrder> findAllByActiveAndUser(boolean active, User user);
 
-    @Query("SELECT r FROM RequestOrder r")
-    Page<RequestOrder> findAllRequest(Pageable pageableRequest);
-
+    /*
+    * Page
+    * */
+    //@Query("SELECT r FROM RequestOrder r")
+    //Page<RequestOrder> findAllRequest(Pageable pageableRequest);
     Page<RequestOrder> findAll(Pageable pageableRequest);
+    Page<RequestOrder> findAllByUser(User user, Pageable pageableRequest);
+    Page<RequestOrder> findAllByServiceType(ServiceType serviceType, Pageable pageableRequest);
+    Page<RequestOrder> findAllByLanguage(Language language, Pageable pageableRequest);
+    Page<RequestOrder> findAllByServiceTypeAndLanguage(ServiceType serviceType, Language language, Pageable pageableRequest);
 
     @Modifying
     @Transactional

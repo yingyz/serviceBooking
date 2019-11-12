@@ -16,6 +16,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
   requests: RequestModel[] = [];
   private requestSub: Subscription;
+  size: number = 0;
 
   provideType: string = 'All';
   provideTypes: string[] = [];
@@ -24,18 +25,21 @@ export class RequestListComponent implements OnInit, OnDestroy {
   languages: string[] = [];
 
   page: number = 0;
+  pageNumber: number = 0;
+  limit: number = 2;
 
   constructor(private requestService: RequestsService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.user = this.authService.getUser();
 
-    this.requests = this.requestService.getRequests();
-    this.requestService.getRequestsFromAPI(this.provideType, this.language);
+    this.onSelect();
     this.requestSub = this.requestService.getRequestsChanged()
       .subscribe(
-        (requests: any[]) => {
-          this.requests = requests;
+        (requestData: {requests: RequestModel[], size: number}) => {
+          this.requests = requestData.requests;
+          this.size = requestData.size;
+          this.pageNumber = Math.ceil(this.size / this.limit);
         }
       );
 
@@ -55,11 +59,26 @@ export class RequestListComponent implements OnInit, OnDestroy {
   }
 
   onSelect() {
-    this.requestService.getRequestsFromAPI(this.provideType, this.language);
+    this.onCallAPI();
+    this.page = 0;
+  }
+
+  onCallAPI() {
+    this.requestService.getRequestsFromAPI(this.provideType, this.language, this.page, this.limit);
   }
 
   onNewRequest() {
     this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onPre() {
+    this.page--;
+    this.onCallAPI();
+  }
+
+  onNext() {
+    this.page++;
+    this.onCallAPI();
   }
 
   ngOnDestroy(): void {
