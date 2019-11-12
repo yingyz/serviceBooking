@@ -81,7 +81,7 @@ export class RequestsService {
         (request: any) => {
           let newRequest = new RequestModel(
             request.requestId,
-            request.title,
+            request.servicetype,
             request.info,
             request.active,
             request.userDto,
@@ -103,7 +103,7 @@ export class RequestsService {
         (request: any) => {
           let newRequest = new RequestModel(
             request.requestId,
-            request.title,
+            request.servicetype,
             request.info,
             request.active,
             request.userDto,
