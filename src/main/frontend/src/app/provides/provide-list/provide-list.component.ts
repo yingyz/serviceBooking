@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ServiceProvideModel} from "../../models/serviceProvide.model";
 import {ProvideService} from "../provide.service";
 import {AuthService} from "../../auth/auth.service";
+import {RequestModel} from "../../models/request.model";
 
 @Component({
   selector: 'app-provide-list',
   templateUrl: './provide-list.component.html',
   styleUrls: ['./provide-list.component.css']
 })
-export class ProvideListComponent implements OnInit {
+export class ProvideListComponent implements OnInit, OnDestroy {
 
   provides: ServiceProvideModel[] = [];
   providesSub: Subscription;
+  size: number = 0;
 
   provideType: string = 'All';
   provideTypes: string[] = [];
@@ -20,14 +22,22 @@ export class ProvideListComponent implements OnInit {
   language: string = 'All';
   languages: string[] = [];
 
+  page: number = 0;
+  pageNumber: number = 0;
+  pageNumberlist: number[] = [];
+  limit: number = 2;
+
   constructor(private provideService: ProvideService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.provideService.getProvidesFromAPI(this.provideType, this.language);
+    this.onCallAPI();
     this.providesSub = this.provideService.getProvidesChanged()
       .subscribe(
-        provides => {
-          this.provides = provides;
+        (providesData: {provides: ServiceProvideModel[], size: number}) => {
+          this.provides = providesData.provides;
+          this.size = providesData.size;
+          this.pageNumber = Math.ceil(this.size / this.limit);
+          this.pageNumberlist = [...Array(this.pageNumber).keys()];
         }
       );
 
@@ -46,7 +56,31 @@ export class ProvideListComponent implements OnInit {
       );
   }
 
+  onCallAPI() {
+    this.provideService.getProvidesFromAPI(this.provideType, this.language, this.page, this.limit);
+  }
+
   onSelect() {
-    this.provideService.getProvidesFromAPI(this.provideType, this.language);
+    this.onCallAPI();
+    this.page = 0;
+  }
+
+  onPre() {
+    this.page--;
+    this.onCallAPI();
+  }
+
+  onNext() {
+    this.page++;
+    this.onCallAPI();
+  }
+
+  onPageSelect() {
+    this.page = +this.page;//select default string
+    this.onCallAPI();
+  }
+
+  ngOnDestroy(): void {
+    this.providesSub.unsubscribe();
   }
 }

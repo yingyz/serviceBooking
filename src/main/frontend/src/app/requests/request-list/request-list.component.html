@@ -19,6 +19,11 @@
 <div>
   <button *ngIf="page > 0" (click)="onPre()">Prev</button>
   <button *ngIf="page < pageNumber - 1" (click)="onNext()">Next</button>
+  <select [(ngModel)]="page" (change)="onPageSelect()">
+    <option *ngFor="let pageNum of pageNumberlist" [value]="pageNum">
+      {{pageNum + 1}}
+    </option>
+  </select>
   <span>Page: {{page + 1}}</span>
 </div>
 

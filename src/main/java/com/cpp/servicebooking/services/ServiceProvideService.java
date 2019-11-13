@@ -1,6 +1,7 @@
 package com.cpp.servicebooking.services;
 
 import com.cpp.servicebooking.Request.ServiceRequest.ServiceProvideRequest;
+import com.cpp.servicebooking.Response.ServicesResponse;
 import com.cpp.servicebooking.exceptions.Exception.DatabaseNotFoundException;
 import com.cpp.servicebooking.models.Language;
 import com.cpp.servicebooking.models.ServiceProvide;
@@ -13,6 +14,9 @@ import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import com.cpp.servicebooking.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,39 +70,50 @@ public class ServiceProvideService {
         return transferServiceDto(serviceProvide);
     }
 
-    public List<ServiceDto> getServicesByName(String serviceName) {
+    public ServicesResponse getServices(int page, int limit) {
+        List<ServiceProvide> allServiceProvides = (ArrayList)serviceProvideRepo.findAll();
+        int size = allServiceProvides.size();
+
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<ServiceProvide> page1 = serviceProvideRepo.findAll(pageableRequest);
+        List<ServiceProvide> serviceProvides = page1.getContent();
+
+        return new ServicesResponse(transferServiceDtos(serviceProvides), size);
+    }
+
+    public ServicesResponse getServicesByName(String serviceName, int page, int limit) {
         ServiceType serviceType = serviceTypeRepo.findByName(serviceName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
 
-        List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByServiceType(serviceType);
+        List<ServiceProvide> allServiceProvides = serviceProvideRepo.findAllByServiceType(serviceType);
+        int size = allServiceProvides.size();
 
-        List<ServiceDto> serviceDtos = new ArrayList<>();
-        for (ServiceProvide serviceProvide : serviceProvides) {
-            serviceDtos.add(transferServiceDto(serviceProvide));
-        }
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<ServiceProvide> page1 = serviceProvideRepo.findAllByServiceType(serviceType, pageableRequest);
+        List<ServiceProvide> serviceProvides = page1.getContent();
 
-        return serviceDtos;
+        return new ServicesResponse(transferServiceDtos(serviceProvides), size);
     }
 
-    public List<ServiceDto> getServiceByLanguage(String languageName) {
+    public ServicesResponse getServiceByLanguage(String languageName, int page, int limit) {
         Language language = languageRepo.findByName(languageName);
         if (language == null) {
             throw new DatabaseNotFoundException("Service not found in database");
         }
 
-        List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByLanguage(language);
+        List<ServiceProvide> allServiceProvides = serviceProvideRepo.findAllByLanguage(language);
+        int size = allServiceProvides.size();
 
-        List<ServiceDto> serviceDtos = new ArrayList<>();
-        for (ServiceProvide serviceProvide : serviceProvides) {
-            serviceDtos.add(transferServiceDto(serviceProvide));
-        }
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<ServiceProvide> page1 = serviceProvideRepo.findAllByLanguage(language, pageableRequest);
+        List<ServiceProvide> serviceProvides = page1.getContent();
 
-        return serviceDtos;
+        return new ServicesResponse(transferServiceDtos(serviceProvides), size);
     }
 
-    public List<ServiceDto> getServiceByNameAndService(String serviceName, String languageName) {
+    public ServicesResponse getServiceByNameAndService(String serviceName, String languageName, int page, int limit) {
         ServiceType serviceType = serviceTypeRepo.findByName(serviceName);
         if (serviceType == null) {
             throw new DatabaseNotFoundException("Service not found in database");
@@ -108,24 +123,20 @@ public class ServiceProvideService {
             throw new DatabaseNotFoundException("Service not found in database");
         }
 
-        List<ServiceProvide> serviceProvides = serviceProvideRepo.findAllByServiceTypeAndLanguage(serviceType, language);
+        List<ServiceProvide> allServiceProvides = serviceProvideRepo.findAllByServiceTypeAndLanguage(serviceType, language);
+        int size = allServiceProvides.size();
+        Pageable pageableRequest = PageRequest.of(page, limit);
+        Page<ServiceProvide> page1 = serviceProvideRepo.findAllByServiceTypeAndLanguage(serviceType, language, pageableRequest);
+        List<ServiceProvide> serviceProvides = page1.getContent();
 
-        List<ServiceDto> serviceDtos = new ArrayList<>();
-        for (ServiceProvide serviceProvide : serviceProvides) {
-            serviceDtos.add(transferServiceDto(serviceProvide));
-        }
-
-        return serviceDtos;
+        return new ServicesResponse(transferServiceDtos(serviceProvides), size);
     }
 
-    public List<ServiceDto> getServices() {
-        List<ServiceProvide> serviceProvides = (ArrayList)serviceProvideRepo.findAll();
-
+    private List<ServiceDto> transferServiceDtos(List<ServiceProvide> serviceProvides) {
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (ServiceProvide serviceProvide : serviceProvides) {
             serviceDtos.add(transferServiceDto(serviceProvide));
         }
-
         return serviceDtos;
     }
 

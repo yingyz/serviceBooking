@@ -11,7 +11,7 @@ const BACKEND_URL = environment.apiUrl + '/provider/';
 @Injectable({providedIn: 'root'})
 export class ProvideService {
   private provides: ServiceProvideModel[] = [];
-  private providesChanged = new Subject<ServiceProvideModel[]>();
+  private providesChanged = new Subject<{provides: ServiceProvideModel[], size: number}>();
   private myProvide: ServiceProvideModel;
   private myProvideChanged = new Subject<ServiceProvideModel>();
 
@@ -42,7 +42,7 @@ export class ProvideService {
     return this.myProvide;
   }
 
-  getProvidesFromAPI(provideName: string, languageName: string) {
+  getProvidesFromAPI(provideName: string, languageName: string, page: number, limit: number) {
     let URL = BACKEND_URL;
     if (provideName != 'All' && languageName != 'All') {
       URL += provideName + '/' + languageName;
@@ -52,28 +52,36 @@ export class ProvideService {
       URL += 'language' + '/' + languageName;
     }
 
-    this.http.get(URL)
+    URL += '?page='+page+'&limit='+limit;
+
+    this.http.get<{serviceDtoList: any, size: number}>(URL)
       .pipe(
         map(
-          (provides: any[]) => {
-            return provides.map(
-              provide => {
-                return new ServiceProvideModel(
-                  provide.serviceId,
-                  provide.detail,
-                  provide.price,
-                  provide.servicetype,
-                  provide.userDto
-                );
-              }
-            );
+          providesData => {
+            return {
+              provides: providesData.serviceDtoList.map(
+                provide => {
+                  return new ServiceProvideModel(
+                    provide.serviceId,
+                    provide.detail,
+                    provide.price,
+                    provide.servicetype,
+                    provide.userDto
+                  );
+                }
+              ),
+              size: providesData.size
+            }
           }
         )
       )
       .subscribe(
         transformedProvides => {
-          this.provides = transformedProvides;
-          this.providesChanged.next([...this.provides]);
+          this.provides = transformedProvides.provides;
+          this.providesChanged.next({
+            provides: [...this.provides],
+            size: transformedProvides.size
+          });
         }
       );
   }

@@ -100,7 +100,12 @@ public class UserService implements UserDetailsService {
 
         //update request language
         if (!user.getUserInfo().getLanguage().getName().equals(language.getName())) {
-            requestOrderRepo.updateRequestOrderLanguage(user.getUserInfo().getLanguage(), user);
+            String roleName = user.getRole().getName();
+            if (roleName.equals("Customer")) {
+                requestOrderRepo.updateRequestOrderLanguage(language, user);
+            } else if (roleName.equals("Service") && user.getServiceProvide() != null) {
+                user.getServiceProvide().setLanguage(language);
+            }
         }
 
         userInfo.setLanguage(language);

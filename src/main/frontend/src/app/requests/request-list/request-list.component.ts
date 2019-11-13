@@ -26,6 +26,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
   page: number = 0;
   pageNumber: number = 0;
+  pageNumberlist: number[] = [];
   limit: number = 2;
 
   constructor(private requestService: RequestsService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
@@ -40,6 +41,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
           this.requests = requestData.requests;
           this.size = requestData.size;
           this.pageNumber = Math.ceil(this.size / this.limit);
+          this.pageNumberlist = [...Array(this.pageNumber).keys()];
         }
       );
 
@@ -78,6 +80,11 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
   onNext() {
     this.page++;
+    this.onCallAPI();
+  }
+
+  onPageSelect(){
+    this.page = +this.page;//select default string
     this.onCallAPI();
   }
 
