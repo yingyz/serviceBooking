@@ -1,0 +1,18 @@
+.btn_background {
+  background-color: #FF5581;
+}
+
+.btn:hover {
+  text-decoration: none;
+  background-color: #ff3c6e;
+}
+
+.select_custom {
+  margin: 0;
+  font-family: sans-serif;
+  padding: .2em .3em .2em .3em;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+  box-shadow: 0 1px 0 1px rgba(0,0,0, .04);
+  border-radius: .2em;
+}

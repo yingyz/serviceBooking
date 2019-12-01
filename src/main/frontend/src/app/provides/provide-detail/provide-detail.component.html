@@ -1,8 +1,42 @@
-<p>provide-detail works!</p>
-<div>{{provide.serviceId}}</div>
-<div>{{provide.servicetype}}</div>
-<div>{{provide.detail}}</div>
-<div>{{provide.price}}</div>
-<div>{{fullName}}</div>
-<div>{{provide.userDto.phone}}</div>
-<div>{{location}}</div>
+<div class="card border-bottom-0 shadow-sm">
+  <div class="card-body">
+    <h4 class="card-title font_color">{{fullName}}</h4>
+    <p class="card-subtitle mt-1 text-muted h6">{{provide.servicetype}}</p>
+    <hr/>
+    <div class="container">
+      <h5 class="card-text text-align-center py-2">{{provide.detail}}</h5>
+      <div class="row">
+        <div class="col-3">
+          <div class="text-muted py-2 h6">Price:</div>
+        </div>
+        <div class="col">
+          <div class="py-2">{{provide.price}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="text-muted py-2 h6">Location:</div>
+        </div>
+        <div class="col">
+          <div class="py-2">{{location}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="text-muted py-2 h6">Phone:</div>
+        </div>
+        <div class="col">
+          <div class="py-2">{{provide.userDto.phone}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="text-muted py-2 h6">Language:</div>
+        </div>
+        <div class="col">
+          <div class="py-2">{{provide.userDto.language}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

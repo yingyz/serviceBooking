@@ -1,18 +1,10 @@
-<div class="container bg-light border">
-  <form class="px-3 py-3" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+<div class="container">
+  <form class ="px-3 py-4 form_border bg-white" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
     <h1 class="pt-3 font_color">Update Your Profile</h1>
     <hr/>
-    <div class="h6 pt-3">Name:  {{user.firstname}} {{user.lastname}}</div>
-    <div class="h6 py-3">Email:  {{user.username}}</div>
+    <div class="h6 pt-3">Name:    {{user.firstname}} {{user.lastname}}</div>
+    <div class="h6 py-3">Email:   {{user.username}}</div>
 
-    <div class="form-group">
-      <label for="firstname">First Name</label>
-      <input class="form-control" type ="text" id = "firstname" formControlName="firstname">
-    </div>
-    <div class="form-group">
-      <label for="lastname">Last Name</label>
-      <input class="form-control" type ="text" id = "lastname" formControlName="lastname">
-    </div>
     <div class="form-group">
       <label for="street">Street</label>
       <input class="form-control" type ="text" id = "street" formControlName="streetname">
@@ -34,8 +26,8 @@
       <input class="form-control" type ="text" id="phone" formControlName="phone" placeholder="xxx-xxx-xxxx">
     </div>
 
-    <div class="form-group">
-      <label for="language">Language: </label>
+    <div class="form-group pt-3">
+      <label for="language" class="pr-3">Language: </label>
       <select id="language" required formControlName="language" name="language">
         <option *ngFor="let language of languages" [value]="language">
           {{language}}
@@ -44,7 +36,7 @@
     </div>
 
     <div class="text-center pt-3">
-      <button type="submit" class="btn btn_background btn-lg" [disabled]="!profileForm.valid">Update</button>
+      <button type="submit" class="btn btn_background btn-lg text-white mx-3 my-1" [disabled]="!profileForm.valid">Update</button>
     </div>
   </form>
 </div>

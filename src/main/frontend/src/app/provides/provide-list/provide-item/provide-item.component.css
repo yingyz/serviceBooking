@@ -1,0 +1,12 @@
+.card {
+  width: 28rem;
+}
+
+.btn_background {
+  background-color: #FF5581;
+}
+
+.btn:hover {
+  text-decoration: none;
+  background-color: #ff3c6e;
+}

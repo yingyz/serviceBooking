@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -78,12 +79,8 @@ public class AdminController {
     }
 
     @GetMapping("/language")
-    public ResponseEntity<Iterable<Language>> getLanguages() {
-        Iterable<Language> languages = languageService.getLanguages();
-        List<String> ans = new ArrayList<>();
-        for (Language language : languages) {
-            ans.add(language.getName());
-        }
+    public ResponseEntity<List<Language>> getLanguages() {
+        List<Language> languages = languageService.getLanguages();
         return ResponseEntity.ok(languages);
     }
 

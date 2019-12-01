@@ -6,6 +6,7 @@ import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
 import com.cpp.servicebooking.models.ServiceType;
 import com.cpp.servicebooking.repository.ServiceTypeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ServicetypeService {
         }
     }
 
-    public Iterable<ServiceType> findAllServiceTypes() {
-        return serviceTypeRepo.findAll();
+    public List<ServiceType> findAllServiceTypes() {
+        return serviceTypeRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 }

@@ -1,6 +1,14 @@
-<div>Comments: </div>
-<div *ngFor="let comment of comments">
-  <div>{{comment.commentDetail}}</div>
-  <div>Service Full Name: {{comment.userdto.firstname}} {{comment.userdto.lastname}}</div>
-  <div>Phone: {{comment.userdto.phone}}</div>
+<div class="card bg-white border-top-0 shadow-sm">
+  <div class="h5 pt-2 px-2">Comments: </div>
+  <div *ngFor="let comment of comments" class="card px-2 py-2 border-0">
+    <div>
+      <span class="comment-text-color h6">@{{comment.userdto.firstname}} {{comment.userdto.lastname}}: </span>
+      <span class=" h6">{{comment.commentDetail}}</span>
+    </div>
+    <div class="pt-1">
+      <div class="text-muted pl-5 pt-1">Location: {{comment.userdto.streetname}}, {{comment.userdto.city}}, {{comment.userdto.state}}, {{comment.userdto.zipcode}}</div>
+      <div class="text-muted pl-5 pt-1">Phone: {{comment.userdto.phone}}</div>
+      <div class="text-muted pl-5 pt-1">Language: {{comment.userdto.language}}</div>
+    </div>
+  </div>
 </div>

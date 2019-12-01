@@ -1,0 +1,12 @@
+.card {
+  width: 65%;
+  margin: 0 auto;
+}
+
+img {
+  height: 128px;
+  width: 128px;
+  vertical-align: middle;
+  margin-top: 30%;
+  margin-left: 20%;
+}

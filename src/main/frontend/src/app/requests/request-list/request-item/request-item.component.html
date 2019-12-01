@@ -1,10 +1,10 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title font_color">{{requestItem.servicetype}}</h5>
+    <h5 class="card-title font_color h5">{{requestItem.servicetype}}</h5>
     <hr/>
-    <p class="card-text h6">{{requestItem.userDto.language}}</p>
-    <p class="card-text h6">{{requestItem.info}}</p>
-    <p class="text-secondary pt-1">Post on: {{requestItem.create_At|date:'short'}}</p>
+    <p class="card-text h5">{{requestItem.info}}</p>
+    <p class="card-text pt-2 h6">Language: {{requestItem.userDto.language}}</p>
+    <p class="text-secondary pt-2">Post on: {{requestItem.create_At|date:'short'}}</p>
     <div class="text-right">
       <a
         style="cursor: pointer"

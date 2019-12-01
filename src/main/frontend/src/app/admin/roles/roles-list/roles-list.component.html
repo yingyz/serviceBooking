@@ -1,4 +1,15 @@
-<div *ngFor="let role of roles">
-  <div>{{role.name}}</div>
-  <br>
-</div>
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Role Type</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let role of roles">
+    <th scope="row">{{role.id}}</th>
+    <td> {{role.name}}</td>
+  </tr>
+  </tbody>
+</table>
+

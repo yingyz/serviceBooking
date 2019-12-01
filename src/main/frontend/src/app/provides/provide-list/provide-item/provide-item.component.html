@@ -1,13 +1,35 @@
-<div>
-  <div>{{provideItem.serviceId}}</div>
-  <div>{{provideItem.servicetype}}</div>
-  <div>{{provideItem.price}}</div>
-  <div>{{index}}</div>
-  <a
-    style="cursor: pointer"
-    [routerLink]="index"
-    routerLinkActive="active"
-    role="button">
-    View Detail
-  </a>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title font_color h5">{{provideItem.userDto.firstname}} {{provideItem.userDto.lastname}}</h5>
+    <hr/>
+    <div class="card-text">
+      <div class="row">
+        <div class="col-4">
+          <div class="text-muted h6">Service type: </div>
+        </div>
+        <div class="col">
+          <div>{{provideItem.servicetype}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="text-muted h6">Price: </div>
+        </div>
+        <div class="col">
+          <div>{{provideItem.price}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-right pt-2">
+      <a
+        style="cursor: pointer"
+        [routerLink]="index"
+        routerLinkActive="active"
+        role="button"
+        class="btn btn_background btn-sm text-white" role="button">
+        View Detail
+      </a>
+    </div>
+  </div>
 </div>
+<br/>

@@ -1,8 +1,12 @@
 .btn_background {
-  background-color: #afa939;
+  background-color: #FF5581;
 }
 
 .btn:hover {
   text-decoration: none;
-  background-color: #a39e45;
+  background-color: #ff3c6e;
+}
+
+.card {
+  width: 28rem;
 }

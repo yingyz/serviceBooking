@@ -1,14 +1,12 @@
-<div class="container bg-light border">
-  <form [formGroup]="languageForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
-    <h2 class="text-center font_color pt-3">Create new Roles</h2>
-    <hr/>
-    <div class="form-group">
-      <label for="name">Role Name</label>
-      <input class="form-control" type ="text" id="name" formControlName="name" placeholder="Role Name">
+<div class="container-fluid pt-2 background-color">
+  <form [formGroup]="languageForm" (ngSubmit)="onSubmit()" class="py-3 form-inline">
+    <h4 class="pr-5 pl-3 text-white">Create New Language</h4>
+    <div class="form-group pl-5 pr-5">
+      <input class="form-control" type ="text" id="name" formControlName="name" placeholder="Enter Language Name">
     </div>
-
-    <div class="text-center py-4">
-      <button type="submit" class="btn btn_background text-white px-4 py-2" [disabled]="!languageForm.valid">Submit</button>
+    <div class="pl-5 pr-3">
+      <button type="submit" class="btn btn_background text-white px-3" [disabled]="!languageForm.valid">Submit</button>
     </div>
   </form>
 </div>
+

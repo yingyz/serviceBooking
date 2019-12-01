@@ -1,4 +1,14 @@
-<div *ngFor="let language of languages">
-  <div>{{language.name}}</div>
-  <br>
-</div>
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Language Type</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let language of languages">
+    <th scope="row">{{language.id}}</th>
+    <td> {{language.name}}</td>
+  </tr>
+  </tbody>
+</table>

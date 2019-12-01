@@ -1,4 +1,15 @@
-<div *ngFor="let serviceType of serviceTypes">
-  <div>{{serviceType.name}}</div>
-  <br>
-</div>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Service Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let serviceType of serviceTypes">
+      <th scope="row">{{serviceType.id}}</th>
+      <td> {{serviceType.name}}</td>
+    </tr>
+  </tbody>
+</table>
+

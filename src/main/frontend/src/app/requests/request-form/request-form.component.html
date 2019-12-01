@@ -1,10 +1,10 @@
-<div class="container bg-light border">
+<div class="container bg-white shadow-sm">
   <form [formGroup]="requestForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
-    <h2 class="text-center font_color pt-3">Post New Request</h2>
+    <h2 class="text-center font_color py-3">Post New Request</h2>
     <hr/>
 
     <div class="form-group">
-      <label for="servicetype">Service Type</label>
+      <label for="servicetype" class="pr-2 h6">Service Type</label>
       <select id="servicetype" required formControlName="title" name="title">
         <option *ngFor="let title of provideTypes" [value]="title">
           {{title}}
@@ -13,12 +13,12 @@
     </div>
 
     <div class="form-group">
-      <label for="detail">Request Detail</label>
-      <textarea class="form-control" type ="message" id="detail" rows="3" formControlName="info" placeholder="Enter request details..."></textarea>
+      <label for="detail" class="h6">Request Detail</label>
+      <textarea class="form-control" type ="message" id="detail" rows="4" formControlName="info" placeholder="Enter request details..."></textarea>
     </div>
     <div class="text-center py-4">
-      <button type="submit" class="btn btn_background text-white px-4 py-2" [disabled]="!requestForm.valid">Submit</button>
+      <button type="submit" class="btn btn_background text-white px-3 py-1" [disabled]="!requestForm.valid">Submit</button>
     </div>
   </form>
 </div>
-<div *ngIf="editMode">Edit</div>
+<div *ngIf="editMode"></div>

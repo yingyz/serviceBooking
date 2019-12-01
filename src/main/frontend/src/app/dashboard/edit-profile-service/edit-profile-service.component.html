@@ -1,10 +1,10 @@
-<div class="container bg-light border">
-  <form [formGroup]="provideForm" (ngSubmit)="onSubmit()" class="px-3 py-3">
-    <h2 class="text-center font_color pt-3">Update Service</h2>
+<div class="container center_div">
+  <form [formGroup]="provideForm" (ngSubmit)="onSubmit()" class="px-3 py-4 form_border bg-white">
+    <h1 class="font_color pt-3 pb-2">Update Service</h1>
     <hr/>
     <div class="form-group">
-      <label for="servicetype">Service Type</label>
-      <select id="servicetype" required formControlName="servicetype" name="servicetype">
+      <label for="servicetype" class="pr-2">Service Type</label>
+      <select id="servicetype" required formControlName="servicetype" name="servicetype" class="select_custom">
         <option *ngFor="let servicetype of provideTypes" [value]="servicetype">
           {{servicetype}}
         </option>
@@ -15,12 +15,12 @@
       <textarea class="form-control" type ="message" id="price" rows="3" formControlName="price" placeholder="Enter Service Price..."></textarea>
     </div>
     <div class="form-group">
-      <label for="detail">Service detail</label>
+      <label for="detail">Service Details</label>
       <textarea class="form-control" type ="message" id="detail" rows="3" formControlName="detail" placeholder="Enter Service details..."></textarea>
     </div>
-    <div class="text-center py-4">
-      <button type="submit" class="btn btn_background text-white px-4 py-2" [disabled]="!provideForm.valid">Submit</button>
+    <div class="text-center py-3">
+      <button type="submit" class="btn btn_background text-white mx-3 my-1" [disabled]="!provideForm.valid">Submit</button>
     </div>
   </form>
 </div>
-<div *ngIf="editMode">Edit</div>
+<div *ngIf="editMode"></div>

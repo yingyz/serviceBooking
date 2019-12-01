@@ -1,3 +1,27 @@
+<div class="card bg-white border-top-0 shadow-sm">
+  <form *ngIf="comment == null" #commentForm="ngForm" (ngSubmit)="onSubmit(commentForm)" class="form-row pl-2 pb-3">
+    <div class="col-10 pl-3">
+      <input
+        type="text"
+        id="detail"
+        class="form-control"
+        ngModel
+        name="detail"
+        required
+        placeholder="Please leave a comment..."
+      />
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn_background text-white" [disabled]="!commentForm.valid">Submit</button>
+    </div>
+  </form>
+  <div *ngIf="comment != null" class="pb-3 pl-2">
+    <hr/>
+    <div class="text-danger">You have commented already!</div>
+    <div class="text-dark">Comment: {{comment.commentDetail}}</div>
+  </div>
+</div>
+<!--
 <form *ngIf="comment == null" #commentForm="ngForm" (ngSubmit)="onSubmit(commentForm)" class ="px-3 py-4 form_border login_center_div">
   <div class="row">
     <div class="col-xs-12">
@@ -26,3 +50,5 @@
   <div>{{comment.commentDetail}}</div>
   <div>Request Full Name {{comment.requestUser.firstname}} {{comment.requestUser.lastname}}</div>
 </div>
+
+-->

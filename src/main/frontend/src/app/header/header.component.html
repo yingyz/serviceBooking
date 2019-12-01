@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-sm fixed-top navbar-dark nav_background">
 
-  <div *ngIf="userIsAuthenticated" class="container">
-    <a class="navbar-brand font-weight-bold" >Service Master</a>
+  <div *ngIf="userIsAuthenticated" class="container-fluid">
+    <a class="navbar-brand font-weight-bold text-white"><h3>LOCALS</h3></a>
     <button
       class="navbar-toggler"
       data-toggle="collapse"
@@ -60,7 +60,7 @@
   <!--guest-->
 
   <div *ngIf="!userIsAuthenticated" class="container">
-    <a class="navbar-brand font-weight-bold" >Service Master</a>
+    <a class="navbar-brand font-weight-bold text-white" ><h3>LOCALS</h3></a>
     <button
       class="navbar-toggler"
       data-toggle="collapse"

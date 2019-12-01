@@ -1,4 +1,4 @@
-<div class="card shadow-sm">
+<div class="card border-bottom-0 shadow-sm">
   <div class="card-body">
     <h4 class="card-title font_color">{{request.servicetype}}</h4>
     <p class="card-subtitle mt-1 text-muted medium">
@@ -10,15 +10,15 @@
       <h5 class="card-text text-align-center">{{request.info}}</h5>
       <div class="py-2">
         <span class="text-muted pr-1 h6">Location:</span>
-        <span class="pl-1">{{location}}</span>
+        <span class="pl-2">{{location}}</span>
       </div>
       <div>
         <span class="text-muted pr-1 h6">Phone:</span>
         <span class="pl-4">{{request.userDto.phone}}</span>
       </div>
-      <div>
+      <div class="pt-2">
         <span class="text-muted pr-1 h6">Language:</span>
-        <span class="pl-4">{{request.userDto.language}}</span>
+        <span class="pl-1">{{request.userDto.language}}</span>
       </div>
       <div *ngIf="editAuth" class="float-right">
         <button (click)="onEditRequest()" class="btn btn_background text-white px-2 mt-1">Edit Request</button>

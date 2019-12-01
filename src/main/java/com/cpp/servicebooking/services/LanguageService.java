@@ -5,6 +5,7 @@ import com.cpp.servicebooking.exceptions.Exception.DuplicateAccountException;
 import com.cpp.servicebooking.models.Language;
 import com.cpp.servicebooking.repository.LanguageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class LanguageService {
     private LanguageRepo languageRepo;
 
     public List<Language> getLanguages() {
-        return (ArrayList)languageRepo.findAll();
+        return languageRepo.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public Language saveLanguage(LanguageRequest languageRequest) {
