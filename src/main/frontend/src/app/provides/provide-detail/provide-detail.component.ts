@@ -21,7 +21,8 @@ export class ProvideDetailComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.index = +params.id;
+          let ids = params.id.split('|');
+          this.index = +ids[0];
           this.provide = this.provideService.getProvideByIdx(this.index);
           this.location = this.provide.userDto.streetname + ", " + this.provide.userDto.city + ", " + this.provide.userDto.state
             + ", " + this.provide.userDto.zipcode;

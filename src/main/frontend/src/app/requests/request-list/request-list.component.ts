@@ -67,6 +67,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
 
   onCallAPI() {
     this.requestService.getRequestsFromAPI(this.provideType, this.language, this.page, this.limit);
+    this.router.navigate(['/requests'], { replaceUrl: true });
   }
 
   onNewRequest() {

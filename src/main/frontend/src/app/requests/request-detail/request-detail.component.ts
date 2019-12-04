@@ -26,7 +26,8 @@ export class RequestDetailComponent implements OnInit {
     this.route.params
       .subscribe(
         (params: Params) => {
-          this.index = +params.id;
+          let ids = params.id.split('|');
+          this.index = +ids[0];
           this.request = this.requestService.getRequestyIdx(this.index);
           this.location = this.request.userDto.streetname + ", " + this.request.userDto.city + ", " + this.request.userDto.state
             + ", " + this.request.userDto.zipcode;

@@ -11,6 +11,7 @@ export class RequestItemComponent implements OnInit {
 
   @Input() requestItem: RequestModel;
   @Input() index: number;
+  @Input() requestId: bigint;
   @Input() user: UserModel;
 
   constructor() { }

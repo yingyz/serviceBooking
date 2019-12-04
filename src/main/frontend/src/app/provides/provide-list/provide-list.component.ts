@@ -3,7 +3,7 @@ import {Subscription} from "rxjs";
 import {ServiceProvideModel} from "../../models/serviceProvide.model";
 import {ProvideService} from "../provide.service";
 import {AuthService} from "../../auth/auth.service";
-import {RequestModel} from "../../models/request.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-provide-list',
@@ -27,7 +27,7 @@ export class ProvideListComponent implements OnInit, OnDestroy {
   pageNumberlist: number[] = [];
   limit: number = 2;
 
-  constructor(private provideService: ProvideService, private authService: AuthService) { }
+  constructor(private provideService: ProvideService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.onCallAPI();
@@ -58,6 +58,7 @@ export class ProvideListComponent implements OnInit, OnDestroy {
 
   onCallAPI() {
     this.provideService.getProvidesFromAPI(this.provideType, this.language, this.page, this.limit);
+    this.router.navigate(['/provides'], { replaceUrl: true });
   }
 
   onSelect() {
